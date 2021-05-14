@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
+const path = require("path");
 // const bodyParser = require("body-parser");
 // const cookieParser = require("cookie-parser");
 
@@ -13,8 +14,8 @@ const routers = require("./routers/routers");
 //more initializing
 const app = express();
 const port = process.env.PORT || 4001;
-app.use(express.static("../build"));
-// app.use(express.static(path.join(__dirname, '../build')))
+// app.use(express.static("../build"));
+app.use(express.static(path.join(__dirname, "../build")));
 // const corsOptions = {
 //   origin: "http://localhost:3000",
 //   optionsSuccessStatus: 200,
