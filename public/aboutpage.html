@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <title>About</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./aboutpage.css">
+  </head>
+  <body>
+      
+<div class="container-fluid">
+  <div class="nav justify-content-center">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="./index.html">theMVPshop</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./index.html">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./aboutpage.html">ABOUT</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">PORTFOLIO</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">PROCESS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./contact.html">CONTACT</a>
+          </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div> 
+
+  <div class="container container-sm container-md container-lg">
+    <section class="about-the-mvpshop d-flex justify-content-center">
+      <div class="row d-flex justify-content-center" id="about-the-mvpshop">
+        <h2 class="aboutTheMVPShopHeader">About the MVP Shop</h2>
+        <div>Created to support graduates of coding bootcamps, theMVPshop creates custom mobile and web applications designed for all devices and built to scale while giving inexperienced, but capable junior developers a chance to go beyond tutorials and class lessons.</div>
+      </div>
+    </section>
+
+    <section class="meet-the-crew d-flex justify-content-center">
+      <div class="row d-flex justify-content-center" id="meet-the-crew">
+        <h2>Meet the Crew</h2>
+        <div>The individual teams rotate and evolve over time, but the team below is responsible for building this website and some of the projects in our portfolio.</div>
+      </div>
+    </section>
+
+    <section class="crew-cards">
+      <div class="row d-flex flex-wrap p-2 m-5 align-items-center justify-content-evenly">
+
+
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img/boy04.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Keith Kritselis</h5>
+            <h6 class="card-head">Project Manager</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Lead the MVP shop</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/keith-kritselis/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/kkritselis" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="0" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img/girl03.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Sarina Colosimo</h5>
+            <h6 class="card-head">Web Developer</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Worked on front-end</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/sarinamcolosimo/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/RiinaMiichelle" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="1" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img/boy01.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Casey Calkins</h5>
+            <h6 class="card-head">Web Developer</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Worked on front-end</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/-casey-calkins/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/ghost-develop" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="2" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img/boy03.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Carl Larson</h5>
+            <h6 class="card-head">Web Developer</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Worked on back-end</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/carllarson512/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/carl-larson" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="3" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img/boy01.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Michael Scoggins</h5>
+            <h6 class="card-head">Web Developer</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Worked on back-end</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/michael-a-scoggins/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/MichaelScoggins" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="4" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+        <div class="card">
+          <img class="card-img-top img-fluid crew-image" src="./MVPwebsite/img//girl02.svg" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">Unknown</h5>
+            <h6 class="card-head">Web Developer</h6>
+            <div class="content-to-flip"> 
+                <div class="content__face content__face--front">
+                    <p class="card-text">Not here yet</p>
+                </div>
+                <div class="content__face content__face--back">
+                  <p>Contact me on <a href="https://www.linkedin.com/in/sarinamcolosimo/"  target="_blank">LinkedIn</a></p>
+                  <p>View my <a href="https://github.com/RiinaMiichelle" target="_blank">GitHub</a></p>
+                </div>
+            </div>
+            <button onclick="flipContent(this)" data-num="5" type="button" class="btn btn-primary btn-grad">Learn More</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  
+  <div class="container d-none d-lg-block">
+    <section class="about-page-footer">
+      <div class="row justify-content-center">
+        <div class="col-lg-3">
+          <h2 class="mvpshoplogo-footer">theMVPshop</h2>
+        </div>
+        <div class="footer-container d-flex justify-content-around col-6 align-content-center">
+          <div class="col-lg-3">
+            <div class="footer-titles">COMPANY</div>
+            <div>About Us</div>
+            <div>Our Team</div>
+            <div>Contact</div>
+          </div>
+          <div class="col-lg-3">
+            <div class="footer-titles">RESOURCES</div>
+            <div>Support</div>
+            <div>Blog</div>
+          </div>
+          <div class="col-lg-3">
+            <div class="footer-titles">ABOUT</div>
+            <div>Features</div>
+            <div>How It Works</div>
+            <div>Plans & Pricing</div>
+          </div>
+        </div>
+        <div class="copyright">Copyright 2021 @ The Zollege Foundation All Rights Reserves</div>
+      </div>     
+    </section>
+  </div>
+    
+</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="./homepage.js" async defer></script> 
+    <script>
+      let contentToFlip = document.getElementsByClassName('content-to-flip');
+      function flipContent(e) {
+        contentToFlip[e.dataset.num].classList.toggle('is-flipped');
+      }
+    </script>
+  </body>
+</html>

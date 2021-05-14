@@ -1,0 +1,331 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	/* font: inherit; */
+	vertical-align: baseline;
+}
+ 
+body {
+	line-height: 1;
+	font-family: 'Mukta', sans-serif;
+}
+
+a {
+	text-decoration: none;
+	font-size: medium;
+	color: white;
+	transition: all 0.5s
+}
+
+span a {
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	transition: 0.5s;
+}
+
+span a:after {
+	content: '\00bb';
+	position: absolute;
+	opacity: 0;
+	top: 0;
+	right: -20px;
+	transition: 0.5s;
+}
+
+span a:hover {
+	color: white;
+	padding-right: 25px;
+}
+
+span:hover a:after {
+	
+	opacity: 1;
+	right: 0;
+}
+
+button {
+	border: none; 
+}
+
+
+
+#landing-page-1 {
+	height: 80vh;
+	background: rgb(62 210 255);
+	background-size: 55%;
+	background-repeat: no-repeat;
+	background-position-x: right;
+    background-position-y: top;
+	background-attachment: fixed;
+	background-image: url('./MVPwebsite/img/illo01.png'), linear-gradient(90deg, rgb(58 210 255) 0%, rgba(50,230,237,1) 75%, rgba(50,237,207,1) 100%);
+}
+
+.badge {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+#landing-page-2 {
+	/* height: 100vh; */
+	background-color: #fff;
+}
+
+.section-container-align-text, .case-studies-align {
+	text-align: center;
+}
+
+.list-unstyled li {
+	text-align: left;
+}
+
+.card-img-holder {
+	box-shadow: inset 0 0 8px 0 #000000;
+}
+
+.card-img-holder img {
+	position: relative;
+    z-index: -1;
+}
+
+
+.portfolio-cards {
+	width: 18rem;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+
+.float-this {
+	float: right;
+	background-color: transparent;
+	color: #0dcaf0;
+	transition: all 0.4s;
+	/* border: none; */
+}
+
+.float-this:hover {
+	transition: all 0.4s;
+	transform: scale(1.5);
+}
+
+.portfolio-links {
+	color: #0dcaf0;
+}
+
+
+#landing-page-4 {
+	/* height: 80vh; */
+	background-color: #fff;
+}
+
+
+.landing-page-5-main-container {
+	background: rgb(50,160,237);
+	width: 80%;
+	margin: auto;
+	background: linear-gradient(90deg, rgba(50,160,237,1) 0%, rgba(50,230,237,1) 75%, rgba(50,237,207,1) 100%);
+	border-radius: 15px;
+}
+
+.landing-page-5-row1 {
+	width: 80%;
+	text-align: center;
+	color: #fff;
+}
+.landing-page-5-row2 {
+	width: 80%;
+	text-align: center;
+	color: #fff;
+	
+}
+
+.landing-page-5-btns {
+	border-radius: 50%;
+}
+
+
+.landing-page-5-row3 {
+	width: 80%;
+	text-align: center;
+	color: #fff;
+	background: black;
+}
+
+/* Responsive Box */
+#process {
+	background: rgb(67,177,247);
+  	background: linear-gradient(153deg, rgba(67,177,247,1) 0%, rgba(53,240,216,1) 100%);
+	width: 635px;
+	height: 450px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	text-align: center;
+	color: white;
+	margin:auto;
+	border-radius: 6px;
+	padding:20px;
+  }
+
+  #bodyText {
+	  width: 350px;
+  }
+
+  #stepText {
+	 height: 180px;
+  }
+
+
+  #flexit {
+	width: 385px;
+	margin: auto;
+	display:flex;
+	flex-direction: column;
+  }
+  
+  #fourStep {
+	/* width:90%; */
+	margin-top:60px;
+	margin:auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+  
+  .numba {
+	width: 50px;
+	height: 50px;
+	border:2px solid white;
+	border-radius: 50px;
+	padding-top: 15px;
+	transition-duration: 0.5s;
+  }
+  
+  .numba:hover {
+	width: 50px;
+	height: 50px;
+	border:2px solid white;
+	border-radius: 50px;
+	padding-top:12px;
+	background:white;
+	color: rgba(67,177,247,1);
+	cursor: pointer;
+	
+  }
+  
+  .line {
+	width:50px;
+	height:.5px;
+	background: white;
+	border:1px solid white;
+  }
+  
+  .selected {
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	background:white;
+	color: rgba(67,177,247,1);
+  }
+  
+  .hideit {
+	display: none;
+  }
+  
+  #stepText {
+	display: flex;
+  }
+  
+  @media screen and (max-width: 768px) {
+	#flexit {
+	  flex-direction: row;
+	}
+	
+	#fourStep, #stepText {
+	  flex-direction: column;
+	}
+	
+	.line {
+	  height:25px;
+	  width:.5px;
+	  background: white;
+	  border:1px solid white;
+	}
+  }
+/* Responsive Box End */
+
+
+#landing-page-6 {
+	height: 100vh;
+	background-color: #fff;
+	background: url('./MVPwebsite/img/illo06.png');
+	background-size: cover;
+	/* background-size: contain; */
+	background-repeat: no-repeat;
+}
+
+/* footer */
+.about-page-footer {
+	margin: auto;
+  }
+  .footer-container {
+	padding-top: 25px;
+  }
+  .footer-container div {
+	align-content: space-between;
+  }
+  .mvpshoplogo-footer {
+	padding-top: 25px;
+	padding-left: 80px;
+	color: black;
+  }
+  .footer-titles {
+	font-weight: bold;
+	padding-bottom: 15px;
+  }
+  .copyright {
+	font-size: small;
+	padding-top: 40px;
+	padding-bottom: 40px;
+	padding-left: 250px;
+  }
+
+@media screen and (max-width: 768px) {
+	#fourStep {
+		 
+	}
+	#flexit {
+		width: 480px;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	#landing-page-1 {
+		background: rgb(67,177,247);
+  		background: linear-gradient(153deg, rgba(67,177,247,1) 0%, rgba(53,240,216,1) 100%);
+	}
+
+	.flex-this {
+		display: inline-flex;
+		align-self: start;
+	}
+
+
+	.about-page-footer {
+		display: none;
+	}
+	
+}
+

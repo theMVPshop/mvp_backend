@@ -1,0 +1,146 @@
+
+
+.btn-grad {background-image: linear-gradient(to right, #24C6DC 0%, #514A9D  51%, #24C6DC  100%)}
+.btn-grad {
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+  display: block;
+  margin: auto;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+
+/* form */
+
+form {
+  height: 600px;
+  text-align: center;
+}
+
+.form-input {
+  border-radius: 10px;
+}
+
+.title {
+  text-align: center;
+}
+
+
+.contact-image {
+  width: 500px;
+}
+
+
+
+/* footer */
+.about-page-footer {
+  margin: auto;
+}
+
+.footer-container {
+	padding-top: 25px;
+}
+
+.footer-container div {
+  align-content: space-between;
+}
+
+.mvpshoplogo-footer {
+  padding-top: 25px;
+	padding-left: 80px;
+	color: black;
+}
+
+.footer-titles {
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.copyright {
+  font-size: small;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 250px;
+}
+
+/* form */
+form {
+  width: auto;
+}
+
+.about-form { 
+  padding-bottom: 60px;
+  padding-top: 100px;
+  width: 800px;
+}
+
+.about-form h4 {
+  margin-bottom: 40px;
+  font-size: 40px;
+  text-align: center;
+}
+
+.about-form form {
+  padding: 0 43px;
+  margin: auto;
+  height: auto;
+}
+
+form p {
+  display: inline;
+  font-size: 20px;
+  font-weight: 500;
+  height: auto;
+  line-height: 50px;
+  width: auto;
+}
+
+input {
+border-left-width: 0px;
+border-right-width: 0px;
+border-top-width: 0px;
+height: 40px;
+text-align: center;
+text-indent: 0px;
+width: 190px;
+}
+
+.submit-btn {
+margin:auto;
+border-bottom-style: none;
+border-left-style: none;
+border-right-style: none;
+border-top-style: none;
+height: 40px;
+width: 150px;
+}
+
+
+.btn-grad {background-image: linear-gradient(to right, #24C6DC 0%, #514A9D  51%, #24C6DC  100%)}
+.btn-grad {
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+  display: block;
+  margin: auto;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}

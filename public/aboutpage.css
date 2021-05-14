@@ -1,0 +1,196 @@
+
+a {
+	text-decoration: none;
+}
+
+p {
+margin: 0;
+padding: 0;
+}
+
+
+.btn-grad {background-image: linear-gradient(to right, #24C6DC 0%, #514A9D  51%, #24C6DC  100%)}
+.btn-grad {
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;            
+  box-shadow: 0 0 20px #eee;
+  border-radius: 5px;
+  display: block;
+  margin: auto;
+  border-bottom-style: none;
+  border-left-style: none;
+  border-right-style: none;
+  border-top-style: none;
+}
+
+.btn-grad:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+
+
+.container {
+	margin: 0;
+}
+
+.card-title, .card-text, .card-head {
+	cursor: default;
+}
+
+/* about page */
+/* section 1 */
+
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.container {
+  margin: auto;
+}
+
+.aboutTheMVPShopHeader {
+  animation-duration: 2s;
+  animation-name: bounceIn;
+}
+
+
+.about-the-mvpshop {
+  margin: auto;
+  /* border: 1px solid black; */
+  padding: 40px;
+}
+
+#about-the-mvpshop h2, #meet-the-crew h2  {
+  text-align: center;
+}
+
+/* section 2 */
+.meet-the-crew {
+  margin: auto;
+  /* border: 1px solid black; */
+  padding: 40px;
+}
+
+/* section 3 */
+.crew-cards {
+  margin: auto;
+  /* border: 1px solid black; */
+}
+
+.crew-image {
+  height: 25vh;
+}
+
+.card {
+	width: 350px; 
+  height: 450px;
+  margin: auto;
+	margin-bottom: 20px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+
+/* footer */
+.about-page-footer {
+  /* border: 1px black; */
+  margin: auto;
+}
+
+.footer-container {
+	padding-top: 25px;
+}
+
+.footer-container div {
+  align-content: space-between;
+}
+
+.mvpshoplogo-footer {
+  padding-top: 25px;
+	padding-left: 80px;
+	color: black;
+}
+
+.footer-titles {
+  font-weight: bold;
+  padding-bottom: 15px;
+}
+
+.copyright {
+  font-size: small;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 250px;
+}
+
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 250px;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (max-width: 768px) and (min-width: 601px) {
+  .card {
+    width: 250px;
+    height: 400px;
+  }
+}
+
+
+/* Flipping cards */
+
+.content-to-flip {
+  transition: transform 1s;
+  transform-style: preserve-3d;
+  position: relative;
+  width: 200px;
+  height: 70px;
+  border: 2px solid #CCC;
+  border-style: ridge;
+  border-radius: 5px;
+  margin: auto;
+  perspective: 600px;
+}
+
+.content-to-flip.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.content__face {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  width: 100%;
+}
+
+.content__face--front {
+  
+}
+
+.content__face--back {
+  transform: rotateY(180deg);
+}
+
+
+
