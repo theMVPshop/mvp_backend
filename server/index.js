@@ -14,6 +14,7 @@ const routers = require("./routers/routers");
 const app = express();
 const port = process.env.PORT || 4001;
 app.use(express.static("../build"));
+// app.use(express.static(path.join(__dirname, '../build')))
 // const corsOptions = {
 //   origin: "http://localhost:3000",
 //   optionsSuccessStatus: 200,
