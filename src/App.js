@@ -55,9 +55,9 @@ function App() {
   }
 
   const NavWithRouter = withRouter(Navigation);
-  let localStorageCurrentUser = JSON.parse(
-    localStorage.getItem("gotrue.user")
-  )?.email;
+  // let localStorageCurrentUser = JSON.parse(
+  //   localStorage.getItem("gotrue.user")
+  // )?.email;
 
   return (
     <>
@@ -65,7 +65,7 @@ function App() {
         NetlifyIdentity={NetlifyIdentity}
         openNetlifyModal={openNetlifyModal}
       />
-      <ReactRouter localStorageCurrentUser={localStorageCurrentUser} />
+      <ReactRouter />
     </>
   );
 }
