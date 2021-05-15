@@ -1,6 +1,7 @@
 import React from "react";
 import Navigation from "./components/Navigation";
 import ReactRouter from "./ReactRouter";
+import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 import { withRouter } from "react-router";
 import netlifyIdentity from "netlify-identity-widget";
@@ -60,11 +61,13 @@ function App() {
 
   return (
     <>
-      <NavWithRouter
-        NetlifyIdentity={NetlifyIdentity}
-        openNetlifyModal={openNetlifyModal}
-      />
-      <ReactRouter />
+      <BrowserRouter>
+        <NavWithRouter
+          NetlifyIdentity={NetlifyIdentity}
+          openNetlifyModal={openNetlifyModal}
+        />
+        <ReactRouter />
+      </BrowserRouter>
     </>
   );
 }
