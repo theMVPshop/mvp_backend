@@ -23,7 +23,6 @@ function App() {
     if (netlifyIdentity) {
       netlifyIdentity.open();
       netlifyIdentity.on("login", (user) => {
-        console.log("login", user);
         axios.get("/users").then((response) => {
           let existingUser = response.data.find(
             (x) => x.username === user.email
