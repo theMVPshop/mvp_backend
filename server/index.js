@@ -13,20 +13,19 @@ const routers = require("./routers/routers");
 const app = express();
 const port = process.env.PORT || 4001;
 app.use(express.static(path.join(__dirname, "../build")));
-// app.get("*", function (req, res) {
-//   res.sendFile(path.join(__dirname, "build", "index.html"));
-// });
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
+});
 
-app.use(
-  session({
-    secret: "secret",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+// app.use(
+//   session({
+//     secret: "secret",
+//     resave: true,
+//     saveUninitialized: true,
+//   })
+// );
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(), routers);
-
 
 app.get("/", (req, res) => {
   res.send("theMVPshop");
