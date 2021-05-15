@@ -29,11 +29,11 @@ function ProjectsTable({
         );
       });
     // fetch permissions table from API and store in hook
-    axios.get("/permissions/").then((response) => {
+    axios.get("/permissions").then((response) => {
       setPermissions(response.data);
     });
     // fetch projects table from API and store in hook
-    axios.get("/projects/").then((response) => {
+    axios.get("/projects").then((response) => {
       setProjects(response.data);
     });
   }, []);

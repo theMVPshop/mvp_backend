@@ -29,7 +29,7 @@ function App() {
             (x) => x.username === user.email
           );
           !existingUser &&
-            axios.post("/users/", {
+            axios.post("/users", {
               username: user.email,
               isModerator: 0,
             });

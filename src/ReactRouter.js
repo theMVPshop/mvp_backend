@@ -10,10 +10,10 @@ const Router = ({ localStorageCurrentUser }) => {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route path="/milestones" component={Milestones} />
-      <Route path="/devlog" component={Devlog} />
+      <Route path="/milestonespage" component={Milestones} />
+      <Route path="/devlogpage" component={Devlog} />
       <Route
-        path="/projects"
+        path="/projectspage"
         render={(props) => (
           <Projects
             {...props}
