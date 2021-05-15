@@ -1,7 +1,9 @@
 import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
 function Navigation({ location, NetlifyIdentity, openNetlifyModal }) {
+  const location = useLocation();
   let loggedIn = localStorage.getItem("loggedIn");
   return (
     <div style={{ paddingBottom: "6px" }}>

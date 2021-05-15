@@ -60,15 +60,13 @@ function App() {
   // )?.email;
 
   return (
-    <>
-      <BrowserRouter>
-        <NavWithRouter
-          NetlifyIdentity={NetlifyIdentity}
-          openNetlifyModal={openNetlifyModal}
-        />
-        <ReactRouter />
-      </BrowserRouter>
-    </>
+    <BrowserRouter>
+      <NavWithRouter
+        NetlifyIdentity={NetlifyIdentity}
+        openNetlifyModal={openNetlifyModal}
+      />
+      <ReactRouter />
+    </BrowserRouter>
   );
 }
 
