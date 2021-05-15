@@ -6,7 +6,7 @@ const session = require("express-session");
 const path = require("path");
 
 //routers
-const routers = require("../server/routers/routers");
+const routers = require("./server/routers/routers");
 // const authRouter = require('./routers/auth');
 
 //more initializing
