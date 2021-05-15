@@ -12,9 +12,9 @@ function Navigation({ location, NetlifyIdentity, openNetlifyModal }) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto" activeKey={location.pathname}>
-            <Nav.Link href="/projects">Projects</Nav.Link>
-            <Nav.Link href="/milestones">Milestones</Nav.Link>
-            <Nav.Link href="/devlog">DevLog</Nav.Link>
+            <Nav.Link href="/projectspage">Projects</Nav.Link>
+            <Nav.Link href="/milestonespage">Milestones</Nav.Link>
+            <Nav.Link href="/devlogpage">DevLog</Nav.Link>
           </Nav>
         </Navbar.Collapse>
         <NetlifyIdentity />
