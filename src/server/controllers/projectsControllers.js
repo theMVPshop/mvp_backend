@@ -11,7 +11,7 @@ const getAllProjects = (req, res) => {
 
 const createProject = (req, res) => {
   let { title, description } = req.body;
-  let sql = "INSERT INTO projects (title, description) VALUE  (?, ?)";
+  let sql = "INSERT INTO projects (title, description) VALUE (?, ?)";
   sql = mysql.format(sql, [title, description]);
 
   pool.query(sql, (err, rows) => {
