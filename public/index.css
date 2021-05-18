@@ -72,7 +72,7 @@ button {
 	background-position-x: right;
     background-position-y: top;
 	background-attachment: fixed;
-	background-image: url('./MVPwebsite/img/illo01.png'), linear-gradient(90deg, rgb(58 210 255) 0%, rgba(50,230,237,1) 75%, rgba(50,237,207,1) 100%);
+	background-image: url('./img/illo01.png'), linear-gradient(90deg, rgb(58 210 255) 0%, rgba(50,230,237,1) 75%, rgba(50,237,207,1) 100%);
 }
 
 .badge {
