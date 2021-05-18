@@ -1,9 +1,22 @@
 DROP TABLE IF EXISTS milestones, permissions, devlog, users, projects;
 
-CREATE TABLE users (
+CREATE TABLE usersCredentials (
+  id INT NOT NULL AUTO_INCREMENT,
   username VARCHAR(50),
+  password VARCHAR(200),
+  email VARCHAR(50),
+  PRIMARY KEY (id, username),
+  UNIQUE KEY (username)
+);
+
+CREATE TABLE users (        
+  id INT NOT NULL AUTO_INCREMENT,
+  firstName VARCHAR(50),
+  lastName VARCHAR(50),
   isModerator BOOLEAN,
-  PRIMARY KEY (username)
+  username VARCHAR(50),
+  PRIMARY KEY (username),
+  FOREIGN KEY (username) REFERENCES usersCredentials (username)
 );
 
 CREATE TABLE projects (
