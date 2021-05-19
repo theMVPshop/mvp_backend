@@ -41,7 +41,7 @@ router.put("/devlog", devlogControllers.updateDevlogById);
 router.post("/login", function (req, res) {
   let { username, password } = req.body;
 
-  localStorage.setItem("user", username);
+  // localStorage.setItem("user", username);
 
   res.json({ username: `${username}`, password: `${password}` });
 
