@@ -1,6 +1,7 @@
 //dependencies
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 //routers
 const routers = require("./server/routers/routers");
@@ -10,6 +11,7 @@ const routers = require("./server/routers/routers");
 const port = process.env.PORT || 4001;
 const app = express();
 app.use(express.static("build"));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors(), routers);
