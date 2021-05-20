@@ -47,7 +47,7 @@ router.post("/login", function (req, res) {
 
   console.log(`username: ${username}, password: ${password}`);
 
-  res.redirect("/");
+  res.redirect(307, "/test");
 
   res.end("yes");
 });
