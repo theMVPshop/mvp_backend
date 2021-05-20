@@ -38,10 +38,15 @@ router.delete("/devlog/:id", devlogControllers.deleteDevlogById);
 router.put("/devlog", devlogControllers.updateDevlogById);
 
 // login
-router.post('/login',function(req,res){
-  var user_name = req.body.user;
-  var password = req.body.password;
-  console.log("User name = "+user_name+", password is "+password);
+router.post("/login", function (req, res) {
+  let { username, password } = req.body;
+
+  localStorage.setItem("user", username);
+
+  res.json({ username: `${username}`, password: `${password}` });
+
+  console.log(`username: ${username}, password: ${password}`);
+
   res.end("yes");
 });
 

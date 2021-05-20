@@ -7,11 +7,12 @@ const routers = require("./server/routers/routers");
 // const authRouter = require('./routers/auth');
 
 //more initializing
-const app = express();
 const port = process.env.PORT || 4001;
+const app = express();
 app.use(express.static("build"));
-app.use(cors(), routers);
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cors(), routers);
 
 app.get("/", (req, res) => {
   res.send("theMVPshop");

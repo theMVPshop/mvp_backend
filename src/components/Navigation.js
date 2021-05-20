@@ -9,7 +9,7 @@ function Navigation({ location, NetlifyIdentity, openNetlifyModal }) {
     setRedirect(link);
   };
 
-  let loggedIn = localStorage.getItem("loggedIn");
+  // let loggedIn = localStorage.getItem("loggedIn");
   return (
     <>
       {redirect && <Redirect to={redirect} />}
@@ -33,14 +33,14 @@ function Navigation({ location, NetlifyIdentity, openNetlifyModal }) {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
-          <NetlifyIdentity />
-          <Button
-            onClick={() => {
-              openNetlifyModal();
-            }}
+          {/* <NetlifyIdentity /> */}
+          {/* <Button
+          // onClick={() => {
+          //   openNetlifyModal();
+          // }}
           >
             {loggedIn === "true" ? "Logout" : "Login"}
-          </Button>
+          </Button> */}
         </Navbar>
       </div>
     </>
