@@ -43,13 +43,11 @@ router.post("/login", function (req, res) {
 
   // localStorage.setItem("user", username);
 
-  res.json({ username: `${username}`, password: `${password}` });
+  // res.json({ username: `${username}`, password: `${password}` });
 
   console.log(`username: ${username}, password: ${password}`);
 
-  res.redirect(307, "/test");
-
-  res.end("yes");
+  res.redirect(307, "/");
 });
 
 module.exports = router;
