@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS milestones, permissions, devlog, users, projects;
+DROP TABLE IF EXISTS milestones, permissions, devlog, users, usersCredentials, projects;
 
 CREATE TABLE usersCredentials (
   id INT NOT NULL AUTO_INCREMENT,
@@ -15,7 +15,7 @@ CREATE TABLE users (
   lastName VARCHAR(50),
   isModerator BOOLEAN,
   username VARCHAR(50),
-  PRIMARY KEY (username),
+  PRIMARY KEY (id),
   FOREIGN KEY (username) REFERENCES usersCredentials (username)
 );
 
