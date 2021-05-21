@@ -1,5 +1,5 @@
-const mysql = require("mysql");
-// require("dotenv").config();
+const mysql = require("mysql2");
+require("dotenv").config();
 
 class Connection {
   constructor() {
@@ -12,7 +12,7 @@ class Connection {
         port: 3306,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
-        database: "a3zl5bffh54p5tff",
+        database: "db9201_MVP",
       };
 
       this.pool = mysql.createPool(config);

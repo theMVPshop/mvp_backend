@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 
-const Login = () => {
+const Signup = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
@@ -23,7 +23,7 @@ const Login = () => {
     password: password,
   };
 
-  const login = async (e) => {
+  const signup = async (e) => {
     e.preventDefault();
     setPassword("");
     setUsername("");
@@ -43,7 +43,7 @@ const Login = () => {
   return (
     <div class="container">
       <div class="row justify-content-center">
-        <form onSubmit={login} className="bg-dark col-3 text-light">
+        <form onSubmit={signup} className="bg-dark col-3 text-light">
           <h3>Sign In</h3>
 
           <div className="form-group">
@@ -114,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
