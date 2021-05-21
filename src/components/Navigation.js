@@ -31,6 +31,9 @@ function Navigation({ location, NetlifyIdentity, openNetlifyModal }) {
               <Nav.Link onClick={() => handleRedirect("/devlogpage")}>
                 DevLog
               </Nav.Link>
+              <Nav.Link onClick={() => handleRedirect("/login")}>
+                Login
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
           {/* <NetlifyIdentity /> */}
