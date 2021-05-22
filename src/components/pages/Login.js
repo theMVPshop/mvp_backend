@@ -4,6 +4,7 @@ import axios from "axios";
 const Login = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [redirectHome, setRedirectHome] = React.useState(false);
   const [email, setEmail] = React.useState("");
 
   const handleUsernameChange = (e) => {
@@ -27,18 +28,26 @@ const Login = () => {
     e.preventDefault();
     setPassword("");
     setUsername("");
-    await axios
-      .post("http://localhost:4001/auth/signup", userObject)
-      .then((res) => {
-        let token = res.data.token;
-        console.log(res);
-        console.log(token);
-        // if (res.date.response === "200") {
-        localStorage.setItem("user", username);
-        // }
-      });
+    await axios.post("/auth/login", userObject).then((res) => {
+      let token = res.data.token;
+      console.log(res);
+      console.log(token);
+      // if (res.date.response === "200") {
+      localStorage.setItem("user", username);
+      // }
+      // props.setUser(username);
+      // props.storeToken(token);
+    });
     goHome();
   };
+
+  const goHome = () => {
+    setRedirectHome(true);
+  };
+
+  if (redirectHome) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div className="container">
