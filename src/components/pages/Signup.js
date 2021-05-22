@@ -109,7 +109,7 @@ const Signup = () => {
             Submit
           </button>
           <p className="forgot-password text-right">
-          New <a href="#">account?</a>&nbsp;&nbsp;&nbsp;&nbsp; Forgot <a href="#">password?</a>
+          Forgot <a href="#">password?</a>
           </p>
         </form>
       </div>
