@@ -15,6 +15,7 @@ const Router = () => {
       <Route path="/milestonespage" component={Milestones} />
       <Route path="/devlogpage" component={Devlog} />
       <Route path="/projectspage" component={Projects} />
+      <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
     </Switch>
   );
