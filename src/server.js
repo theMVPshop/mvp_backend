@@ -1,6 +1,9 @@
 //dependencies
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
 const cors = require("cors");
+const authRouter = require("./server/routers/auth");
 
 //routers
 const routers = require("./server/routers/routers");
@@ -10,9 +13,11 @@ const routers = require("./server/routers/routers");
 const port = process.env.PORT || 4001;
 const app = express();
 app.use(express.static("build"));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors(), routers);
+app.use(routers);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("theMVPshop");

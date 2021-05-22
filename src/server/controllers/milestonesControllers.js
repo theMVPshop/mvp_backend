@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const pool = require("../sql/connection");
 const { handleSQLError } = require("../sql/error");
 
@@ -14,14 +14,8 @@ const getMilestoneByProject = (req, res) => {
 
 const createMilestone = (req, res) => {
   console.log("the whole request", req.body);
-  let {
-    ms_status,
-    due_date,
-    title,
-    subtitle,
-    project_id,
-    description,
-  } = req.body;
+  let { ms_status, due_date, title, subtitle, project_id, description } =
+    req.body;
   let sql =
     "INSERT INTO milestones (title, subtitle, project_id, due_date, ms_status, description) VALUE (?, ?, ?, ?, ?, ?)";
   sql = mysql.format(sql, [

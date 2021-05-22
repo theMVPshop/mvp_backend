@@ -1,7 +1,7 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
 dotenv.config();
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../sql/connection");
