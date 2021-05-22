@@ -1,10 +1,10 @@
-html {
+/* html {
   background-color: gray;
-}
+} */
 
 body {
   margin: 0;
-  background-color: gray;
+  background-color: #333;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
