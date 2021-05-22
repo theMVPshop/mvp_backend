@@ -45,8 +45,8 @@ const Signup = () => {
   }
 
   return (
-    <div class="container">
-      <div class="row justify-content-center">
+    <div className="container">
+      <div className="row justify-content-center">
         <form onSubmit={signup} className="bg-dark col-3 text-light">
           <h3>Sign Up</h3>
 
