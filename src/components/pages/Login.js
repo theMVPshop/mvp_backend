@@ -115,7 +115,7 @@ const Login = () => {
             Submit
           </button>
           <p className="forgot-password text-right">
-            Need <a href="#">an account?</a> Forgot <a href="#">password?</a>
+          New <a href="#">account?</a>&nbsp;&nbsp;&nbsp;&nbsp; Forgot <a href="#">password?</a>
           </p>
         </form>
       </div>
