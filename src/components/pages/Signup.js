@@ -1,10 +1,12 @@
 import React from "react";
 import axios from "axios";
+import { Redirect, Link } from "react-router-dom";
 
 const Signup = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [email, setEmail] = React.useState("");
+  const [redirectHome, setRedirectHome] = React.useState(null);
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -19,26 +21,27 @@ const Signup = () => {
   };
 
   const userObject = {
-    username: username,
-    password: password,
+    username,
+    password,
+    email,
   };
 
   const signup = async (e) => {
     e.preventDefault();
-    setPassword("");
-    setUsername("");
-    await axios
-      .post("http://localhost:4001/auth/signup", userObject)
-      .then((res) => {
-        let token = res.data.token;
-        console.log(res);
-        console.log(token);
-        // if (res.date.response === "200") {
-        localStorage.setItem("user", username);
-        // }
-      });
-    goHome();
+    await axios.post("/auth/signup", userObject);
+    await axios.post("/auth/login", userObject).then((res) => {
+      // props.storeToken(res.data.token);
+    });
+    await axios.post("/users", userObject);
+    // const profile = props.profile;
+    // props.setProfile(profile);
+    // props.setUser(props.profile.username);
+    setRedirectHome(true);
   };
+
+  if (redirectHome) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div class="container">
