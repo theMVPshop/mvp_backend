@@ -28,12 +28,12 @@ const Signup = () => {
 
   const signup = async (e) => {
     e.preventDefault();
-    await axios.post("/auth/signup", userObject);
-    await axios.post("/auth/login", userObject).then((res) => {
+    await axios.post("localhost:4001/auth/signup", userObject);
+    await axios.post("localhost:4001/auth/login", userObject).then((res) => {
       localStorage.setItem("user", username);
       // props.storeToken(res.data.token);
     });
-    await axios.post("/users", userObject);
+    await axios.post("localhost:4001/users", userObject);
     // const profile = props.profile;
     // props.setProfile(profile);
     // props.setUser(props.profile.username);

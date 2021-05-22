@@ -7,7 +7,6 @@ const authRouter = require("./server/routers/auth");
 
 //routers
 const routers = require("./server/routers/routers");
-// const authRouter = require('./routers/auth');
 
 //more initializing
 const port = process.env.PORT || 4001;

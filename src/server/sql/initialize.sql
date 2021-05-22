@@ -11,8 +11,6 @@ CREATE TABLE usersCredentials (
 
 CREATE TABLE users (        
   id INT NOT NULL AUTO_INCREMENT,
-  firstName VARCHAR(50),
-  lastName VARCHAR(50),
   isModerator BOOLEAN,
   username VARCHAR(50),
   PRIMARY KEY (id),

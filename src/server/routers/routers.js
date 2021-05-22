@@ -5,6 +5,14 @@ const milestonesControllers = require("../controllers/milestonesControllers");
 const permissionsControllers = require("../controllers/permissionsControllers");
 const devlogControllers = require("../controllers/devlogControllers");
 const router = express.Router();
+const { authenticate } = require("../middleware");
+
+// user credentials functions (username and password)
+router.post(
+  "/users/credentials",
+  authenticate,
+  usersControllers.createUserCredentials
+);
 
 // users controllers
 router.get("/users", usersControllers.getAllUsers);
