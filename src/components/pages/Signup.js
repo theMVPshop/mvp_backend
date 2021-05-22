@@ -41,8 +41,8 @@ const Signup = () => {
   };
 
   return (
-    <div class="container">
-      <div class="row justify-content-center">
+    <div className="container">
+      <div className="row justify-content-center">
         <form onSubmit={signup} className="bg-dark col-3 text-light">
           <h3>Sign In</h3>
 
@@ -106,7 +106,7 @@ const Signup = () => {
             Submit
           </button>
           <p className="forgot-password text-right">
-            Forgot <a href="#">password?</a>
+          New <a href="#">account?</a>&nbsp;&nbsp;&nbsp;&nbsp; Forgot <a href="#">password?</a>
           </p>
         </form>
       </div>
