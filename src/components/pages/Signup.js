@@ -20,24 +20,37 @@ const Signup = () => {
     setEmail(e.target.value);
   };
 
-  const userObject = {
+  const userCredsObject = {
     username,
     password,
-    email,
+  };
+
+  const userObject = {
+    username,
+    isModerator: 0,
+  };
+
+  const login = async () => {
+    await axios
+      .post("http://localhost:4001/auth/login", userCredsObject)
+      .then((res) => {
+        localStorage.setItem("user", username);
+        localStorage.setItem("token", res.data.token);
+        const user = localStorage.getItem("user");
+        const token = localStorage.getItem("token");
+        console.log(user);
+        console.log(token);
+      });
+    setRedirectHome(true);
   };
 
   const signup = async (e) => {
     e.preventDefault();
-    await axios.post("localhost:4001/auth/signup", userObject);
-    await axios.post("localhost:4001/auth/login", userObject).then((res) => {
-      localStorage.setItem("user", username);
-      // props.storeToken(res.data.token);
-    });
-    await axios.post("localhost:4001/users", userObject);
-    // const profile = props.profile;
-    // props.setProfile(profile);
-    // props.setUser(props.profile.username);
-    setRedirectHome(true);
+    setPassword("");
+    setUsername("");
+    await axios.post("http://localhost:4001/auth/signup", userCredsObject);
+    await axios.post("http://localhost:4001/users", userObject);
+    login();
   };
 
   if (redirectHome) {

@@ -46,16 +46,9 @@ router.delete("/devlog/:id", devlogControllers.deleteDevlogById);
 router.put("/devlog", devlogControllers.updateDevlogById);
 
 // login
-router.post("/login", function (req, res) {
-  let { username, password } = req.body;
-
-  // localStorage.setItem("user", username);
-
-  // res.json({ username: `${username}`, password: `${password}` });
-
-  console.log(`username: ${username}, password: ${password}`);
-
-  res.redirect(307, "/");
-});
+// router.post("/login", function (req, res) {
+//   let { username, password } = req.body;
+//   console.log(`username: ${username}, password: ${password}`);
+// });
 
 module.exports = router;
