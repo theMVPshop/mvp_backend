@@ -1,64 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 
 const Login = () => {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [redirect, setRedirect] = React.useState(null);
-  const [redirectHome, setRedirectHome] = React.useState(false);
-  const [email, setEmail] = React.useState("");
+  const [input, setInput] = useState({
+    username: "",
+    password: "",
+    email: "",
+  });
+  const [redirectHome, setRedirectHome] = useState(false);
 
-  const handleRedirect = (link) => {
-    setRedirect(link);
-  };
-
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const userCredsObject = {
-    username: username,
-    password: password,
+  const handleChange = (e) => {
+    setInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const login = async (e) => {
     e.preventDefault();
-    setPassword("");
-    setUsername("");
-    await axios
-      .post("http://localhost:4001/auth/login", userCredsObject)
-      .then((res) => {
-        localStorage.setItem("user", username);
-        localStorage.setItem("token", res.data.token);
-        const user = localStorage.getItem("user");
-        const token = localStorage.getItem("token");
-        console.log(user);
-        console.log(token);
-      });
-    goHome();
-  };
-
-  const goHome = () => {
+    await axios.post("http://localhost:4001/auth/login", input).then((res) => {
+      localStorage.setItem("user", username);
+      localStorage.setItem("token", res.data.token);
+      const user = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+      console.log(user);
+      console.log(token);
+    });
+    setInput({
+      username: "",
+      password: "",
+      email: "",
+    });
     setRedirectHome(true);
   };
 
-  if (redirectHome) {
-    return <Redirect to="/" />;
-  }
-
   return (
     <>
-      {redirect && <Redirect to={redirect} />}
+      {redirectHome && <Redirect to="/" />}
       <div className="container">
         <div className="row justify-content-center">
           <form onSubmit={login} className="bg-dark col-3 text-light">
@@ -71,8 +51,8 @@ const Login = () => {
                 id="email"
                 name="email"
                 label="Email"
-                onChange={handleEmailChange}
-                value={email}
+                onChange={handleChange}
+                value={input.email}
                 className="form-control"
                 placeholder="Enter email"
               />
@@ -85,8 +65,8 @@ const Login = () => {
                 id="username"
                 name="username"
                 label="Username"
-                onChange={handleUsernameChange}
-                value={username}
+                onChange={handleChange}
+                value={input.username}
                 className="form-control"
                 placeholder="Enter Username"
               />
@@ -96,8 +76,8 @@ const Login = () => {
               <label>Password</label>
               <input
                 type="password"
-                onChange={handlePasswordChange}
-                value={password}
+                onChange={handleChange}
+                value={input.password}
                 name="password"
                 label="Password"
                 type="password"
@@ -124,9 +104,9 @@ const Login = () => {
               Submit
             </button>
             <p className="forgot-password text-right">
-              <Nav.Link onClick={() => handleRedirect("/signup")}>
+              <Link to="/signup" className="nav-link">
                 New user?
-              </Nav.Link>
+              </Link>
             </p>
           </form>
         </div>

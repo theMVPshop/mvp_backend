@@ -11,7 +11,7 @@ import Signup from "./components/pages/Signup";
 const Router = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" component={Projects} />
       <Route path="/milestonespage" component={Milestones} />
       <Route path="/devlogpage" component={Devlog} />
       <Route path="/projectspage" component={Projects} />
