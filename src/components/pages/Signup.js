@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 const Signup = () => {
   const [input, setInput] = useState({
@@ -24,7 +24,7 @@ const Signup = () => {
 
   const login = async () => {
     await axios.post("http://localhost:4001/auth/login", input).then((res) => {
-      localStorage.setItem("user", username);
+      localStorage.setItem("user", input.username);
       localStorage.setItem("token", res.data.token);
       const user = localStorage.getItem("user");
       const token = localStorage.getItem("token");

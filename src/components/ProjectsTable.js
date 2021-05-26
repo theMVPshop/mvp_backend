@@ -10,20 +10,20 @@ function ProjectsTable({
   setActiveProject,
 }) {
   // checks if "gotrue.user" exists before reading the email property
-  const localStorageCurrentUser = JSON.parse(
-    localStorage.getItem("gotrue.user")
-  )?.email;
+  // const localStorageCurrentUser = JSON.parse(
+  //   localStorage.getItem("gotrue.user")
+  // )?.email;
+  const user = localStorage.getItem("user");
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
 
   useEffect(() => {
     // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
-    localStorageCurrentUser &&
+    user &&
       axios.get("/users").then((response) => {
         setIsMod(
-          response.data.find((x) => x.username === localStorageCurrentUser)
-            ?.isModerator === 1
+          response.data.find((x) => x.username === user)?.isModerator === 1
             ? true
             : false
         );
@@ -108,7 +108,7 @@ function ProjectsTable({
                       .filter(
                         (x) =>
                           x.id === permission.project_id &&
-                          permission.username === localStorageCurrentUser
+                          permission.username === user
                       )
                       .map((project) => (
                         <tr
@@ -132,7 +132,7 @@ function ProjectsTable({
                       .filter(
                         (x) =>
                           x.id === permission.project_id &&
-                          permission.username === localStorageCurrentUser
+                          permission.username === user
                       )
                       .map((project) => (
                         <tr>

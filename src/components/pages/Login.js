@@ -21,7 +21,7 @@ const Login = () => {
   const login = async (e) => {
     e.preventDefault();
     await axios.post("http://localhost:4001/auth/login", input).then((res) => {
-      localStorage.setItem("user", username);
+      localStorage.setItem("user", input.username);
       localStorage.setItem("token", res.data.token);
       const user = localStorage.getItem("user");
       const token = localStorage.getItem("token");
