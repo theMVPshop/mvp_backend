@@ -14,13 +14,13 @@ function Navigation({ location }) {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto" activeKey={location.pathname}>
-            <Link to="/projectspage" className="nav-link">
+            <Link to="/projects" className="nav-link">
               Projects
             </Link>
-            <Link to="/milestonespage" className="nav-link">
+            <Link to="/milestones" className="nav-link">
               Milestones
             </Link>
-            <Link to="/devlogpage" className="nav-link">
+            <Link to="/devlog" className="nav-link">
               DevLog
             </Link>
             {/* <Link to="/login" className="nav-link">

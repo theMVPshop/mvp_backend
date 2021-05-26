@@ -23,7 +23,7 @@ const Signup = () => {
   };
 
   const login = async () => {
-    await axios.post("http://localhost:4001/auth/login", input).then((res) => {
+    await axios.post("/auth/login", input).then((res) => {
       localStorage.setItem("user", input.username);
       localStorage.setItem("token", res.data.token);
       const user = localStorage.getItem("user");
@@ -36,8 +36,8 @@ const Signup = () => {
 
   const signup = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:4001/auth/signup", input);
-    await axios.post("http://localhost:4001/users", userObject);
+    await axios.post("/auth/signup", input);
+    await axios.post("/users", userObject);
     setInput({
       username: "",
       password: "",
@@ -48,7 +48,7 @@ const Signup = () => {
 
   return (
     <>
-      {redirectHome && <Redirect to="/" />}
+      {redirectHome && <Redirect to="/projects" />}
       <div className="container">
         <div className="row justify-content-center">
           <form onSubmit={signup} className="bg-dark col-3 text-light">
