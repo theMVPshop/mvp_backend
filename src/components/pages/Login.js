@@ -4,6 +4,7 @@ import { Redirect, Link } from "react-router-dom";
 import { Nav } from "react-bootstrap";
 
 const Login = () => {
+  const user = localStorage.getItem("user");
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -38,7 +39,7 @@ const Login = () => {
 
   return (
     <>
-      {redirectHome && <Redirect to="/projects" />}
+      {(redirectHome || user) && <Redirect to="/projects" />}
       <div className="container">
         <div className="row justify-content-center">
           <form onSubmit={login} className="bg-dark col-3 text-light">
