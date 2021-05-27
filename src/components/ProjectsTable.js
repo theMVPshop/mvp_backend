@@ -9,11 +9,13 @@ function ProjectsTable({
   activeProject,
   setActiveProject,
 }) {
-  // checks if "gotrue.user" exists before reading the email property
-  // const localStorageCurrentUser = JSON.parse(
-  //   localStorage.getItem("gotrue.user")
-  // )?.email;
   const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
+  const authBody = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
@@ -21,7 +23,7 @@ function ProjectsTable({
   useEffect(() => {
     // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
     user &&
-      axios.get("/users").then((response) => {
+      axios.get("/users", authBody).then((response) => {
         setIsMod(
           response.data.find((x) => x.username === user)?.isModerator === 1
             ? true
@@ -29,19 +31,19 @@ function ProjectsTable({
         );
       });
     // fetch permissions table from API and store in hook
-    axios.get("/permissions").then((response) => {
+    axios.get("/permissions", authBody).then((response) => {
       setPermissions(response.data);
     });
     // fetch projects table from API and store in hook
-    axios.get("/projects").then((response) => {
+    axios.get("/projects", authBody).then((response) => {
       setProjects(response.data);
     });
   }, []);
 
   // removes project from api and repopulates component with projects sans deleted one
   const removeProject = (projectId) => {
-    axios.delete(`/projects/${projectId}`).then(() => {
-      axios.get("/projects").then((response) => {
+    axios.delete(`/projects/${projectId}`, authBody).then(() => {
+      axios.get("/projects", authBody).then((response) => {
         setProjects([...response.data]);
       });
     });

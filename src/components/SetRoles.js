@@ -3,28 +3,36 @@ import axios from "axios";
 import { Table, Container, Form, Button } from "react-bootstrap";
 
 function SetRoles({ projects }) {
+  const token = localStorage.getItem("token");
+  const authBody = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
-    axios.get("/users/").then((response) => {
-      console.log(response.data);
+    axios.get("/users", authBody).then((response) => {
       setUsers(response.data);
     });
-    axios.get("/permissions/").then((response) => {
-      console.log(response.data);
+    axios.get("/permissions", authBody).then((response) => {
       setPermissions(response.data);
     });
   }, []);
 
   const handleChangeRole = (isMod, username) => {
     axios
-      .put("/users/", {
-        isModerator: !isMod,
-        username,
-      })
+      .put(
+        "/users",
+        {
+          isModerator: !isMod,
+          username,
+        },
+        authBody
+      )
       .then(() => {
-        axios.get("/users/").then((response) => {
+        axios.get("/users", authBody).then((response) => {
           setUsers(response.data);
         });
       });
@@ -39,17 +47,21 @@ function SetRoles({ projects }) {
     let permissionId = permissionObject && permissionObject.id;
     e.target.checked
       ? axios
-          .post("/permissions/", {
-            username,
-            project_id,
-          })
+          .post(
+            "/permissions",
+            {
+              username,
+              project_id,
+            },
+            authBody
+          )
           .then(() => {
-            axios.get("/permissions/").then((response) => {
+            axios.get("/permissions", authBody).then((response) => {
               setPermissions(response.data);
             });
           })
-      : axios.delete(`/permissions/${permissionId}`).then(() => {
-          axios.get("/permissions/").then((response) => {
+      : axios.delete(`/permissions/${permissionId}`, authBody).then(() => {
+          axios.get("/permissions", authBody).then((response) => {
             setPermissions(response.data);
           });
         });

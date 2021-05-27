@@ -6,6 +6,12 @@ import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
 
 function Milestones() {
+  const token = localStorage.getItem("token");
+  const authBody = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
   const [todos, setTodos] = useState([]);
   const [currentProjectId, setCurrentProjectId] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
@@ -21,12 +27,12 @@ function Milestones() {
 
   // populates milestones for the selected project
   const handleProjectClick = (projectId) => {
-    axios.get(`/milestones/${projectId}`).then((response) => {
+    axios.get(`/milestones/${projectId}`, authBody).then((response) => {
       setTodos(response.data);
       setCurrentProjectId(projectId);
       setActiveProject(projectId);
     });
-    axios.get("/projects").then((response) => {
+    axios.get("/projects", authBody).then((response) => {
       setProjects(response.data);
     });
   };
@@ -43,40 +49,51 @@ function Milestones() {
   const onSubmit = (event) => {
     event.preventDefault();
     axios
-      .post(`/milestones`, {
-        title: input.title,
-        subtitle: input.subtitle,
-        project_id: currentProjectId,
-        due_date: input.due_date,
-        ms_status: "TODO",
-        description: input.description,
-      })
+      .post(
+        `/milestones`,
+        {
+          title: input.title,
+          subtitle: input.subtitle,
+          project_id: currentProjectId,
+          due_date: input.due_date,
+          ms_status: "TODO",
+          description: input.description,
+        },
+        authBody
+      )
       .then(() => {
-        axios.get(`/milestones/${currentProjectId}`).then((response) => {
-          setTodos(response.data);
-          setInput({
-            title: "",
-            subtitle: "",
-            description: "",
-            due_date: "",
+        axios
+          .get(`/milestones/${currentProjectId}`, authBody)
+          .then((response) => {
+            setTodos(response.data);
+            setInput({
+              title: "",
+              subtitle: "",
+              description: "",
+              due_date: "",
+            });
           });
-        });
       });
   };
 
   // deletes milestone in api and repopulates component with milestones sans deleted one
   const removeItem = (Id) => {
-    console.log("Id", Id, "currentProjectId", currentProjectId);
     axios
-      .delete(`/milestones/${currentProjectId}`, {
-        data: {
-          id: Id,
+      .delete(
+        `/milestones/${currentProjectId}`,
+        {
+          data: {
+            id: Id,
+          },
         },
-      })
+        authBody
+      )
       .then(() => {
-        axios.get(`/milestones/${currentProjectId}`).then((response) => {
-          setTodos([...response.data.filter((x, i) => i !== Id)]);
-        });
+        axios
+          .get(`/milestones/${currentProjectId}`, authBody)
+          .then((response) => {
+            setTodos([...response.data.filter((x, i) => i !== Id)]);
+          });
       });
   };
 
@@ -85,19 +102,31 @@ function Milestones() {
     const todoId = todo.id;
     if (todo.ms_status === "TODO") {
       todo.ms_status = "IN PROGRESS";
-      axios.put(`/milestones/${todoId}`, {
-        ms_status: "IN PROGRESS",
-      });
+      axios.put(
+        `/milestones/${todoId}`,
+        {
+          ms_status: "IN PROGRESS",
+        },
+        authBody
+      );
     } else if (todo.ms_status === "IN PROGRESS") {
       todo.ms_status = "COMPLETED";
-      axios.put(`/milestones/${todoId}`, {
-        ms_status: "COMPLETED",
-      });
+      axios.put(
+        `/milestones/${todoId}`,
+        {
+          ms_status: "COMPLETED",
+        },
+        authBody
+      );
     } else if (todo.ms_status === "COMPLETED") {
       todo.ms_status = "TODO";
-      axios.put(`/milestones/${todoId}`, {
-        ms_status: "TODO",
-      });
+      axios.put(
+        `/milestones/${todoId}`,
+        {
+          ms_status: "TODO",
+        },
+        authBody
+      );
     }
     setTodos([...todos]);
   };

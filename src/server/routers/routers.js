@@ -8,11 +8,7 @@ const router = express.Router();
 const { authenticate } = require("../middleware");
 
 // user credentials functions (username and password)
-router.post(
-  "/users/credentials",
-  authenticate,
-  usersControllers.createUserCredentials
-);
+router.post("/users/credentials", usersControllers.createUserCredentials);
 
 // users controllers
 router.get("/users", usersControllers.getAllUsers);

@@ -28,8 +28,6 @@ const Signup = () => {
       localStorage.setItem("token", res.data.token);
       const user = localStorage.getItem("user");
       const token = localStorage.getItem("token");
-      console.log(user);
-      console.log(token);
     });
     setRedirectHome(true);
   };

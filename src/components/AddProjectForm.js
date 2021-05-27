@@ -5,6 +5,8 @@ import SetRolesModal from "./SetRolesModal";
 
 // inheriting props/state from ProjectsTable.js
 function AddProjectForm({ isMod, projects, setProjects }) {
+  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
   const [input, setInput] = useState({
     title: "",
     description: "",
@@ -27,12 +29,24 @@ function AddProjectForm({ isMod, projects, setProjects }) {
       description: input.description,
     };
 
-    axios.post("/projects", project).then(() => {
-      axios.get("/projects").then((response) => {
-        project.id = response.data[response.data.length - 1].id;
-        setProjects([...response.data]);
+    axios
+      .post("/projects", project, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(() => {
+        axios
+          .get("/projects", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            project.id = response.data[response.data.length - 1].id;
+            setProjects([...response.data]);
+          });
       });
-    });
 
     // clear input fields
     setInput({
