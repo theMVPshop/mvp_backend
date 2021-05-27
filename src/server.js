@@ -1,6 +1,3 @@
-//dependencies
-const dotenv = require("dotenv");
-dotenv.config();
 const express = require("express");
 const cors = require("cors");
 const authRouter = require("./server/routers/auth");
@@ -8,7 +5,7 @@ const authRouter = require("./server/routers/auth");
 //routers
 const routers = require("./server/routers/routers");
 
-//more initializing
+//initializing
 const port = process.env.PORT || 4001;
 const app = express();
 app.use(express.static("build"));
