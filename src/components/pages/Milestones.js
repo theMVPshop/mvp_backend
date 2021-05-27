@@ -12,9 +12,10 @@ function Milestones() {
       Authorization: `Bearer ${token}`,
     },
   };
+  let cachedActiveProject = localStorage.getItem("activeProject");
   const [todos, setTodos] = useState([]);
-  const [currentProjectId, setCurrentProjectId] = useState(null);
-  const [activeProject, setActiveProject] = useState(null);
+  const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
+  const [activeProject, setActiveProject] = useState(cachedActiveProject);
   const [activeProjectTitle, setActiveProjectTitle] = useState(null);
   const [projects, setProjects] = useState(null);
   const [input, setInput] = useState({
@@ -25,12 +26,24 @@ function Milestones() {
     ms_status: "TODO",
   });
 
+  React.useEffect(() => {
+    axios
+      .get(`/milestones/${cachedActiveProject}`, authBody)
+      .then((response) => {
+        setTodos(response.data);
+      });
+    axios.get("/projects", authBody).then((response) => {
+      setProjects(response.data);
+    });
+  }, []);
+
   // populates milestones for the selected project
   const handleProjectClick = (projectId) => {
     axios.get(`/milestones/${projectId}`, authBody).then((response) => {
       setTodos(response.data);
       setCurrentProjectId(projectId);
       setActiveProject(projectId);
+      localStorage.setItem("activeProject", projectId);
     });
     axios.get("/projects", authBody).then((response) => {
       setProjects(response.data);

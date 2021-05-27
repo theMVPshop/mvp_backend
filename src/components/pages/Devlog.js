@@ -12,9 +12,14 @@ import {
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 
 function Devlog() {
-  const localStorageCurrentUser = JSON.parse(
-    localStorage.getItem("gotrue.user")
-  )?.email;
+  const user = localStorage.getItem("user");
+  const authBody = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const [users, setUsers] = useState([]);
+  const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
@@ -24,7 +29,7 @@ function Devlog() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get(`/devlog/${projectId}`);
+      const result = await axios.get(`/devlog/${projectId}`, authBody);
       setLogs(result.data);
     } catch (error) {
       console.log(error);
@@ -32,11 +37,10 @@ function Devlog() {
   };
 
   useEffect(() => {
-    localStorageCurrentUser &&
-      axios.get("/users").then((response) => {
+    user &&
+      axios.get("/users", authBody).then((response) => {
         setIsMod(
-          response.data.find((x) => x.username === localStorageCurrentUser)
-            .isModerator === 1
+          response.data.find((x) => x.username === user).isModerator === 1
             ? true
             : false
         );
@@ -49,7 +53,8 @@ function Devlog() {
       .post(
         `/devlog`,
         // newMilestoneRequest,
-        newLog
+        newLog,
+        authBody
       )
       .then(function (response) {
         console.log("post devlog response", response);
@@ -64,7 +69,7 @@ function Devlog() {
     let id = logs[idx].id;
     console.log("delete log: ", id);
     axios
-      .delete(`/devlog/${id}`)
+      .delete(`/devlog/${id}`, authBody)
       .then(() => fetchData())
       .then(() => console.log("logs:", logs))
       .catch(function (error) {
@@ -115,7 +120,7 @@ function Devlog() {
     };
 
     const handleProjectClick = (projectId) => {
-      axios.get(`/milestones/${projectId}`).then((response) => {
+      axios.get(`/milestones/${projectId}`, authBody).then((response) => {
         setLogs(response.data);
         setCurrentProjectId(projectId);
       });
@@ -212,11 +217,7 @@ function Devlog() {
           {logs.map((log, idx) => (
             <Card key={idx} style={{ backgroundColor: "#708090" }}>
               <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
-                <Accordion.Toggle
-                  as={Button}
-                  variant="info"
-                  eventKey={`${idx}`}
-                >
+                <Accordion.Toggle as={Button} variant="info" eventKey={idx}>
                   {log.title}
                 </Accordion.Toggle>
                 <div style={{ color: "gray" }}>{log.time_stamp}</div>
