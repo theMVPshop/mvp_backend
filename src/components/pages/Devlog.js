@@ -13,6 +13,7 @@ import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 
 function Devlog() {
   const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
   const authBody = {
     headers: {
       Authorization: `Bearer ${token}`,
