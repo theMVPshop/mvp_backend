@@ -4,7 +4,7 @@ import { Table, Container, Form, Button } from "react-bootstrap";
 
 function SetRoles({ projects }) {
   const token = localStorage.getItem("token");
-  const authBody = {
+  const authHeader = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -13,10 +13,10 @@ function SetRoles({ projects }) {
   const [permissions, setPermissions] = useState([]);
 
   useEffect(() => {
-    axios.get("/users", authBody).then((response) => {
+    axios.get("/users", authHeader).then((response) => {
       setUsers(response.data);
     });
-    axios.get("/permissions", authBody).then((response) => {
+    axios.get("/permissions", authHeader).then((response) => {
       setPermissions(response.data);
     });
   }, []);
@@ -29,10 +29,10 @@ function SetRoles({ projects }) {
           isModerator: !isMod,
           username,
         },
-        authBody
+        authHeader
       )
       .then(() => {
-        axios.get("/users", authBody).then((response) => {
+        axios.get("/users", authHeader).then((response) => {
           setUsers(response.data);
         });
       });
@@ -53,15 +53,15 @@ function SetRoles({ projects }) {
               username,
               project_id,
             },
-            authBody
+            authHeader
           )
           .then(() => {
-            axios.get("/permissions", authBody).then((response) => {
+            axios.get("/permissions", authHeader).then((response) => {
               setPermissions(response.data);
             });
           })
-      : axios.delete(`/permissions/${permissionId}`, authBody).then(() => {
-          axios.get("/permissions", authBody).then((response) => {
+      : axios.delete(`/permissions/${permissionId}`, authHeader).then(() => {
+          axios.get("/permissions", authHeader).then((response) => {
             setPermissions(response.data);
           });
         });

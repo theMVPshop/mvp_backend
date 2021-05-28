@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";
+import {
+  faCalendarCheck,
+  faClipboard,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 
 function ProjectsTable({
@@ -11,19 +16,22 @@ function ProjectsTable({
 }) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  const authBody = {
+  const authHeader = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
+  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
+  const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
+  const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
   useEffect(() => {
     // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
     user &&
-      axios.get("/users", authBody).then((response) => {
+      axios.get("/users", authHeader).then((response) => {
         setIsMod(
           response.data.find((x) => x.username === user)?.isModerator === 1
             ? true
@@ -31,19 +39,19 @@ function ProjectsTable({
         );
       });
     // fetch permissions table from API and store in hook
-    axios.get("/permissions", authBody).then((response) => {
+    axios.get("/permissions", authHeader).then((response) => {
       setPermissions(response.data);
     });
     // fetch projects table from API and store in hook
-    axios.get("/projects", authBody).then((response) => {
+    axios.get("/projects", authHeader).then((response) => {
       setProjects(response.data);
     });
   }, []);
 
   // removes project from api and repopulates component with projects sans deleted one
   const removeProject = (projectId) => {
-    axios.delete(`/projects/${projectId}`, authBody).then(() => {
-      axios.get("/projects", authBody).then((response) => {
+    axios.delete(`/projects/${projectId}`, authHeader).then(() => {
+      axios.get("/projects", authHeader).then((response) => {
         setProjects([...response.data]);
       });
     });
@@ -63,6 +71,8 @@ function ProjectsTable({
           <thead>
             <tr>
               <th>ID#</th>
+              <th>Milestones</th>
+              <th>Devlog</th>
               <th>Project Title</th>
               <th>Project Description</th>
             </tr>
@@ -75,7 +85,8 @@ function ProjectsTable({
                     <tr
                       // the following attributes are only applicable if rendered by Milestones.js
                       style={
-                        activeProject === project.id
+                        activeProject === project.id ||
+                        cachedActiveProject === project.id
                           ? {
                               backgroundColor: "orange",
                             }
@@ -88,6 +99,8 @@ function ProjectsTable({
                       }
                     >
                       <td>{project.id}</td>
+                      <td>{milestoneIcon}</td>
+                      <td>{devlogIcon}</td>
                       <td>{project.title}</td>
                       <td>{project.description}</td>
                       {!fromMilestones && (
@@ -115,7 +128,8 @@ function ProjectsTable({
                       .map((project) => (
                         <tr
                           style={
-                            activeProject === project.id
+                            activeProject === project.id ||
+                            cachedActiveProject === project.id
                               ? {
                                   backgroundColor: "orange",
                                 }
@@ -124,6 +138,9 @@ function ProjectsTable({
                           onClick={() => handleProjectClick(project.id)}
                         >
                           <td>{project.id}</td>
+                          <td>{milestoneIcon}</td>
+                          <td>{devlogIcon}</td>
+                          <td>{project.title}</td>
                           <td>{project.description}</td>
                         </tr>
                       ))
@@ -139,6 +156,8 @@ function ProjectsTable({
                       .map((project) => (
                         <tr>
                           <td>{project.id}</td>
+                          <td>{milestoneIcon}</td>
+                          <td>{devlogIcon}</td>
                           <td>{project.title}</td>
                           <td>{project.description}</td>
                         </tr>
