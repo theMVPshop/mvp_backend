@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";
 import {
@@ -99,7 +100,16 @@ function ProjectsTable({
                       }
                     >
                       <td>{project.id}</td>
-                      <td>{milestoneIcon}</td>
+                      <td>
+                        <Link
+                          onClick={() =>
+                            localStorage.setItem("activeProject", project.id)
+                          }
+                          to="/milestones"
+                        >
+                          {milestoneIcon}
+                        </Link>
+                      </td>
                       <td>{devlogIcon}</td>
                       <td>{project.title}</td>
                       <td>{project.description}</td>
@@ -138,7 +148,9 @@ function ProjectsTable({
                           onClick={() => handleProjectClick(project.id)}
                         >
                           <td>{project.id}</td>
-                          <td>{milestoneIcon}</td>
+                          <td>
+                            <Link to="/milestones">{milestoneIcon}</Link>
+                          </td>
                           <td>{devlogIcon}</td>
                           <td>{project.title}</td>
                           <td>{project.description}</td>
@@ -156,7 +168,9 @@ function ProjectsTable({
                       .map((project) => (
                         <tr>
                           <td>{project.id}</td>
-                          <td>{milestoneIcon}</td>
+                          <td>
+                            <Link to="/milestones">{milestoneIcon}</Link>
+                          </td>
                           <td>{devlogIcon}</td>
                           <td>{project.title}</td>
                           <td>{project.description}</td>
