@@ -14,7 +14,7 @@ import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 function Devlog() {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
-  const authBody = {
+  const authHeader = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -30,7 +30,7 @@ function Devlog() {
 
   const fetchData = async () => {
     try {
-      const result = await axios.get(`/devlog/${projectId}`, authBody);
+      const result = await axios.get(`/devlog/${projectId}`, authHeader);
       setLogs(result.data);
     } catch (error) {
       console.log(error);
@@ -39,7 +39,7 @@ function Devlog() {
 
   useEffect(() => {
     user &&
-      axios.get("/users", authBody).then((response) => {
+      axios.get("/users", authHeader).then((response) => {
         setIsMod(
           response.data.find((x) => x.username === user).isModerator === 1
             ? true
@@ -55,7 +55,7 @@ function Devlog() {
         `/devlog`,
         // newMilestoneRequest,
         newLog,
-        authBody
+        authHeader
       )
       .then(function (response) {
         console.log("post devlog response", response);
@@ -70,7 +70,7 @@ function Devlog() {
     let id = logs[idx].id;
     console.log("delete log: ", id);
     axios
-      .delete(`/devlog/${id}`, authBody)
+      .delete(`/devlog/${id}`, authHeader)
       .then(() => fetchData())
       .then(() => console.log("logs:", logs))
       .catch(function (error) {
@@ -121,7 +121,7 @@ function Devlog() {
     };
 
     const handleProjectClick = (projectId) => {
-      axios.get(`/milestones/${projectId}`, authBody).then((response) => {
+      axios.get(`/milestones/${projectId}`, authHeader).then((response) => {
         setLogs(response.data);
         setCurrentProjectId(projectId);
       });

@@ -7,7 +7,7 @@ import TimelineElement from "../TimelineElement";
 
 function Milestones() {
   const token = localStorage.getItem("token");
-  const authBody = {
+  const authHeader = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -28,24 +28,24 @@ function Milestones() {
 
   React.useEffect(() => {
     axios
-      .get(`/milestones/${cachedActiveProject}`, authBody)
+      .get(`/milestones/${cachedActiveProject}`, authHeader)
       .then((response) => {
         setTodos(response.data);
       });
-    axios.get("/projects", authBody).then((response) => {
+    axios.get("/projects", authHeader).then((response) => {
       setProjects(response.data);
     });
   }, []);
 
   // populates milestones for the selected project
   const handleProjectClick = (projectId) => {
-    axios.get(`/milestones/${projectId}`, authBody).then((response) => {
+    axios.get(`/milestones/${projectId}`, authHeader).then((response) => {
       setTodos(response.data);
       setCurrentProjectId(projectId);
       setActiveProject(projectId);
       localStorage.setItem("activeProject", projectId);
     });
-    axios.get("/projects", authBody).then((response) => {
+    axios.get("/projects", authHeader).then((response) => {
       setProjects(response.data);
     });
   };
@@ -72,11 +72,11 @@ function Milestones() {
           ms_status: "TODO",
           description: input.description,
         },
-        authBody
+        authHeader
       )
       .then(() => {
         axios
-          .get(`/milestones/${currentProjectId}`, authBody)
+          .get(`/milestones/${currentProjectId}`, authHeader)
           .then((response) => {
             setTodos(response.data);
             setInput({
@@ -99,11 +99,11 @@ function Milestones() {
             id: Id,
           },
         },
-        authBody
+        authHeader
       )
       .then(() => {
         axios
-          .get(`/milestones/${currentProjectId}`, authBody)
+          .get(`/milestones/${currentProjectId}`, authHeader)
           .then((response) => {
             setTodos([...response.data.filter((x, i) => i !== Id)]);
           });
@@ -120,7 +120,7 @@ function Milestones() {
         {
           ms_status: "IN PROGRESS",
         },
-        authBody
+        authHeader
       );
     } else if (todo.ms_status === "IN PROGRESS") {
       todo.ms_status = "COMPLETED";
@@ -129,7 +129,7 @@ function Milestones() {
         {
           ms_status: "COMPLETED",
         },
-        authBody
+        authHeader
       );
     } else if (todo.ms_status === "COMPLETED") {
       todo.ms_status = "TODO";
@@ -138,7 +138,7 @@ function Milestones() {
         {
           ms_status: "TODO",
         },
-        authBody
+        authHeader
       );
     }
     setTodos([...todos]);
