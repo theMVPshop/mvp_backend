@@ -4,7 +4,7 @@
 
 body {
   margin: 0;
-  background-color: #333 !important;
+  background-color: #441091 !important;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -17,9 +17,35 @@ code {
     monospace;
 }
 
+.mileContainer {
+  border:solid 2px #7246D8;
+  background-color: #7246D8;
+  width: 100%;
+}
+
+.mileContainer form {
+  width: 100%;
+}
+
 .timeline-date {
   color: white;
 }
+
+.projects {
+  border: 2px solid gray;
+  border-radius: 20px;
+  padding-top: 10px;
+}
+
+.milestones {
+  border: 2px solid gray;
+  border-radius: 20px;
+  padding-top: 10px;
+  background:gray;
+}
+
+}
+
 /* 
 .vertical-timeline-element-content {
   border-bottom: 3px solid #2196f3;

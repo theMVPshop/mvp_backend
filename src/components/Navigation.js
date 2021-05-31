@@ -5,8 +5,8 @@ import { Navbar, Nav } from "react-bootstrap";
 function Navigation({ location }) {
   // let loggedIn = localStorage.getItem("loggedIn");
   return (
-    <div style={{ paddingBottom: "6px" }}>
-      <Navbar bg="dark" variant="dark" expand="lg">
+    <div className="pb-3" style={{ paddingBottom: "6px", backgroundColor: "#441091" }}>
+      <Navbar variant="dark" expand="lg">
         <Navbar.Brand href="/" style={{ color: "white" }}>
           the<span style={{ fontWeight: "800", color: "orange" }}>MVP</span>
           shop

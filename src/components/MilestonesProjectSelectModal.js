@@ -14,28 +14,30 @@ function MilestonesProjectSelectModal({
   const handleShow = () => setShow(true);
 
   return (
-    <>
-      <Button variant="secondary" onClick={handleShow}>
-        Select Project
-      </Button>
-      <>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Your Projects</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
-            <Container className="d-flex p-6 justify-content-center">
-              <ProjectsTable
-                fromMilestones={fromMilestones}
-                handleProjectClick={handleProjectClick}
-                setActiveProject={setActiveProject}
-                activeProject={activeProject}
-              />
-            </Container>
-          </Modal.Body>
-        </Modal>
-      </>
-    </>
+    <Container className="milestones">
+      <div className="row d-flex justify-content-center">
+        <Button variant="secondary" onClick={handleShow}>
+          Select Project
+        </Button>
+        <>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton style={{ backgroundColor: "var(--indigo)" }}>
+              <Modal.Title style={{ color: "var(--light)" }}>Your Projects</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ backgroundColor: "#441091" }}>
+              <Container className="d-flex p-6 justify-content-center">
+                <ProjectsTable style={{ backgroundColor: "var(--indigo)" }}
+                  fromMilestones={fromMilestones}
+                  handleProjectClick={handleProjectClick}
+                  setActiveProject={setActiveProject}
+                  activeProject={activeProject}
+                />
+              </Container>
+            </Modal.Body>
+          </Modal>
+        </>
+      </div>
+    </Container>
   );
 }
 

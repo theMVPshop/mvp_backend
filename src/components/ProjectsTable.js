@@ -50,7 +50,7 @@ function ProjectsTable({
   };
 
   return (
-    <div>
+    <div className="projects">
       {/* form to add a project */}
       <AddProjectForm
         isMod={isMod}
@@ -59,12 +59,13 @@ function ProjectsTable({
       />
       <Container>
         {/* table of projects */}
-        <Table striped bordered hover variant="dark">
+        <Table striped bordered hover variant="dark" style={{ backgroundColor: "var(--indigo)" }}>
           <thead>
             <tr>
               <th>ID#</th>
               <th>Project Title</th>
               <th>Project Description</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
