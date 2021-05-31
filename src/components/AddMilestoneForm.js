@@ -4,7 +4,7 @@ import { Button, Container } from "react-bootstrap";
 function AddMilestoneForm({ onSubmit, onChange, input }) {
   return (
     <div>
-      <Container className="d-flex p-6 justify-content-center">
+      <Container className="d-flex p-6 justify-content-around">
         <form onSubmit={onSubmit}>
           <input
             type="text"

@@ -20,7 +20,7 @@ function MilestonesProjectSelectModal({
           Select Project
         </Button>
         <>
-          <Modal show={show} onHide={handleClose}>
+          <Modal show={show} onHide={handleClose} style={{ width: "800px" }}>
             <Modal.Header closeButton style={{ backgroundColor: "var(--indigo)" }}>
               <Modal.Title style={{ color: "var(--light)" }}>Your Projects</Modal.Title>
             </Modal.Header>

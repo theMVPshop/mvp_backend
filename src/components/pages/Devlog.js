@@ -143,11 +143,13 @@ function Devlog() {
             Add Log Entry
           </Button>
         )}
-
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Developer Log</Modal.Title>
-          </Modal.Header>
+        <Modal show={show} onHide={handleClose}></Modal>        
+        <div  className="pb-3 mb-2"style={{ backgroundColor: "rgba(0,0,0,.25", margin: "auto", border: "solid 3px var(--indigo)", width:"100%", borderRadius: "30px 30px 0 0" }}>
+          <div className="mileContainer pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", color: "var(--light)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
+            <Modal.Header closeButton>
+              <Modal.Title>Developer Log</Modal.Title>
+            </Modal.Header>
+          </div>
           <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
             <Container className="d-flex p-6 justify-content-center">
               <Form className="m-4" onSubmit={onSubmit}>
@@ -199,6 +201,7 @@ function Devlog() {
               </Form>
             </Container>
           </Modal.Body>
+          </div>
         </Modal>
       </>
     );
