@@ -60,128 +60,132 @@ function ProjectsTable({
 
   return (
     <div className="projects">
-      {/* form to add a project */}
-      <AddProjectForm
-        isMod={isMod}
-        projects={projects}
-        setProjects={setProjects}
-      />
-      <Container>
-        {/* table of projects */}
-        <Table striped bordered hover variant="dark" style={{ backgroundColor: "var(--indigo)" }}>
-          <thead>
-            <tr>
-              <th>ID#</th>
-              <th>Milestones</th>
-              <th>Devlog</th>
-              <th>Project Title</th>
-              <th>Project Description</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              // checks if user is a moderator to either show all projects or filter based on permissions table
-              isMod
-                ? projects.map((project) => (
-                    <tr
-                      // the following attributes are only applicable if rendered by Milestones.js
-                      style={
-                        activeProject === project.id ||
-                        cachedActiveProject === project.id
-                          ? {
-                              backgroundColor: "orange",
+      <div  className="pb-3 mb-2"style={{ backgroundColor: "rgba(0,0,0,.25", margin: "auto", border: "solid 3px var(--indigo)", width:"80%", borderRadius: "30px 30px 0 0" }}>
+        {/* form to add a project */}
+        <AddProjectForm
+          isMod={isMod}
+          projects={projects}
+          setProjects={setProjects}
+        />
+      </div>
+      <div className="mileContainer pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
+        <Container>
+          {/* table of projects */}
+          <Table striped bordered hover variant="dark" style={{ backgroundColor: "var(--indigo)" }}>
+            <thead>
+              <tr>
+                <th>ID#</th>
+                <th>Milestones</th>
+                <th>Devlog</th>
+                <th>Project Title</th>
+                <th>Project Description</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                // checks if user is a moderator to either show all projects or filter based on permissions table
+                isMod
+                  ? projects.map((project) => (
+                      <tr
+                        // the following attributes are only applicable if rendered by Milestones.js
+                        style={
+                          activeProject === project.id ||
+                          cachedActiveProject === project.id
+                            ? {
+                                backgroundColor: "orange",
+                              }
+                            : fromMilestones && { cursor: "pointer" }
+                        }
+                        onClick={
+                          fromMilestones
+                            ? () => handleProjectClick(project.id)
+                            : null
+                        }
+                      >
+                        <td>{project.id}</td>
+                        <td>
+                          <Link
+                            onClick={() =>
+                              localStorage.setItem("activeProject", project.id)
                             }
-                          : fromMilestones && { cursor: "pointer" }
-                      }
-                      onClick={
-                        fromMilestones
-                          ? () => handleProjectClick(project.id)
-                          : null
-                      }
-                    >
-                      <td>{project.id}</td>
-                      <td>
-                        <Link
-                          onClick={() =>
-                            localStorage.setItem("activeProject", project.id)
-                          }
-                          to="/milestones"
-                        >
-                          {milestoneIcon}
-                        </Link>
-                      </td>
-                      <td>{devlogIcon}</td>
-                      <td>{project.title}</td>
-                      <td>{project.description}</td>
-                      {!fromMilestones && (
-                        <td className="d-flex justify-content-center">
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => removeProject(project.id)}
+                            to="/milestones"
                           >
-                            X
-                          </Button>
+                            {milestoneIcon}
+                          </Link>
                         </td>
-                      )}
-                    </tr>
-                  ))
-                : fromMilestones
-                ? // maps over permissions table to filter projects assigned to current user and render them in the table. if rendered from Milestones.js then it will have a handleclick eventlistener
-                  permissions.map((permission) =>
-                    projects
-                      .filter(
-                        (x) =>
-                          x.id === permission.project_id &&
-                          permission.username === user
-                      )
-                      .map((project) => (
-                        <tr
-                          style={
-                            activeProject === project.id ||
-                            cachedActiveProject === project.id
-                              ? {
-                                  backgroundColor: "orange",
-                                }
-                              : fromMilestones && { cursor: "pointer" }
-                          }
-                          onClick={() => handleProjectClick(project.id)}
-                        >
-                          <td>{project.id}</td>
-                          <td>
-                            <Link to="/milestones">{milestoneIcon}</Link>
+                        <td>{devlogIcon}</td>
+                        <td>{project.title}</td>
+                        <td>{project.description}</td>
+                        {!fromMilestones && (
+                          <td className="d-flex justify-content-center">
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => removeProject(project.id)}
+                            >
+                              X
+                            </Button>
                           </td>
-                          <td>{devlogIcon}</td>
-                          <td>{project.title}</td>
-                          <td>{project.description}</td>
-                        </tr>
-                      ))
-                  )
-                : // otherwise, it won't have the listener
-                  permissions.map((permission) =>
-                    projects
-                      .filter(
-                        (x) =>
-                          x.id === permission.project_id &&
-                          permission.username === user
-                      )
-                      .map((project) => (
-                        <tr>
-                          <td>{project.id}</td>
-                          <td>
-                            <Link to="/milestones">{milestoneIcon}</Link>
-                          </td>
-                          <td>{devlogIcon}</td>
-                          <td>{project.title}</td>
-                          <td>{project.description}</td>
-                        </tr>
-                      ))
-                  )
-            }
-          </tbody>
-        </Table>
-      </Container>
+                        )}
+                      </tr>
+                    ))
+                  : fromMilestones
+                  ? // maps over permissions table to filter projects assigned to current user and render them in the table. if rendered from Milestones.js then it will have a handleclick eventlistener
+                    permissions.map((permission) =>
+                      projects
+                        .filter(
+                          (x) =>
+                            x.id === permission.project_id &&
+                            permission.username === user
+                        )
+                        .map((project) => (
+                          <tr
+                            style={
+                              activeProject === project.id ||
+                              cachedActiveProject === project.id
+                                ? {
+                                    backgroundColor: "orange",
+                                  }
+                                : fromMilestones && { cursor: "pointer" }
+                            }
+                            onClick={() => handleProjectClick(project.id)}
+                          >
+                            <td>{project.id}</td>
+                            <td>
+                              <Link to="/milestones">{milestoneIcon}</Link>
+                            </td>
+                            <td>{devlogIcon}</td>
+                            <td>{project.title}</td>
+                            <td>{project.description}</td>
+                          </tr>
+                        ))
+                    )
+                  : // otherwise, it won't have the listener
+                    permissions.map((permission) =>
+                      projects
+                        .filter(
+                          (x) =>
+                            x.id === permission.project_id &&
+                            permission.username === user
+                        )
+                        .map((project) => (
+                          <tr>
+                            <td>{project.id}</td>
+                            <td>
+                              <Link to="/milestones">{milestoneIcon}</Link>
+                            </td>
+                            <td>{devlogIcon}</td>
+                            <td>{project.title}</td>
+                            <td>{project.description}</td>
+                          </tr>
+                        ))
+                    )
+              }
+            </tbody>
+          </Table>
+        </Container>
+      </div>
     </div>
   );
 }
