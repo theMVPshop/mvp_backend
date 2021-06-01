@@ -9,7 +9,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 
-function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
+function ProjectsTable({
+  fromMilestones,
+  handleProjectClick,
+  activeProject,
+  setActiveProject,
+}) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -54,7 +59,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
   };
 
   return (
-    <div className="projects" style={{ margin: "auto" }}>
+    <div className="projects" style={{ width: "800px", margin: "auto" }}>
       <div
         className="pb-3 mb-2 mt-2"
         style={{
@@ -92,11 +97,15 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
             <thead>
               <tr>
                 <th>ID#</th>
-                <th>Milestones</th>
-                <th>Devlog</th>
+                {!fromMilestones && (
+                  <>
+                    <th>Milestones</th>
+                    <th>Devlog</th>
+                  </>
+                )}
                 <th>Project Title</th>
                 <th>Project Description</th>
-                <th>Delete</th>
+                {!fromMilestones && <th>Delete</th>}
               </tr>
             </thead>
             <tbody>
@@ -105,40 +114,83 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
                 isMod
                   ? projects.map((project) => (
                       <tr
+                        // the following attributes are only applicable if rendered by Milestones.js
                         style={
+                          activeProject === project.id ||
                           cachedActiveProject === project.id
                             ? {
                                 backgroundColor: "#766400",
                               }
+                            : fromMilestones && { cursor: "pointer" }
+                        }
+                        onClick={
+                          fromMilestones
+                            ? () => handleProjectClick(project.id)
                             : null
                         }
                       >
                         <td>{project.id}</td>
-                        <td>
-                          <Link
-                            onClick={() =>
-                              localStorage.setItem("activeProject", project.id)
-                            }
-                            to="/milestones"
-                          >
-                            {milestoneIcon}
-                          </Link>
-                        </td>
-                        <td>{devlogIcon}</td>
+                        {!fromMilestones && (
+                          <>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  localStorage.setItem(
+                                    "activeProject",
+                                    project.id
+                                  )
+                                }
+                                to="/milestones"
+                              >
+                                {milestoneIcon}
+                              </Link>
+                            </td>
+                            <td>{devlogIcon}</td>
+                          </>
+                        )}
                         <td>{project.title}</td>
                         <td>{project.description}</td>
-                        <td className="d-flex justify-content-center">
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => removeProject(project.id)}
-                          >
-                            X
-                          </Button>
-                        </td>
+                        {!fromMilestones && (
+                          <td className="d-flex justify-content-center">
+                            <Button
+                              variant="danger"
+                              size="sm"
+                              onClick={() => removeProject(project.id)}
+                            >
+                              X
+                            </Button>
+                          </td>
+                        )}
                       </tr>
                     ))
-                  : // if not a moderator then the table filters the projects based on the permissions table
+                  : fromMilestones
+                  ? // maps over permissions table to filter projects assigned to current user and render them in the table. if rendered from Milestones.js then it will have a handleclick eventlistener
+                    permissions.map((permission) =>
+                      projects
+                        .filter(
+                          (x) =>
+                            x.id === permission.project_id &&
+                            permission.username === user
+                        )
+                        .map((project) => (
+                          <tr
+                            style={
+                              activeProject === project.id ||
+                              cachedActiveProject === project.id
+                                ? {
+                                    backgroundColor: "#766400",
+                                  }
+                                : fromMilestones && { cursor: "pointer" }
+                            }
+                            onClick={() => handleProjectClick(project.id)}
+                          >
+                            <td>{project.id}</td>
+                            <td>{project.title}</td>
+                            <td>{project.description}</td>
+                          </tr>
+                        ))
+                    )
+                  : // otherwise, it won't have the listener
                     permissions.map((permission) =>
                       projects
                         .filter(
