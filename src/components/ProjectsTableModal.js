@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { Container, Table, Button } from "react-bootstrap";
-import {
-  faCalendarCheck,
-  faClipboard,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Container, Table } from "react-bootstrap";
 import AddProjectForm from "./AddProjectForm";
 
-function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
+function ProjectsTableModal({ fromMilestones, handleProjectClick }) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -21,8 +15,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
-  const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
-  const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
   useEffect(() => {
     // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
@@ -44,15 +36,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
     });
   }, []);
 
-  // removes project from api and repopulates component with projects sans deleted one
-  const removeProject = (projectId) => {
-    axios.delete(`/projects/${projectId}`, authHeader).then(() => {
-      axios.get("/projects", authHeader).then((response) => {
-        setProjects([...response.data]);
-      });
-    });
-  };
-
   return (
     <div className="projects" style={{ margin: "auto" }}>
       <div
@@ -72,14 +55,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
             borderRadius: "25px 25px 0 0",
             filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
           }}
-        >
-          {/* form to add a project */}
-          <AddProjectForm
-            isMod={isMod}
-            projects={projects}
-            setProjects={setProjects}
-          />
-        </div>
+        ></div>
         <Container>
           {/* table of projects */}
           <Table
@@ -92,11 +68,8 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
             <thead>
               <tr>
                 <th>ID#</th>
-                <th>Milestones</th>
-                <th>Devlog</th>
                 <th>Project Title</th>
                 <th>Project Description</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -110,35 +83,16 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
                             ? {
                                 backgroundColor: "#766400",
                               }
-                            : null
+                            : { cursor: "pointer" }
                         }
+                        onClick={() => handleProjectClick(project.id)}
                       >
                         <td>{project.id}</td>
-                        <td>
-                          <Link
-                            onClick={() =>
-                              localStorage.setItem("activeProject", project.id)
-                            }
-                            to="/milestones"
-                          >
-                            {milestoneIcon}
-                          </Link>
-                        </td>
-                        <td>{devlogIcon}</td>
                         <td>{project.title}</td>
                         <td>{project.description}</td>
-                        <td className="d-flex justify-content-center">
-                          <Button
-                            variant="danger"
-                            size="sm"
-                            onClick={() => removeProject(project.id)}
-                          >
-                            X
-                          </Button>
-                        </td>
                       </tr>
                     ))
-                  : // if not a moderator then the table filters the projects based on the permissions table
+                  : // maps over permissions table to filter projects assigned to current user and render them in the table.
                     permissions.map((permission) =>
                       projects
                         .filter(
@@ -147,12 +101,17 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
                             permission.username === user
                         )
                         .map((project) => (
-                          <tr>
+                          <tr
+                            style={
+                              cachedActiveProject === project.id
+                                ? {
+                                    backgroundColor: "#766400",
+                                  }
+                                : { cursor: "pointer" }
+                            }
+                            onClick={() => handleProjectClick(project.id)}
+                          >
                             <td>{project.id}</td>
-                            <td>
-                              <Link to="/milestones">{milestoneIcon}</Link>
-                            </td>
-                            <td>{devlogIcon}</td>
                             <td>{project.title}</td>
                             <td>{project.description}</td>
                           </tr>
@@ -167,4 +126,4 @@ function ProjectsTable({ fromMilestones, handleProjectClick, activeProject }) {
   );
 }
 
-export default ProjectsTable;
+export default ProjectsTableModal;
