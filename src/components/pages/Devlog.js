@@ -201,8 +201,9 @@ function Devlog() {
               </Form>
             </Container>
           </Modal.Body>
+
+        {/* </Modal> */}
           </div>
-        </Modal>
       </>
     );
   }
