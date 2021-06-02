@@ -16,7 +16,6 @@ function Milestones() {
   const [todos, setTodos] = useState([]);
   const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
   const [activeProject, setActiveProject] = useState(cachedActiveProject);
-  const [activeProjectTitle, setActiveProjectTitle] = useState(null);
   const [projects, setProjects] = useState(null);
   const [input, setInput] = useState({
     title: "",

@@ -9,12 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 
-function ProjectsTable({
-  fromMilestones,
-  handleProjectClick,
-  activeProject,
-  setActiveProject,
-}) {
+function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -79,11 +74,13 @@ function ProjectsTable({
           }}
         >
           {/* form to add a project */}
-          <AddProjectForm
-            isMod={isMod}
-            projects={projects}
-            setProjects={setProjects}
-          />
+          {!fromMilestones && (
+            <AddProjectForm
+              isMod={isMod}
+              projects={projects}
+              setProjects={setProjects}
+            />
+          )}
         </div>
         <Container>
           {/* table of projects */}
@@ -116,7 +113,6 @@ function ProjectsTable({
                       <tr
                         // the following attributes are only applicable if rendered by Milestones.js
                         style={
-                          activeProject === project.id ||
                           cachedActiveProject === project.id
                             ? {
                                 backgroundColor: "#766400",
@@ -175,7 +171,6 @@ function ProjectsTable({
                         .map((project) => (
                           <tr
                             style={
-                              activeProject === project.id ||
                               cachedActiveProject === project.id
                                 ? {
                                     backgroundColor: "#766400",
