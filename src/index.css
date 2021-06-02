@@ -30,6 +30,10 @@ code {
   }
 }
 
+input {
+  margin: 4px;
+}
+
 .mileContainer form {
   width: 100%;
 }
