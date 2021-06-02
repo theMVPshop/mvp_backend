@@ -21,12 +21,18 @@ function MilestonesProjectSelectModal({
         </Button>
         <>
           <Modal show={show} onHide={handleClose} style={{ width: "800px" }}>
-            <Modal.Header closeButton style={{ backgroundColor: "var(--indigo)" }}>
-              <Modal.Title style={{ color: "var(--light)" }}>Your Projects</Modal.Title>
+            <Modal.Header
+              closeButton
+              style={{ backgroundColor: "var(--indigo)" }}
+            >
+              <Modal.Title style={{ color: "var(--light)" }}>
+                Your Projects
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body style={{ backgroundColor: "#441091" }}>
               <Container className="d-flex p-6 justify-content-center">
-                <ProjectsTable style={{ backgroundColor: "var(--indigo)" }}
+                <ProjectsTable
+                  style={{ backgroundColor: "var(--indigo)" }}
                   fromMilestones={fromMilestones}
                   handleProjectClick={handleProjectClick}
                   setActiveProject={setActiveProject}

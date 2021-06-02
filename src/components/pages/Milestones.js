@@ -16,7 +16,6 @@ function Milestones() {
   const [todos, setTodos] = useState([]);
   const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
   const [activeProject, setActiveProject] = useState(cachedActiveProject);
-  const [activeProjectTitle, setActiveProjectTitle] = useState(null);
   const [projects, setProjects] = useState(null);
   const [input, setInput] = useState({
     title: "",
@@ -146,8 +145,25 @@ function Milestones() {
 
   return (
     <>
-      <div  className="pb-3 mb-2" style={{ backgroundColor: "rgba(0,0,0,.25", margin: "auto", border: "solid 3px var(--indigo)", width:"100%", borderRadius: "30px 30px 0 0" }}>
-        <div className="mileContainer pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", color: "var(--light)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
+      <div
+        className="pb-3 mb-2"
+        style={{
+          backgroundColor: "rgba(0,0,0,.25",
+          margin: "auto",
+          border: "solid 3px var(--indigo)",
+          width: "100%",
+          borderRadius: "30px 30px 0 0",
+        }}
+      >
+        <div
+          className="mileContainer pt-2 pb-2 mb-3"
+          style={{
+            backgroundColor: "var(--indigo)",
+            color: "var(--light)",
+            borderRadius: "25px 25px 0 0",
+            filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
+          }}
+        >
           <Container className="d-flex p-6 justify-content-evenly mt-2">
             <MilestonesProjectSelectModal
               fromMilestones={true}
@@ -157,7 +173,8 @@ function Milestones() {
             />
           </Container>
           <Container className="d-flex p-6 justify-content-center mt-2 mb-2 ms-2">
-            <AddMilestoneForm className="ms-3 me-2"
+            <AddMilestoneForm
+              className="ms-3 me-2"
               onChange={onChange}
               input={input}
               onSubmit={onSubmit}
@@ -165,10 +182,11 @@ function Milestones() {
           </Container>
           {projects && (
             <h1 className="d-flex p-6 justify-content-center">
-              {activeProject && projects.find((x) => x.id == activeProject)?.title}
+              {activeProject &&
+                projects.find((x) => x.id == activeProject)?.title}
             </h1>
           )}
-        </div>        
+        </div>
         <TimelineElement
           todos={todos}
           handleClick={handleClick}

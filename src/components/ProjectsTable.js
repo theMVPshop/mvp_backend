@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";
-import { faCalendarCheck, faClipboard } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarCheck,
+  faClipboard,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 
-function ProjectsTable({
-  fromMilestones,
-  handleProjectClick,
-  activeProject,
-  setActiveProject,
-}) {
+function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -56,27 +54,55 @@ function ProjectsTable({
   };
 
   return (
-    <div className="projects" style={{ margin: "auto" }}>
-      <div  className="pb-3 mb-2 mt-2" style={{ backgroundColor: "rgba(0,0,0,.25)", margin: "auto", border: "solid 3px var(--indigo)", width:"80%", borderRadius: "30px 30px 0 0" }}>
-        <div className="mileContainer pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
+    <div className="projects" style={{ width: "800px", margin: "auto" }}>
+      <div
+        className="pb-3 mb-2 mt-2"
+        style={{
+          backgroundColor: "rgba(0,0,0,.25)",
+          margin: "auto",
+          border: "solid 3px var(--indigo)",
+          width: "80%",
+          borderRadius: "30px 30px 0 0",
+        }}
+      >
+        <div
+          className="mileContainer pt-2 pb-2 mb-3"
+          style={{
+            backgroundColor: "var(--indigo)",
+            borderRadius: "25px 25px 0 0",
+            filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
+          }}
+        >
           {/* form to add a project */}
-          <AddProjectForm
-            isMod={isMod}
-            projects={projects}
-            setProjects={setProjects}
-          />
+          {!fromMilestones && (
+            <AddProjectForm
+              isMod={isMod}
+              projects={projects}
+              setProjects={setProjects}
+            />
+          )}
         </div>
         <Container>
           {/* table of projects */}
-          <Table striped bordered hover variant="dark" style={{ backgroundColor: "var(--indigo)" }}>
+          <Table
+            striped
+            bordered
+            hover
+            variant="dark"
+            style={{ backgroundColor: "var(--indigo)" }}
+          >
             <thead>
               <tr>
                 <th>ID#</th>
-                <th>Milestones</th>
-                <th>Devlog</th>
+                {!fromMilestones && (
+                  <>
+                    <th>Milestones</th>
+                    <th>Devlog</th>
+                  </>
+                )}
                 <th>Project Title</th>
                 <th>Project Description</th>
-                <th>Delete</th>
+                {!fromMilestones && <th>Delete</th>}
               </tr>
             </thead>
             <tbody>
@@ -87,7 +113,6 @@ function ProjectsTable({
                       <tr
                         // the following attributes are only applicable if rendered by Milestones.js
                         style={
-                          activeProject === project.id ||
                           cachedActiveProject === project.id
                             ? {
                                 backgroundColor: "#766400",
@@ -101,17 +126,24 @@ function ProjectsTable({
                         }
                       >
                         <td>{project.id}</td>
-                        <td>
-                          <Link
-                            onClick={() =>
-                              localStorage.setItem("activeProject", project.id)
-                            }
-                            to="/milestones"
-                          >
-                            {milestoneIcon}
-                          </Link>
-                        </td>
-                        <td>{devlogIcon}</td>
+                        {!fromMilestones && (
+                          <>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  localStorage.setItem(
+                                    "activeProject",
+                                    project.id
+                                  )
+                                }
+                                to="/milestones"
+                              >
+                                {milestoneIcon}
+                              </Link>
+                            </td>
+                            <td>{devlogIcon}</td>
+                          </>
+                        )}
                         <td>{project.title}</td>
                         <td>{project.description}</td>
                         {!fromMilestones && (
@@ -139,7 +171,6 @@ function ProjectsTable({
                         .map((project) => (
                           <tr
                             style={
-                              activeProject === project.id ||
                               cachedActiveProject === project.id
                                 ? {
                                     backgroundColor: "#766400",
@@ -149,10 +180,6 @@ function ProjectsTable({
                             onClick={() => handleProjectClick(project.id)}
                           >
                             <td>{project.id}</td>
-                            <td>
-                              <Link to="/milestones">{milestoneIcon}</Link>
-                            </td>
-                            <td>{devlogIcon}</td>
                             <td>{project.title}</td>
                             <td>{project.description}</td>
                           </tr>
