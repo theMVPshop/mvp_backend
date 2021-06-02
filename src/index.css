@@ -25,7 +25,6 @@ code {
 
 @media (min-width: 576px) {
   .modal-dialog {
-      max-width: 800px !important; 
       margin: 1.75rem auto;
   }
 }

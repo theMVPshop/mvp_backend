@@ -57,7 +57,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     localStorage.setItem("activeProject", project.id);
 
   return (
-    <div className="projects" style={{ width: "800px", margin: "auto" }}>
+    <div className="projects">
       <div
         className="pb-3 mb-2 mt-2"
         style={{
