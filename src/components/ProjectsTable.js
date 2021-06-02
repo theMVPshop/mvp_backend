@@ -53,6 +53,9 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     });
   };
 
+  const addItemToLocalStorage = () =>
+    localStorage.setItem("activeProject", project.id);
+
   return (
     <div className="projects" style={{ width: "800px", margin: "auto" }}>
       <div
@@ -141,7 +144,19 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                 {milestoneIcon}
                               </Link>
                             </td>
-                            <td>{devlogIcon}</td>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  localStorage.setItem(
+                                    "activeProject",
+                                    project.id
+                                  )
+                                }
+                                to="/devlog"
+                              >
+                                {devlogIcon}
+                              </Link>
+                            </td>
                           </>
                         )}
                         <td>{project.title}</td>
@@ -197,9 +212,31 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                           <tr>
                             <td>{project.id}</td>
                             <td>
-                              <Link to="/milestones">{milestoneIcon}</Link>
+                              <Link
+                                onClick={() =>
+                                  localStorage.setItem(
+                                    "activeProject",
+                                    project.id
+                                  )
+                                }
+                                to="/milestones"
+                              >
+                                {milestoneIcon}
+                              </Link>
                             </td>
-                            <td>{devlogIcon}</td>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  localStorage.setItem(
+                                    "activeProject",
+                                    project.id
+                                  )
+                                }
+                                to="/devlog"
+                              >
+                                {devlogIcon}
+                              </Link>
+                            </td>
                             <td>{project.title}</td>
                             <td>{project.description}</td>
                           </tr>
