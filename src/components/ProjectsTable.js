@@ -64,7 +64,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
           backgroundColor: "rgba(0,0,0,.25)",
           margin: "auto",
           border: "solid 3px var(--indigo)",
-          width: "80%",
+          // width: "80%",
           borderRadius: "30px 30px 0 0",
         }}
       >
@@ -140,6 +140,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   )
                                 }
                                 to="/milestones"
+                                style={{ color: "white" }}
                               >
                                 {milestoneIcon}
                               </Link>
@@ -153,6 +154,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   )
                                 }
                                 to="/devlog"
+                                style={{ color: "white" }}
                               >
                                 {devlogIcon}
                               </Link>
@@ -220,6 +222,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   )
                                 }
                                 to="/milestones"
+                                style={{ color: "white" }}
                               >
                                 {milestoneIcon}
                               </Link>
@@ -233,6 +236,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   )
                                 }
                                 to="/devlog"
+                                style={{ color: "white" }}
                               >
                                 {devlogIcon}
                               </Link>
