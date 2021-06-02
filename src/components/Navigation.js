@@ -6,6 +6,7 @@ function Navigation({ location }) {
   // let loggedIn = localStorage.getItem("loggedIn");
   return (
     <div className="pb-3" style={{ paddingBottom: "6px", backgroundColor: "#441091" }}>
+      <div style={{ margin: "auto"}} className="col-7">
       <Navbar variant="dark" expand="lg">
         <Navbar.Brand href="/" style={{ color: "white" }}>
           the<span style={{ fontWeight: "800", color: "orange" }}>MVP</span>
@@ -30,6 +31,7 @@ function Navigation({ location }) {
         </Navbar.Collapse>
         {/* <Button>{loggedIn === "true" ? "Logout" : "Login"}</Button> */}
       </Navbar>
+      </div>
     </div>
   );
 }

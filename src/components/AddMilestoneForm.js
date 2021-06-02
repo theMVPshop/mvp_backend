@@ -5,7 +5,7 @@ function AddMilestoneForm({ onSubmit, onChange, input }) {
   return (
     <div>
       <Container className="d-flex p-6 justify-content-around">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} style={{alignItems:"center"}}>
           <input
             type="text"
             name="title"
