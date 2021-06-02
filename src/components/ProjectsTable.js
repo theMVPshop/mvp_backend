@@ -53,9 +53,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     });
   };
 
-  const addItemToLocalStorage = () =>
-    localStorage.setItem("activeProject", project.id);
-
   return (
     <div className="projects">
       <div
@@ -64,7 +61,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
           backgroundColor: "rgba(0,0,0,.25)",
           margin: "auto",
           border: "solid 3px var(--indigo)",
-          // width: "80%",
           borderRadius: "30px 30px 0 0",
         }}
       >
