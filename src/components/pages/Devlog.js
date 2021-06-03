@@ -19,23 +19,23 @@ function Devlog() {
       Authorization: `Bearer ${token}`,
     },
   };
-  const [users, setUsers] = useState([]);
-  const [permissions, setPermissions] = useState([]);
+  // const [users, setUsers] = useState([]);
+  // const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const [projectId, setCurrentProjectId] = useState(null);
 
-  let newLog = {};
+  // let newLog = {};
 
-  const fetchData = async () => {
-    try {
-      const result = await axios.get(`/devlog/${projectId}`, authHeader);
-      setLogs(result.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const result = await axios.get(`/devlog/${projectId}`, authHeader);
+  //     setLogs(result.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     user &&
@@ -48,23 +48,14 @@ function Devlog() {
       });
   }, []);
 
-  const postLog = () => {
-    console.log("log", newLog);
-    axios
-      .post(
-        `/devlog`,
-        // newMilestoneRequest,
-        newLog,
-        authHeader
-      )
-      .then(function (response) {
-        console.log("post devlog response", response);
-      })
-      .then(() => fetchData())
-      .catch(function (error) {
-        console.log("post devlog error", error);
-      });
-  };
+  // const postLog = () => {
+  //   axios
+  //     .post("/devlog", newLog, authHeader)
+  //     .then(() => fetchData())
+  //     .catch((error) => {
+  //       console.log("post devlog error", error);
+  //     });
+  // };
 
   const removeItem = (idx) => {
     let id = logs[idx].id;
@@ -73,7 +64,7 @@ function Devlog() {
       .delete(`/devlog/${id}`, authHeader)
       .then(() => fetchData())
       .then(() => console.log("logs:", logs))
-      .catch(function (error) {
+      .catch((error) => {
         console.log("delete devlog error", error);
       });
   };
@@ -83,7 +74,6 @@ function Devlog() {
     const [show, setShow] = useState(false);
     const [input, setInput] = useState({
       title: "",
-      // subtitle: "",
       description: "",
       time_stamp: "",
       projectId,
@@ -102,26 +92,32 @@ function Devlog() {
     const onSubmit = (event) => {
       event.preventDefault();
       let date = new Date().toLocaleString();
-      newLog = {
-        title: input.title,
-        project_id: input.project_id,
-        description: input.description,
-        time_stamp: date,
-        // subtitle: input.subtitle,
-      };
-      // setCounter(counter + 1);
-      setInput({
-        title: "",
-        // subtitle: "",
-        description: "",
-        time_stamp: "",
-        project_id: projectId,
-      });
-      postLog();
+      axios
+        .post(
+          "/devlog",
+          {
+            title: input.title,
+            project_id: input.project_id,
+            description: input.description,
+            time_stamp: date,
+          },
+          authHeader
+        )
+        .then(() => {
+          axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
+            setLogs(response.data);
+            setInput({
+              title: "",
+              description: "",
+              time_stamp: "",
+              projectId,
+            });
+          });
+        });
     };
 
     const handleProjectClick = (projectId) => {
-      axios.get(`/milestones/${projectId}`, authHeader).then((response) => {
+      axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
         setLogs(response.data);
         setCurrentProjectId(projectId);
       });
@@ -129,6 +125,7 @@ function Devlog() {
 
     return (
       <>
+        {/* devLog render */}
         <Container className="d-flex p-6 justify-content-center">
           <MilestonesProjectSelectModal
             fromMilestones={true}
@@ -138,11 +135,12 @@ function Devlog() {
           />
         </Container>
         {/* Only show the entry creation button if user is a moderator */}
-        {isMod && (
-          <Button variant="primary" onClick={handleShow}>
-            Add Log Entry
-          </Button>
-        )}
+        {isMod ||
+          (!isMod && (
+            <Button variant="primary" onClick={handleShow}>
+              Add Log Entry
+            </Button>
+          ))}
         <Modal show={show} onHide={handleClose}>
           <div
             className="devlogContainer pb-3 mb-2"
