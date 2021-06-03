@@ -143,9 +143,26 @@ function Devlog() {
             Add Log Entry
           </Button>
         )}
-        <Modal show={show} onHide={handleClose}></Modal>        
-        <div  className="devlogContainer pb-3 mb-2"style={{ backgroundColor: "rgba(0,0,0,.25", margin: "auto", border: "solid 3px var(--indigo)", width:"100%", borderRadius: "30px 30px 0 0" }}>
-          <div className="pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", color: "var(--light)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
+        <Modal show={show} onHide={handleClose}></Modal>
+        <div
+          className="devlogContainer pb-3 mb-2"
+          style={{
+            backgroundColor: "rgba(0,0,0,.25",
+            margin: "auto",
+            border: "solid 3px var(--indigo)",
+            width: "100%",
+            borderRadius: "30px 30px 0 0",
+          }}
+        >
+          <div
+            className="pt-2 pb-2 mb-3"
+            style={{
+              backgroundColor: "var(--indigo)",
+              color: "var(--light)",
+              borderRadius: "25px 25px 0 0",
+              filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
+            }}
+          >
             <Modal.Header closeButton>
               <Modal.Title>Developer Log</Modal.Title>
             </Modal.Header>
@@ -202,8 +219,8 @@ function Devlog() {
             </Container>
           </Modal.Body>
 
-        {/* </Modal> */}
-          </div>
+          {/* </Modal> */}
+        </div>
       </>
     );
   }
@@ -211,42 +228,58 @@ function Devlog() {
 
   return (
     <>
-      <div  className="pb-3 mb-2"style={{ backgroundColor: "rgba(0,0,0,.25", margin: "auto", border: "solid 3px var(--indigo)", width:"40%", borderRadius: "30px 30px 0 0" }}>
-        <div className="mileContainer pt-2 pb-2 mb-3" style={{ backgroundColor: "var(--indigo)", borderRadius: "25px 25px 0 0", filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}>
-      <DevlogModal />
-      {/* accordion starts below */}
-      </div>
-      <Container className="p-12">
-        <Accordion
-          // style={{ color: "white" }}
-          defaultActiveKey="0"
-          className="p-12"
+      <div
+        className="pb-3 mb-2"
+        style={{
+          backgroundColor: "rgba(0,0,0,.25",
+          margin: "auto",
+          border: "solid 3px var(--indigo)",
+          width: "40%",
+          borderRadius: "30px 30px 0 0",
+        }}
+      >
+        <div
+          className="mileContainer pt-2 pb-2 mb-3"
+          style={{
+            backgroundColor: "var(--indigo)",
+            borderRadius: "25px 25px 0 0",
+            filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
+          }}
         >
-          {logs.map((log, idx) => (
-            <Card key={idx} style={{ backgroundColor: "#708090" }}>
-              <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
-                <Accordion.Toggle as={Button} variant="info" eventKey={idx}>
-                  {log.title}
-                </Accordion.Toggle>
-                <div style={{ color: "gray" }}>{log.time_stamp}</div>
-                {isMod && (
-                  <Button
-                    variant="danger"
-                    onClick={() => removeItem(idx)}
-                    size="sm"
-                    className="d-flex ml-auto"
-                  >
-                    Remove
-                  </Button>
-                )}
-              </Card.Header>
-              <Accordion.Collapse eventKey={`${idx}`}>
-                <Card.Body>{log.description}</Card.Body>
-              </Accordion.Collapse>
-            </Card>
-          ))}
-        </Accordion>
-      </Container>
+          <DevlogModal />
+          {/* accordion starts below */}
+        </div>
+        <Container className="p-12">
+          <Accordion
+            // style={{ color: "white" }}
+            defaultActiveKey="0"
+            className="p-12"
+          >
+            {logs.map((log, idx) => (
+              <Card key={idx} style={{ backgroundColor: "#708090" }}>
+                <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
+                  <Accordion.Toggle as={Button} variant="info" eventKey={idx}>
+                    {log.title}
+                  </Accordion.Toggle>
+                  <div style={{ color: "gray" }}>{log.time_stamp}</div>
+                  {isMod && (
+                    <Button
+                      variant="danger"
+                      onClick={() => removeItem(idx)}
+                      size="sm"
+                      className="d-flex ml-auto"
+                    >
+                      Remove
+                    </Button>
+                  )}
+                </Card.Header>
+                <Accordion.Collapse eventKey={idx}>
+                  <Card.Body>{log.description}</Card.Body>
+                </Accordion.Collapse>
+              </Card>
+            ))}
+          </Accordion>
+        </Container>
       </div>
     </>
   );
