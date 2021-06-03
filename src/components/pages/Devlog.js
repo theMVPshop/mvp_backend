@@ -143,11 +143,11 @@ function Devlog() {
             Add Log Entry
           </Button>
         )}
-        <Modal show={show} onHide={handleClose}></Modal>
+        <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2"
           style={{
-            backgroundColor: "rgba(0,0,0,.25",
+            backgroundColor: "rgba(0,0,0,.25)",
             margin: "auto",
             border: "solid 3px var(--indigo)",
             width: "100%",
@@ -218,9 +218,9 @@ function Devlog() {
               </Form>
             </Container>
           </Modal.Body>
-
-          {/* </Modal> */}
         </div>
+          </Modal>
+
       </>
     );
   }
@@ -231,7 +231,7 @@ function Devlog() {
       <div
         className="pb-3 mb-2"
         style={{
-          backgroundColor: "rgba(0,0,0,.25",
+          backgroundColor: "rgba(0,0,0,.25)",
           margin: "auto",
           border: "solid 3px var(--indigo)",
           width: "40%",
