@@ -11,7 +11,6 @@ router.post("/users/credentials", usersControllers.createUserCredentials);
 
 // users controllers
 router.get("/users", usersControllers.getAllUsers);
-router.post("/users", usersControllers.createUser);
 router.put("/users", usersControllers.updateRoleByUsername);
 
 // projects controllers

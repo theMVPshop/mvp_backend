@@ -4,12 +4,14 @@ import { Container, Button, Form, Modal } from "react-bootstrap";
 import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
 
 function DevlogModal({
+  isMod,
   projectId,
   setProjectId,
   setLogs,
   setActiveProject,
   activeProject,
   authHeader,
+  fetchData,
 }) {
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
@@ -22,48 +24,48 @@ function DevlogModal({
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const onChange = (event) => {
+  const onChange = (event) =>
     setInput((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
-  };
+
+  const clearForm = () =>
+    setInput({
+      title: "",
+      description: "",
+      time_stamp: "",
+    });
 
   const onSubmit = (event) => {
     event.preventDefault();
+
     let date = new Date().toLocaleString();
+    console.log("date", date);
+    const body = {
+      title: input.title,
+      description: input.description,
+      project_id: projectId,
+      time_stamp: date,
+    };
+
     axios
-      .post(
-        "/devlog",
-        {
-          title: input.title,
-          description: input.description,
-          project_id: projectId,
-          time_stamp: date,
-        },
-        authHeader
-      )
-      .then(() => {
-        axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
-          setLogs(response.data);
-          setInput({
-            title: "",
-            description: "",
-            time_stamp: "",
-          });
-        });
-      })
+      .post("/devlog", body, authHeader)
+      .then(() => fetchData())
+      .then(() => clearForm())
       .catch((error) => console.log(error));
   };
 
-  const handleProjectClick = (projectId) => {
-    axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
-      localStorage.setItem("activeProject", projectId);
-      setActiveProject(projectId);
-      setProjectId(projectId);
-      setLogs(response.data);
-    });
-  };
+  const handleProjectClick = (projectId) =>
+    axios
+      .get(`/devlog/${projectId}`, authHeader)
+      .then((response) => {
+        localStorage.setItem("activeProject", projectId);
+        setActiveProject(projectId);
+        setProjectId(projectId);
+        setLogs(response.data);
+      })
+      .catch((error) => console.log(error));
 
   return (
     <>
@@ -77,15 +79,11 @@ function DevlogModal({
         />
       </Container>
       {/* Only show the entry creation button if user is a moderator */}
-      {/* {isMod && (
-          <Button variant="primary" onClick={handleShow}>
-            Add Log Entry
-          </Button>
-        )} */}
-      {/* testing purposes only */}
-      <Button variant="primary" onClick={handleShow}>
-        Add Log Entry
-      </Button>
+      {isMod && (
+        <Button variant="primary" onClick={handleShow}>
+          Add Log Entry
+        </Button>
+      )}
       <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2"

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, Link } from "react-router-dom";
-import { Nav } from "react-bootstrap";
 
 const Login = () => {
-  const user = localStorage.getItem("user");
+  let user = localStorage.getItem("user");
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -12,27 +11,32 @@ const Login = () => {
   });
   const [redirectHome, setRedirectHome] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setInput((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-  };
 
-  const login = async (e) => {
-    e.preventDefault();
-    await axios.post("/auth/login", input).then((res) => {
-      localStorage.setItem("user", input.username);
-      localStorage.setItem("token", res.data.token);
-      const user = localStorage.getItem("user");
-      const token = localStorage.getItem("token");
-    });
+  const clearForm = () =>
     setInput({
       username: "",
       password: "",
       email: "",
     });
-    setRedirectHome(true);
+
+  const login = (e) => {
+    e.preventDefault();
+    axios
+      .post("/auth/login", input)
+      .then((res) => {
+        localStorage.setItem("user", input.username);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("loggedIn", true);
+        user = localStorage.getItem("user");
+        clearForm();
+        setRedirectHome(true);
+      })
+      .catch((error) => console.log("login error", error));
   };
 
   return (
