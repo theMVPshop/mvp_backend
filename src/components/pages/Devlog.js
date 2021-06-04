@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import {
-  Container,
-  Accordion,
-  Card,
-  Button,
-  Form,
-  Modal,
-} from "react-bootstrap";
-import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
+import { Container, Accordion, Card, Button } from "react-bootstrap";
+import DevlogModal from "../DevlogModal";
 
 function Devlog() {
+  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -20,8 +14,8 @@ function Devlog() {
   };
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
-  const [activeProject, setActiveProject] = useState(null);
-  const [projectId, setCurrentProjectId] = useState(null);
+  const [activeProject, setActiveProject] = useState(cachedActiveProject);
+  const [projectId, setProjectId] = useState(cachedActiveProject);
 
   useEffect(() => {
     user &&
@@ -34,14 +28,13 @@ function Devlog() {
       });
   }, []);
 
-  const removeItem = (idx) => {
-    let id = logs[idx].id;
+  const removeItem = (Id) => {
     axios
       .delete(
-        `/devlog/${idx}`,
+        `/devlog/${Id}`,
         {
           data: {
-            id: idx,
+            id: Id,
           },
         },
         authHeader
@@ -49,145 +42,6 @@ function Devlog() {
       .then(() => fetchData())
       .catch((error) => console.log("delete devlog error", error));
   };
-
-  // modal component code begins below and ends after first return statement
-  function DevlogModal() {
-    const [show, setShow] = useState(false);
-    const [input, setInput] = useState({
-      title: "",
-      description: "",
-      time_stamp: "",
-      projectId,
-    });
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    const onChange = (event) => {
-      setInput((prevState) => ({
-        ...prevState,
-        [event.target.name]: event.target.value,
-      }));
-    };
-
-    const onSubmit = (event) => {
-      event.preventDefault();
-      let date = new Date().toLocaleString();
-      axios
-        .post(
-          "/devlog",
-          {
-            title: input.title,
-            project_id: input.project_id,
-            description: input.description,
-            time_stamp: date,
-          },
-          authHeader
-        )
-        .then(() => {
-          axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
-            setLogs(response.data);
-            setInput({
-              title: "",
-              description: "",
-              time_stamp: "",
-              projectId,
-            });
-          });
-        })
-        .catch((error) => console.log(error));
-    };
-
-    const handleProjectClick = (projectId) => {
-      axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
-        setLogs(response.data);
-        setCurrentProjectId(projectId);
-      });
-    };
-
-    return (
-      <>
-        {/* devLog render */}
-        <Container className="d-flex p-6 justify-content-center">
-          <MilestonesProjectSelectModal
-            fromMilestones={true}
-            handleProjectClick={handleProjectClick}
-            setActiveProject={setActiveProject}
-            activeProject={activeProject}
-          />
-        </Container>
-        {/* Only show the entry creation button if user is a moderator */}
-        {isMod ||
-          (!isMod && (
-            <Button variant="primary" onClick={handleShow}>
-              Add Log Entry
-            </Button>
-          ))}
-        <Modal show={show} onHide={handleClose}>
-          <div
-            className="devlogContainer pb-3 mb-2"
-            style={{
-              backgroundColor: "rgba(0,0,0,.25)",
-              margin: "auto",
-              border: "solid 3px var(--indigo)",
-              width: "100%",
-              borderRadius: "30px 30px 0 0",
-            }}
-          >
-            <div
-              className="pt-2 pb-2 mb-3"
-              style={{
-                backgroundColor: "var(--indigo)",
-                color: "var(--light)",
-                borderRadius: "25px 25px 0 0",
-                filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
-              }}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Developer Log</Modal.Title>
-              </Modal.Header>
-            </div>
-            <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
-              <Container className="d-flex p-6 justify-content-center">
-                <Form className="m-4" onSubmit={onSubmit}>
-                  <Form.Row>
-                    <Form.Group controlId="title">
-                      <Form.Label>Title</Form.Label>
-                      <Form.Control
-                        placeholder="Post Title..."
-                        value={input.title}
-                        onChange={onChange}
-                        name="title"
-                      />
-                    </Form.Group>
-                  </Form.Row>
-                  <Form.Group controlId="post">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      value={input.description}
-                      onChange={onChange}
-                      name="description"
-                      placeholder="description..."
-                    />
-                  </Form.Group>
-                  <Button
-                    variant="primary"
-                    type="submit"
-                    className="float-right"
-                  >
-                    Add Entry
-                  </Button>
-                </Form>
-              </Container>
-            </Modal.Body>
-          </div>
-        </Modal>
-      </>
-    );
-  }
-  // modal component code ends here
 
   return (
     <>
@@ -209,7 +63,14 @@ function Devlog() {
             filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
           }}
         >
-          <DevlogModal />
+          <DevlogModal
+            projectId={projectId}
+            setProjectId={setProjectId}
+            setActiveProject={setActiveProject}
+            activeProject={activeProject}
+            authHeader={authHeader}
+            setLogs={setLogs}
+          />
           {/* accordion starts below */}
         </div>
         <Container className="p-12">
@@ -224,7 +85,7 @@ function Devlog() {
                   {isMod && (
                     <Button
                       variant="danger"
-                      onClick={() => removeItem(idx)}
+                      onClick={() => removeItem(log.id)}
                       size="sm"
                       className="d-flex ml-auto"
                     >
