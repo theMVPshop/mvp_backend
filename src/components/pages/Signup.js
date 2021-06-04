@@ -8,39 +8,46 @@ const Signup = () => {
     password: "",
     email: "",
   });
-  const [redirectHome, setRedirectHome] = useState(null);
+  const [redirectHome, setRedirectHome] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setInput((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-  };
 
   const userObject = {
     username: input.username,
     isModerator: 0,
   };
 
-  const login = async () => {
-    await axios.post("/auth/login", input).then((res) => {
-      localStorage.setItem("user", input.username);
-      localStorage.setItem("token", res.data.token);
-      const user = localStorage.getItem("user");
-      const token = localStorage.getItem("token");
-    });
-    setRedirectHome(true);
-  };
-
-  const signup = async (e) => {
-    e.preventDefault();
-    await axios.post("/auth/signup", input);
-    await axios.post("/users", userObject);
+  const clearForm = () =>
     setInput({
       username: "",
       password: "",
       email: "",
     });
+
+  const login = () =>
+    axios
+      .post("/auth/login", input)
+      .then((res) => {
+        localStorage.setItem("user", input.username);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("loggedIn", true);
+        setRedirectHome(true);
+      })
+      .catch((error) => console.log("failed to log in", error));
+
+  const signup = async (e) => {
+    e.preventDefault();
+    await axios
+      .post("/auth/signup", input)
+      .catch((error) => console.log("failed to create user", error));
+    await axios
+      .post("/users", userObject)
+      .catch((error) => console.log("failed to add user to db", error));
+    clearForm();
     login();
   };
 
