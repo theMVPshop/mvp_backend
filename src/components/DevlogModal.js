@@ -86,7 +86,6 @@ function DevlogModal({
       <Button variant="primary" onClick={handleShow}>
         Add Log Entry
       </Button>
-
       <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2"

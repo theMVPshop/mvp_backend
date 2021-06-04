@@ -39,7 +39,16 @@ function Devlog() {
         },
         authHeader
       )
-      .then(() => fetchData())
+      .then(() => {
+        axios.get(`/devlog/${projectId}`, authHeader).then((response) => {
+          setInput({
+            title: "",
+            description: "",
+            time_stamp: "",
+          });
+          setLogs(response.data);
+        });
+      })
       .catch((error) => console.log("delete devlog error", error));
   };
 
