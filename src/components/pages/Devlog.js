@@ -29,6 +29,7 @@ function Devlog() {
               : false
           );
         })
+        .then(() => fetchData())
         .then((error) => console.log(error));
   }, []);
 
