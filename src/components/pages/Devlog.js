@@ -125,7 +125,7 @@ function Devlog() {
           ))}
         <Modal show={show} onHide={handleClose}>
           <div
-            className="devlogContainer pb-3 mb-2"
+            className="devlogContainer mb-2"
             style={{
               backgroundColor: "rgba(0,0,0,.25)",
               margin: "auto",
@@ -135,7 +135,6 @@ function Devlog() {
             }}
           >
             <div
-              className="pt-2 pb-2 mb-3"
               style={{
                 backgroundColor: "var(--indigo)",
                 color: "var(--light)",
@@ -147,7 +146,7 @@ function Devlog() {
                 <Modal.Title>Developer Log</Modal.Title>
               </Modal.Header>
             </div>
-            <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
+            <Modal.Body>
               <Container className="d-flex p-6 justify-content-center">
                 <Form className="m-4" onSubmit={onSubmit}>
                   <Form.Row>
