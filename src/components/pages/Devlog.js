@@ -91,7 +91,11 @@ function Devlog() {
           {logs.map((log, idx) => (
             <Card key={idx} style={{ backgroundColor: "#708090" }}>
               <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
-                <Accordion.Toggle as={Button} variant="info" eventKey={idx}>
+                <Accordion.Toggle
+                  as={Button}
+                  variant="info"
+                  eventKey={`${idx}`}
+                >
                   {log.title}
                 </Accordion.Toggle>
                 <div style={{ color: "gray" }}>{log.time_stamp}</div>
@@ -106,7 +110,7 @@ function Devlog() {
                   </Button>
                 )}
               </Card.Header>
-              <Accordion.Collapse eventKey={idx}>
+              <Accordion.Collapse eventKey={`${idx}`}>
                 <Card.Body>{log.description}</Card.Body>
               </Accordion.Collapse>
             </Card>

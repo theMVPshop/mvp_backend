@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
 function Navigation({ location }) {
+  let user = localStorage.getItem("user");
   let loggedIn = localStorage.getItem("loggedIn");
   const [redirectHome, setRedirectHome] = React.useState(false);
 
@@ -43,6 +44,11 @@ function Navigation({ location }) {
                 </Link>
               </Nav>
             </Navbar.Collapse>
+            {user && (
+              <span style={{ color: "white", marginRight: "1rem" }}>
+                Welcome <span style={{ color: "orange" }}>{user}</span>!
+              </span>
+            )}
             {loggedIn === "true" && (
               <Button variant="danger" onClick={logOut}>
                 Logout
