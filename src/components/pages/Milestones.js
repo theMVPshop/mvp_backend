@@ -62,7 +62,7 @@ function Milestones() {
     event.preventDefault();
     axios
       .post(
-        `/milestones`,
+        "/milestones",
         {
           title: input.title,
           subtitle: input.subtitle,

@@ -6,7 +6,6 @@ import {
   Card,
   Button,
   Form,
-  Col,
   Modal,
 } from "react-bootstrap";
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
@@ -19,23 +18,10 @@ function Devlog() {
       Authorization: `Bearer ${token}`,
     },
   };
-  // const [users, setUsers] = useState([]);
-  // const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
   const [activeProject, setActiveProject] = useState(null);
   const [projectId, setCurrentProjectId] = useState(null);
-
-  // let newLog = {};
-
-  // const fetchData = async () => {
-  //   try {
-  //     const result = await axios.get(`/devlog/${projectId}`, authHeader);
-  //     setLogs(result.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   useEffect(() => {
     user &&
@@ -48,25 +34,20 @@ function Devlog() {
       });
   }, []);
 
-  // const postLog = () => {
-  //   axios
-  //     .post("/devlog", newLog, authHeader)
-  //     .then(() => fetchData())
-  //     .catch((error) => {
-  //       console.log("post devlog error", error);
-  //     });
-  // };
-
   const removeItem = (idx) => {
     let id = logs[idx].id;
-    console.log("delete log: ", id);
     axios
-      .delete(`/devlog/${id}`, authHeader)
+      .delete(
+        `/devlog/${idx}`,
+        {
+          data: {
+            id: idx,
+          },
+        },
+        authHeader
+      )
       .then(() => fetchData())
-      .then(() => console.log("logs:", logs))
-      .catch((error) => {
-        console.log("delete devlog error", error);
-      });
+      .catch((error) => console.log("delete devlog error", error));
   };
 
   // modal component code begins below and ends after first return statement
@@ -113,7 +94,8 @@ function Devlog() {
               projectId,
             });
           });
-        });
+        })
+        .catch((error) => console.log(error));
     };
 
     const handleProjectClick = (projectId) => {
@@ -178,26 +160,6 @@ function Devlog() {
                         name="title"
                       />
                     </Form.Group>
-                    {/* <Col xs="auto">
-                    <Form.Group controlId="subtitle">
-                      <Form.Label>Subtitle</Form.Label>
-                      <Form.Control
-                        placeholder="Subtitle..."
-                        value={input.subtitle}
-                        onChange={onChange}
-                        name="subtitle"
-                      />
-                    </Form.Group>
-                  </Col> */}
-                    {/* <Form.Group controlId="date">
-                    <Form.Label>Log Date</Form.Label>
-                    <Form.Control
-                      type="date"
-                      value={input.date}
-                      onChange={onChange}
-                      name="date"
-                    />
-                  </Form.Group> */}
                   </Form.Row>
                   <Form.Group controlId="post">
                     <Form.Label>Description</Form.Label>
@@ -251,11 +213,7 @@ function Devlog() {
           {/* accordion starts below */}
         </div>
         <Container className="p-12">
-          <Accordion
-            // style={{ color: "white" }}
-            defaultActiveKey="0"
-            className="p-12"
-          >
+          <Accordion defaultActiveKey="0" className="p-12">
             {logs.map((log, idx) => (
               <Card key={idx} style={{ backgroundColor: "#708090" }}>
                 <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
