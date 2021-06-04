@@ -6,10 +6,11 @@ function Navigation({ location }) {
   let loggedIn = localStorage.getItem("loggedIn");
   const [redirectHome, setRedirectHome] = React.useState(false);
 
-  const logOut = () => {
-    setRedirectHome(true);
+  const logOut = async () => {
+    await setRedirectHome(false);
     localStorage.setItem("loggedIn", false);
     localStorage.removeItem("user");
+    setRedirectHome(true);
   };
 
   return (
