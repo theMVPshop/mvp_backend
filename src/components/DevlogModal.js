@@ -11,7 +11,7 @@ function DevlogModal({
   setActiveProject,
   activeProject,
   authHeader,
-  fetchData,
+  fetchLogs,
 }) {
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
@@ -30,7 +30,7 @@ function DevlogModal({
       [event.target.name]: event.target.value,
     }));
 
-  const clearForm = () =>
+  const clearLogForm = () =>
     setInput({
       title: "",
       description: "",
@@ -39,33 +39,38 @@ function DevlogModal({
 
   const onSubmit = (event) => {
     event.preventDefault();
-
     let date = new Date().toLocaleString();
-    console.log("date", date);
     const body = {
       title: input.title,
       description: input.description,
       project_id: projectId,
       time_stamp: date,
     };
-
     axios
       .post("/devlog", body, authHeader)
-      .then(() => fetchData())
-      .then(() => clearForm())
+      .then(() => fetchLogs())
+      .then(() => clearLogForm())
       .catch((error) => console.log(error));
   };
 
-  const handleProjectClick = (projectId) =>
-    axios
-      .get(`/devlog/${projectId}`, authHeader)
-      .then((response) => {
-        localStorage.setItem("activeProject", projectId);
-        setActiveProject(projectId);
-        setProjectId(projectId);
-        setLogs(response.data);
-      })
-      .catch((error) => console.log(error));
+  // why doesnt this work correctly??
+  const handleProjectClick = (Id) => {
+    localStorage.setItem("activeProject", Id);
+    setActiveProject(Id);
+    setProjectId(Id);
+    fetchLogs(Id);
+  };
+
+  // const handleProjectClick = (Id) =>
+  //   axios
+  //     .get(`/devlog/${Id}`, authHeader)
+  //     .then((response) => {
+  //       localStorage.setItem("activeProject", Id);
+  //       setActiveProject(Id);
+  //       setProjectId(Id);
+  //       setLogs(response.data);
+  //     })
+  //     .catch((error) => console.log(error));
 
   return (
     <>

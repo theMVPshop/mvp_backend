@@ -2,22 +2,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = () => {
-  let user = localStorage.getItem("user");
+const Login = ({ user }) => {
+  const [redirectHome, setRedirectHome] = useState(false);
   const [input, setInput] = useState({
     username: "",
     password: "",
     email: "",
   });
-  const [redirectHome, setRedirectHome] = useState(false);
 
-  const handleChange = (e) =>
+  const onChange = (e) =>
     setInput((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
 
-  const clearForm = () =>
+  const clearLoginForm = () =>
     setInput({
       username: "",
       password: "",
@@ -33,7 +32,7 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
         user = localStorage.getItem("user");
-        clearForm();
+        clearLoginForm();
         setRedirectHome(true);
       })
       .catch((error) => console.log("login error", error));
@@ -54,7 +53,7 @@ const Login = () => {
                 id="email"
                 name="email"
                 label="Email"
-                onChange={handleChange}
+                onChange={onChange}
                 value={input.email}
                 className="form-control"
                 placeholder="Enter email"
@@ -68,7 +67,7 @@ const Login = () => {
                 id="username"
                 name="username"
                 label="Username"
-                onChange={handleChange}
+                onChange={onChange}
                 value={input.username}
                 className="form-control"
                 placeholder="Enter Username"
@@ -79,7 +78,7 @@ const Login = () => {
               <label>Password</label>
               <input
                 type="password"
-                onChange={handleChange}
+                onChange={onChange}
                 value={input.password}
                 name="password"
                 label="Password"

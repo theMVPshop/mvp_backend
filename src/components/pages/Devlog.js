@@ -11,7 +11,6 @@ function Devlog() {
   const [logs, setLogs] = useState([]);
   const [activeProject, setActiveProject] = useState(cachedActiveProject);
   const [projectId, setProjectId] = useState(cachedActiveProject);
-
   const authHeader = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -19,27 +18,28 @@ function Devlog() {
   };
 
   useEffect(() => {
-    user &&
-      axios
-        .get("/users", authHeader)
-        .then((response) => {
-          setIsMod(
-            response.data.find((x) => x.username === user).isModerator === 1
-              ? true
-              : false
-          );
-        })
-        .then(() => fetchData())
-        .then((error) => console.log(error));
+    checkModPrivilege();
+    fetchLogs();
   }, []);
 
-  const fetchData = () =>
+  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
+  const checkModPrivilege = () =>
+    user &&
+    axios.get("/users", authHeader).then((response) => {
+      setIsMod(
+        response.data.find((x) => x.username === user)?.isModerator === 1
+          ? true
+          : false
+      );
+    });
+
+  const fetchLogs = (Id) =>
     axios
-      .get(`/devlog/${projectId}`, authHeader)
+      .get(`/devlog/${Id || projectId}`, authHeader)
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
 
-  const removeItem = (Id) => {
+  const removeLog = (Id) => {
     const reqBody = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -48,11 +48,10 @@ function Devlog() {
         id: Id,
       },
     };
-
     axios
       .delete(`/devlog/${Id}`, reqBody)
-      .then(() => fetchData())
-      .catch((error) => console.log("delete devlog error", error));
+      .then(() => fetchLogs())
+      .catch((error) => console.log("error deleting devlog", error));
   };
 
   return (
@@ -81,7 +80,7 @@ function Devlog() {
           activeProject={activeProject}
           authHeader={authHeader}
           setLogs={setLogs}
-          fetchData={fetchData}
+          fetchLogs={fetchLogs}
           isMod={isMod}
         />
       </div>
@@ -102,7 +101,7 @@ function Devlog() {
                 {isMod && (
                   <Button
                     variant="danger"
-                    onClick={() => removeItem(log.id)}
+                    onClick={() => removeLog(log.id)}
                     size="sm"
                     className="d-flex ml-auto"
                   >

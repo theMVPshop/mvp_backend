@@ -5,13 +5,19 @@ import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
 
-function Milestones() {
-  const token = localStorage.getItem("token");
-  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
-  const [todos, setTodos] = useState([]);
-  const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
-  const [activeProject, setActiveProject] = useState(cachedActiveProject);
-  const [projects, setProjects] = useState(null);
+const Milestones = ({
+  token,
+  todos,
+  setTodos,
+  projects,
+  currentProjectId,
+  setCurrentProjectId,
+  activeProject,
+  setActiveProject,
+  authHeader,
+  fetchMilestones,
+  populateProjects,
+}) => {
   const [input, setInput] = useState({
     title: "",
     subtitle: "",
@@ -20,26 +26,8 @@ function Milestones() {
     ms_status: "TODO",
   });
 
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
-  const fetchData = () =>
-    axios
-      .get(`/milestones/${currentProjectId}`, authHeader)
-      .then((response) => setTodos(response.data))
-      .catch((error) => console.log(error));
-
-  const populateProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log(error));
-
   React.useEffect(() => {
-    fetchData();
+    fetchMilestones();
     populateProjects();
   }, []);
 
@@ -84,7 +72,7 @@ function Milestones() {
     };
     axios
       .post("/milestones", postBody, authHeader)
-      .then(() => fetchData())
+      .then(() => fetchMilestones())
       .then(() => clearForm())
       .catch((error) => console.log(error));
   };
@@ -102,12 +90,12 @@ function Milestones() {
 
     axios
       .delete(`/milestones/${currentProjectId}`, reqBody)
-      .then(() => fetchData())
+      .then(() => fetchMilestones())
       .catch((error) => console.log(error));
   };
 
   // updates milestone status in api and component
-  const handleStatus = (todo) => {
+  const handleStatusChange = (todo) => {
     const todoId = todo.id;
     if (todo.ms_status === "TODO") {
       todo.ms_status = "IN PROGRESS";
@@ -186,13 +174,13 @@ function Milestones() {
         </div>
         <TimelineElement
           todos={todos}
-          handleClick={handleStatus}
+          handleClick={handleStatusChange}
           removeItem={removeItem}
           authHeader={authHeader}
         />
       </div>
     </>
   );
-}
+};
 
 export default Milestones;

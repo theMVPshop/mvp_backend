@@ -2,9 +2,7 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
-function Navigation({ location }) {
-  let user = localStorage.getItem("user");
-  let loggedIn = localStorage.getItem("loggedIn");
+function Navigation({ location, user, loggedIn }) {
   const [redirectHome, setRedirectHome] = React.useState(false);
 
   const logOut = async () => {
@@ -39,9 +37,11 @@ function Navigation({ location }) {
                 <Link to="/devlog" className="nav-link">
                   DevLog
                 </Link>
-                <Link to="/login" className="nav-link">
-                  Sign In
-                </Link>
+                {!user && (
+                  <Link to="/login" className="nav-link">
+                    Sign In
+                  </Link>
+                )}
               </Nav>
             </Navbar.Collapse>
             {user && (
