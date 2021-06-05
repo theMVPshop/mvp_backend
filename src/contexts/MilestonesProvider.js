@@ -7,11 +7,14 @@ export const useMilestones = () => useContext(MilestonesContext);
 
 export default function MilestonesProvider({
   children,
-  setProjects,
   currentProjectId,
+  setCurrentProjectId,
   authHeader,
+  activeProject,
+  setActiveProject,
 }) {
   const [milestones, setMilestones] = useState([]);
+  const [projects, setProjects] = useState([]);
 
   // Milestones.js methods
   const fetchMilestones = () =>
@@ -27,14 +30,14 @@ export default function MilestonesProvider({
       .catch((error) => console.log(error));
 
   // populates milestones for the selected project
-  const handleProjectClick = (projectId) =>
+  const handleProjectClick = (Id) =>
     axios
-      .get(`/milestones/${projectId}`, authHeader)
+      .get(`/milestones/${Id}`, authHeader)
       .then((response) => {
-        setTodos(response.data);
-        setCurrentProjectId(projectId);
-        setActiveProject(projectId);
-        localStorage.setItem("activeProject", projectId);
+        setMilestones(response.data);
+        setCurrentProjectId(Id);
+        setActiveProject(Id);
+        localStorage.setItem("activeProject", Id);
       })
       .then(() => populateProjects())
       .catch((error) => console.log(error));
@@ -104,6 +107,8 @@ export default function MilestonesProvider({
         handleProjectClick,
         removeMilestone,
         handleStatusChange,
+        activeProject,
+        setActiveProject,
       }}
     >
       {children}

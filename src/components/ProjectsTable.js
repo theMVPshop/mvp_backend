@@ -8,65 +8,29 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
-import { useProvider } from "../contexts/ContextProvider";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 function ProjectsTable({
+  user,
+  // token,
+  // cachedActiveProject,
   fromMilestones,
-  checkModPrivilege,
-  populateProjects,
-  fetchPermissions,
+  handleProjectClick,
+  authHeader,
 }) {
-  const {
-    todos,
-    setTodos,
-    cachedActiveProjectId,
-    user,
-    token,
-    authHeader,
-    activeProject,
-    setActiveProject,
-    currentProjectId,
-    setCurrentProjectId,
-  } = useProvider();
-  // const user = localStorage.getItem("user");
-  // const token = localStorage.getItem("token");
-  // const authHeader = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // };
-  // let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
-  const [projects, setProjects] = useState([]);
-  const [permissions, setPermissions] = useState([]);
-  const [isMod, setIsMod] = useState(false);
-
+  const { projects, setProjects, permissions, isMod, cachedActiveProjectId } =
+    useProjects();
+  // const [projects, setProjects] = useState([]);
+  // const [permissions, setPermissions] = useState([]);
+  // const [isMod, setIsMod] = useState(false);
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
-  useEffect(() => {
-    checkModPrivilege();
-    fetchPermissions();
-    populateProjects();
-  }, []);
-
-  // // populates milestones for the selected project
-  const handleProjectClick = (Id) =>
-    axios
-      .get(`/milestones/${Id}`, authHeader)
-      .then((response) => {
-        setTodos(response.data);
-        setCurrentProjectId(Id);
-        setActiveProject(Id);
-        localStorage.setItem("activeProject", Id);
-      })
-      .then(() => populateProjects())
-      .catch((error) => console.log(error));
-
-  // // removes project from api and repopulates component with projects sans deleted one
+  // removes project from api and repopulates component with projects sans deleted one
   const removeProject = (projectId) =>
     axios
       .delete(`/projects/${projectId}`, authHeader)
-      .then(() => populateProjects())
+      .then(() => fetchProjects())
       .catch((error) =>
         console.log(`deleting project #${projectId} failed`, error)
       );
@@ -130,7 +94,7 @@ function ProjectsTable({
                       <tr
                         // the following attributes are only applicable if rendered by Milestones.js
                         style={
-                          currentProjectId === project.id
+                          cachedActiveProjectId === project.id
                             ? {
                                 backgroundColor: "#766400",
                               }
@@ -202,7 +166,7 @@ function ProjectsTable({
                         .map((project) => (
                           <tr
                             style={
-                              cachedActiveProject === project.id
+                              cachedActiveProjectId === project.id
                                 ? {
                                     backgroundColor: "#766400",
                                   }

@@ -4,25 +4,9 @@ import { Container } from "react-bootstrap";
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
-import { useProvider } from "../../contexts/ContextProvider";
+import { useMilestones } from "../../contexts/MilestonesProvider";
 
-export default function Milestones({}) {
-  const {
-    authHeader,
-    projects,
-    activeProject,
-    setActiveProject,
-    currentProjectId,
-    todos,
-    setTodos,
-    // fetchMilestones,
-    populateProjects,
-    // cachedActiveProjectId,
-    // handleProjectClick,
-    // removeMilestone,
-    // handleStatusChange,
-  } = useProvider();
-
+function Milestones({ authHeader }) {
   const [input, setInput] = useState({
     title: "",
     subtitle: "",
@@ -31,32 +15,18 @@ export default function Milestones({}) {
     ms_status: "TODO",
   });
 
-  React.useEffect(() => {
-    fetchMilestones();
-    populateProjects();
-  }, []);
-
-  const fetchMilestones = () =>
-    axios
-      .get(`/milestones/${currentProjectId}`, authHeader)
-      .then((response) => setTodos(response.data))
-      .catch((error) => console.log(error));
-
-  // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeMilestone = (Id) => {
-    const reqBody = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        id: Id,
-      },
-    };
-    axios
-      .delete(`/milestones/${currentProjectId}`, reqBody)
-      .then(() => fetchMilestones())
-      .catch((error) => console.log(error));
-  };
+  const {
+    activeProject,
+    setActiveProject,
+    cachedActiveProject,
+    milestones,
+    setMilestones,
+    fetchMilestones,
+    populateProjects,
+    handleProjectClick,
+    removeMilestone,
+    handleStatusChange,
+  } = useMilestones();
 
   // populates the add milestone form with input data in realtime
   const onChange = (event) =>
@@ -91,40 +61,6 @@ export default function Milestones({}) {
       .catch((error) => console.log(error));
   };
 
-  // updates milestone status in api and component
-  const handleStatusChange = (todo) => {
-    const todoId = todo.id;
-    if (todo.ms_status === "TODO") {
-      todo.ms_status = "IN PROGRESS";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "IN PROGRESS",
-        },
-        authHeader
-      );
-    } else if (todo.ms_status === "IN PROGRESS") {
-      todo.ms_status = "COMPLETED";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "COMPLETED",
-        },
-        authHeader
-      );
-    } else if (todo.ms_status === "COMPLETED") {
-      todo.ms_status = "TODO";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "TODO",
-        },
-        authHeader
-      );
-    }
-    setTodos([...todos]);
-  };
-
   return (
     <>
       <div
@@ -148,8 +84,7 @@ export default function Milestones({}) {
         >
           <Container className="d-flex p-6 justify-content-evenly mt-2">
             <MilestonesProjectSelectModal
-              fromMilestones={true}
-              // handleProjectClick={handleProjectClick}
+              handleProjectClick={handleProjectClick}
               setActiveProject={setActiveProject}
               activeProject={activeProject}
             />
@@ -162,15 +97,15 @@ export default function Milestones({}) {
               onSubmit={onSubmit}
             />
           </Container>
-          {projects && (
+          {/* {projects && (
             <h1 className="d-flex p-6 justify-content-center">
-              {currentProjectId &&
-                projects.find((x) => x.id == currentProjectId)?.title}
+              {activeProject &&
+                projects.find((x) => x.id == activeProject)?.title}
             </h1>
-          )}
+          )} */}
         </div>
         <TimelineElement
-          todos={todos}
+          todos={milestones}
           handleClick={handleStatusChange}
           removeItem={removeMilestone}
           authHeader={authHeader}
@@ -179,3 +114,5 @@ export default function Milestones({}) {
     </>
   );
 }
+
+export default Milestones;

@@ -11,31 +11,16 @@ import Signup from "./components/pages/Signup";
 
 // import { fetchMilestones, populateProjects } from "./globalProps";
 
-const Router = ({
-  cachedActiveProject,
-  loggedIn,
-  user,
-  token,
-  populateProjects,
-  fetchPermissions,
-  checkModPrivilege,
-}) => {
-  const [todos, setTodos] = useState([]);
-  const [projects, setProjects] = useState(null);
-  const [isMod, setIsMod] = useState(false);
-  const [logs, setLogs] = useState([]);
-  const [activeProject, setActiveProject] = useState(cachedActiveProject);
-  const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-
+const Router = ({ cachedActiveProject, user, token, authHeader }) => {
   return (
     <Switch>
       <Route exact path="/" component={Login} />
-      <Route path="/milestones" component={Milestones} />
+      <Route
+        path="/milestones"
+        render={(props) => (
+          <Milestones {...props} token={token} authHeader={authHeader} />
+        )}
+      />
       <Route
         path="/devlog"
         render={(props) => <Devlog {...props} user={user} token={token} />}
@@ -47,9 +32,8 @@ const Router = ({
             {...props}
             user={user}
             token={token}
-            populateProjects={populateProjects}
-            fetchPermissions={fetchPermissions}
-            checkModPrivilege={checkModPrivilege}
+            authHeader={authHeader}
+            cachedActiveProject={cachedActiveProject}
           />
         )}
       />

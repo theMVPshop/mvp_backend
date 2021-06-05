@@ -3,7 +3,6 @@ import { Container, Modal, Button } from "react-bootstrap";
 import ProjectsTable from "./ProjectsTable";
 
 function MilestonesProjectSelectModal({
-  fromMilestones,
   handleProjectClick,
   activeProject,
   setActiveProject,
@@ -33,7 +32,7 @@ function MilestonesProjectSelectModal({
               <Container className="d-flex p-6 justify-content-center">
                 <ProjectsTable
                   style={{ backgroundColor: "var(--indigo)" }}
-                  fromMilestones={fromMilestones}
+                  fromMilestones={true}
                   handleProjectClick={handleProjectClick}
                   setActiveProject={setActiveProject}
                   activeProject={activeProject}
