@@ -26,7 +26,7 @@ function Milestones() {
     },
   };
 
-  const fetchData = () =>
+  const fetchMilestones = () =>
     axios
       .get(`/milestones/${currentProjectId}`, authHeader)
       .then((response) => setTodos(response.data))
@@ -39,7 +39,7 @@ function Milestones() {
       .catch((error) => console.log(error));
 
   React.useEffect(() => {
-    fetchData();
+    fetchMilestones();
     populateProjects();
   }, []);
 
@@ -84,7 +84,7 @@ function Milestones() {
     };
     axios
       .post("/milestones", postBody, authHeader)
-      .then(() => fetchData())
+      .then(() => fetchMilestones())
       .then(() => clearForm())
       .catch((error) => console.log(error));
   };
@@ -102,7 +102,7 @@ function Milestones() {
 
     axios
       .delete(`/milestones/${currentProjectId}`, reqBody)
-      .then(() => fetchData())
+      .then(() => fetchMilestones())
       .catch((error) => console.log(error));
   };
 

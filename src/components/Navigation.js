@@ -39,9 +39,11 @@ function Navigation({ location }) {
                 <Link to="/devlog" className="nav-link">
                   DevLog
                 </Link>
-                <Link to="/login" className="nav-link">
-                  Sign In
-                </Link>
+                {!user && (
+                  <Link to="/login" className="nav-link">
+                    Sign In
+                  </Link>
+                )}
               </Nav>
             </Navbar.Collapse>
             {user && (

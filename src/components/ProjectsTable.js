@@ -24,34 +24,48 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
-  useEffect(() => {
-    // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
+  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
+  const checkModPrivilege = () =>
     user &&
-      axios.get("/users", authHeader).then((response) => {
+    axios
+      .get("/users", authHeader)
+      .then((response) => {
         setIsMod(
           response.data.find((x) => x.username === user)?.isModerator === 1
             ? true
             : false
         );
-      });
-    // fetch permissions table from API and store in hook
-    axios.get("/permissions", authHeader).then((response) => {
-      setPermissions(response.data);
-    });
-    // fetch projects table from API and store in hook
-    axios.get("/projects", authHeader).then((response) => {
-      setProjects(response.data);
-    });
+      })
+      .catch((error) =>
+        console.log("failed to retrieve moderator status", error)
+      );
+
+  // fetch projects table from API and store in hook
+  const fetchProjects = () =>
+    axios
+      .get("/projects", authHeader)
+      .then((response) => setProjects(response.data))
+      .catch((error) => console.log("failed to fetch projects", error));
+
+  // fetch permissions table from API and store in hook
+  const fetchPermissions = () =>
+    axios
+      .get("/permissions", authHeader)
+      .then((response) => setPermissions(response.data))
+      .then((error) => console.log("failed to fetch permissions", error));
+
+  useEffect(() => {
+    checkModPrivilege();
+    fetchProjects();
+    fetchPermissions();
   }, []);
 
   // removes project from api and repopulates component with projects sans deleted one
-  const removeProject = (projectId) => {
-    axios.delete(`/projects/${projectId}`, authHeader).then(() => {
-      axios.get("/projects", authHeader).then((response) => {
-        setProjects([...response.data]);
-      });
-    });
-  };
+  const deleteProject = (Id) =>
+    axios
+      .delete(`/projects/${Id}`, authHeader)
+      .then(() => fetchProjects())
+      .catch((error) => "error deleting project", error);
 
   return (
     <div className="projects">
@@ -93,14 +107,14 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
             <thead>
               <tr>
                 <th>ID#</th>
+                <th>Project Title</th>
+                <th>Project Description</th>
                 {!fromMilestones && (
                   <>
                     <th>Milestones</th>
                     <th>Devlog</th>
                   </>
                 )}
-                <th>Project Title</th>
-                <th>Project Description</th>
                 {!fromMilestones && <th>Delete</th>}
               </tr>
             </thead>
@@ -125,6 +139,8 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         }
                       >
                         <td>{project.id}</td>
+                        <td>{project.title}</td>
+                        <td>{project.description}</td>
                         {!fromMilestones && (
                           <>
                             <td>
@@ -157,14 +173,12 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             </td>
                           </>
                         )}
-                        <td>{project.title}</td>
-                        <td>{project.description}</td>
                         {!fromMilestones && (
                           <td className="d-flex justify-content-center">
                             <Button
                               variant="danger"
                               size="sm"
-                              onClick={() => removeProject(project.id)}
+                              onClick={() => deleteProject(project.id)}
                             >
                               X
                             </Button>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogModal from "../DevlogModal";
 
-function Devlog() {
+export default function Devlog() {
   let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
@@ -29,11 +29,11 @@ function Devlog() {
               : false
           );
         })
-        .then(() => fetchData())
+        .then(() => fetchLogs())
         .then((error) => console.log(error));
   }, []);
 
-  const fetchData = () =>
+  const fetchLogs = () =>
     axios
       .get(`/devlog/${projectId}`, authHeader)
       .then((response) => setLogs(response.data))
@@ -51,7 +51,7 @@ function Devlog() {
 
     axios
       .delete(`/devlog/${Id}`, reqBody)
-      .then(() => fetchData())
+      .then(() => fetchLogs())
       .catch((error) => console.log("delete devlog error", error));
   };
 
@@ -81,7 +81,7 @@ function Devlog() {
           activeProject={activeProject}
           authHeader={authHeader}
           setLogs={setLogs}
-          fetchData={fetchData}
+          fetchLogs={fetchLogs}
           isMod={isMod}
         />
       </div>
@@ -120,5 +120,3 @@ function Devlog() {
     </div>
   );
 }
-
-export default Devlog;
