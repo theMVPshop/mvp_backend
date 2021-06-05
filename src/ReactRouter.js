@@ -24,44 +24,10 @@ const Router = ({ cachedActiveProject, loggedIn, user, token }) => {
     },
   };
 
-  // Milestones.js methods
-  const fetchMilestones = () =>
-    axios
-      .get(`/milestones/${currentProjectId}`, authHeader)
-      .then((response) => setTodos(response.data))
-      .catch((error) => console.log(error));
-
-  const populateProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log(error));
-
   return (
     <Switch>
       <Route exact path="/" component={Login} />
-      <Route
-        path="/milestones"
-        render={(props) => (
-          <Milestones
-            {...props}
-            user={user}
-            token={token}
-            cachedActiveProject={cachedActiveProject}
-            todos={todos}
-            setTodos={setTodos}
-            projects={projects}
-            setProjects={setProjects}
-            currentProjectId={currentProjectId}
-            setCurrentProjectId={setCurrentProjectId}
-            activeProject={activeProject}
-            setActiveProject={setActiveProject}
-            authHeader={authHeader}
-            fetchMilestones={fetchMilestones}
-            populateProjects={populateProjects}
-          />
-        )}
-      />
+      <Route path="/milestones" component={Milestones} />
       <Route
         path="/devlog"
         render={(props) => <Devlog {...props} user={user} token={token} />}

@@ -4,20 +4,24 @@ import { Container } from "react-bootstrap";
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
+import { useMilestones } from "../../contexts/MilestonesProvider";
 
-const Milestones = ({
-  token,
-  todos,
-  setTodos,
+export default function Milestones({
   projects,
   currentProjectId,
-  setCurrentProjectId,
   activeProject,
   setActiveProject,
   authHeader,
-  fetchMilestones,
-  populateProjects,
-}) => {
+}) {
+  const {
+    milestones,
+    fetchMilestones,
+    populateProjects,
+    handleProjectClick,
+    removeMilestone,
+    handleStatusChange,
+  } = useMilestones();
+
   const [input, setInput] = useState({
     title: "",
     subtitle: "",
@@ -30,19 +34,6 @@ const Milestones = ({
     fetchMilestones();
     populateProjects();
   }, []);
-
-  // populates milestones for the selected project
-  const handleProjectClick = (projectId) =>
-    axios
-      .get(`/milestones/${projectId}`, authHeader)
-      .then((response) => {
-        setTodos(response.data);
-        setCurrentProjectId(projectId);
-        setActiveProject(projectId);
-        localStorage.setItem("activeProject", projectId);
-      })
-      .then(() => populateProjects())
-      .catch((error) => console.log(error));
 
   // populates the add milestone form with input data in realtime
   const onChange = (event) =>
@@ -75,57 +66,6 @@ const Milestones = ({
       .then(() => fetchMilestones())
       .then(() => clearForm())
       .catch((error) => console.log(error));
-  };
-
-  // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeItem = (Id) => {
-    const reqBody = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        id: Id,
-      },
-    };
-
-    axios
-      .delete(`/milestones/${currentProjectId}`, reqBody)
-      .then(() => fetchMilestones())
-      .catch((error) => console.log(error));
-  };
-
-  // updates milestone status in api and component
-  const handleStatusChange = (todo) => {
-    const todoId = todo.id;
-    if (todo.ms_status === "TODO") {
-      todo.ms_status = "IN PROGRESS";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "IN PROGRESS",
-        },
-        authHeader
-      );
-    } else if (todo.ms_status === "IN PROGRESS") {
-      todo.ms_status = "COMPLETED";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "COMPLETED",
-        },
-        authHeader
-      );
-    } else if (todo.ms_status === "COMPLETED") {
-      todo.ms_status = "TODO";
-      axios.put(
-        `/milestones/${todoId}`,
-        {
-          ms_status: "TODO",
-        },
-        authHeader
-      );
-    }
-    setTodos([...todos]);
   };
 
   return (
@@ -173,14 +113,12 @@ const Milestones = ({
           )}
         </div>
         <TimelineElement
-          todos={todos}
+          todos={milestones}
           handleClick={handleStatusChange}
-          removeItem={removeItem}
+          removeItem={removeMilestone}
           authHeader={authHeader}
         />
       </div>
     </>
   );
-};
-
-export default Milestones;
+}
