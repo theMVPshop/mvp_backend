@@ -8,62 +8,68 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
+import { useProvider } from "../contexts/ContextProvider";
 
-function ProjectsTable({ fromMilestones, handleProjectClick }) {
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
+function ProjectsTable({
+  fromMilestones,
+  checkModPrivilege,
+  populateProjects,
+  fetchPermissions,
+}) {
+  const {
+    todos,
+    setTodos,
+    cachedActiveProjectId,
+    user,
+    token,
+    authHeader,
+    activeProject,
+    setActiveProject,
+    currentProjectId,
+    setCurrentProjectId,
+  } = useProvider();
+  // const user = localStorage.getItem("user");
+  // const token = localStorage.getItem("token");
+  // const authHeader = {
+  //   headers: {
+  //     Authorization: `Bearer ${token}`,
+  //   },
+  // };
+  // let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
+
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
-
-  // fetch permissions table from API and store in hook
-  const fetchPermissions = () =>
-    axios
-      .get("/permissions", authHeader)
-      .then((response) => setPermissions(response.data))
-      .catch((error) => console.log("permissions failed to load", error));
-
-  // fetch projects table from API and store in hook
-  const fetchProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("projects failed to load", error));
-
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook (line 15) as a boolean
-  const checkModPrivilege = () =>
-    user &&
-    axios.get("/users", authHeader).then((response) => {
-      setIsMod(
-        response.data.find((x) => x.username === user)?.isModerator === 1
-          ? true
-          : false
-      );
-    });
 
   useEffect(() => {
     checkModPrivilege();
     fetchPermissions();
-    fetchProjects();
+    populateProjects();
   }, []);
 
-  // removes project from api and repopulates component with projects sans deleted one
-  const removeProject = (projectId) => {
+  // // populates milestones for the selected project
+  const handleProjectClick = (Id) =>
+    axios
+      .get(`/milestones/${Id}`, authHeader)
+      .then((response) => {
+        setTodos(response.data);
+        setCurrentProjectId(Id);
+        setActiveProject(Id);
+        localStorage.setItem("activeProject", Id);
+      })
+      .then(() => populateProjects())
+      .catch((error) => console.log(error));
+
+  // // removes project from api and repopulates component with projects sans deleted one
+  const removeProject = (projectId) =>
     axios
       .delete(`/projects/${projectId}`, authHeader)
-      .then(() => fetchProjects())
+      .then(() => populateProjects())
       .catch((error) =>
         console.log(`deleting project #${projectId} failed`, error)
       );
-  };
 
   return (
     <div className="projects">
@@ -124,7 +130,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                       <tr
                         // the following attributes are only applicable if rendered by Milestones.js
                         style={
-                          cachedActiveProject === project.id
+                          currentProjectId === project.id
                             ? {
                                 backgroundColor: "#766400",
                               }

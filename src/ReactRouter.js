@@ -11,7 +11,15 @@ import Signup from "./components/pages/Signup";
 
 // import { fetchMilestones, populateProjects } from "./globalProps";
 
-const Router = ({ cachedActiveProject, loggedIn, user, token }) => {
+const Router = ({
+  cachedActiveProject,
+  loggedIn,
+  user,
+  token,
+  populateProjects,
+  fetchPermissions,
+  checkModPrivilege,
+}) => {
   const [todos, setTodos] = useState([]);
   const [projects, setProjects] = useState(null);
   const [isMod, setIsMod] = useState(false);
@@ -34,7 +42,16 @@ const Router = ({ cachedActiveProject, loggedIn, user, token }) => {
       />
       <Route
         path="/projects"
-        render={(props) => <Projects {...props} user={user} token={token} />}
+        render={(props) => (
+          <Projects
+            {...props}
+            user={user}
+            token={token}
+            populateProjects={populateProjects}
+            fetchPermissions={fetchPermissions}
+            checkModPrivilege={checkModPrivilege}
+          />
+        )}
       />
       <Route
         path="/login"
