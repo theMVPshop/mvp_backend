@@ -65,7 +65,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     axios
       .delete(`/projects/${Id}`, authHeader)
       .then(() => fetchProjects())
-      .catch((error) => "error deleting project", error);
+      .catch((error) => console.log("error deleting project", error));
 
   return (
     <div className="projects">
@@ -141,6 +141,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         <td>{project.id}</td>
                         <td>{project.title}</td>
                         <td>{project.description}</td>
+                        {/* two table cells with an icon/link in each; only rendered if on Projects.js page */}
                         {!fromMilestones && (
                           <>
                             <td>
@@ -173,6 +174,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             </td>
                           </>
                         )}
+                        {/* end of code for icons */}
                         {!fromMilestones && (
                           <td className="d-flex justify-content-center">
                             <Button
@@ -223,6 +225,9 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         .map((project) => (
                           <tr>
                             <td>{project.id}</td>
+                            <td>{project.title}</td>
+                            <td>{project.description}</td>
+                            {/* same deal as the above for two links/icons, except for when rendered by non-mods i.e. clients */}
                             <td>
                               <Link
                                 onClick={() =>
@@ -251,8 +256,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                 {devlogIcon}
                               </Link>
                             </td>
-                            <td>{project.title}</td>
-                            <td>{project.description}</td>
                           </tr>
                         ))
                     )
