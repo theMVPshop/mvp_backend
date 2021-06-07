@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Button, Form, Modal } from "react-bootstrap";
 import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
 
+// inherits props from Devlog.js
 function DevlogModal({
   isMod,
   projectId,
@@ -11,7 +12,7 @@ function DevlogModal({
   setActiveProject,
   activeProject,
   authHeader,
-  fetchData,
+  fetchLogs,
 }) {
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
@@ -39,30 +40,27 @@ function DevlogModal({
 
   const onSubmit = (event) => {
     event.preventDefault();
-
     let date = new Date().toLocaleString();
-    console.log("date", date);
-    const body = {
+    const reqBody = {
       title: input.title,
       description: input.description,
       project_id: projectId,
       time_stamp: date,
     };
-
     axios
-      .post("/devlog", body, authHeader)
-      .then(() => fetchData())
+      .post("/devlog", reqBody, authHeader)
+      .then(() => fetchLogs())
       .then(() => clearForm())
       .catch((error) => console.log(error));
   };
 
-  const handleProjectClick = (projectId) =>
+  const handleProjectClick = (Id) =>
     axios
-      .get(`/devlog/${projectId}`, authHeader)
+      .get(`/devlog/${Id}`, authHeader)
       .then((response) => {
-        localStorage.setItem("activeProject", projectId);
-        setActiveProject(projectId);
-        setProjectId(projectId);
+        localStorage.setItem("activeProject", Id);
+        setActiveProject(Id);
+        setProjectId(Id);
         setLogs(response.data);
       })
       .catch((error) => console.log(error));
@@ -133,7 +131,12 @@ function DevlogModal({
                     placeholder="description..."
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="float-right">
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="float-right"
+                  onClick={handleClose}
+                >
                   Add Entry
                 </Button>
               </Form>

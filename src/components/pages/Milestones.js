@@ -8,7 +8,7 @@ import TimelineElement from "../TimelineElement";
 function Milestones() {
   const token = localStorage.getItem("token");
   let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
-  const [todos, setTodos] = useState([]);
+  const [milestones, setMilestones] = useState([]);
   const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
   const [activeProject, setActiveProject] = useState(cachedActiveProject);
   const [projects, setProjects] = useState(null);
@@ -29,14 +29,14 @@ function Milestones() {
   const fetchMilestones = () =>
     axios
       .get(`/milestones/${currentProjectId}`, authHeader)
-      .then((response) => setTodos(response.data))
-      .catch((error) => console.log(error));
+      .then((response) => setMilestones(response.data))
+      .catch((error) => console.log("failed to fetch milestones", error));
 
   const populateProjects = () =>
     axios
       .get("/projects", authHeader)
       .then((response) => setProjects(response.data))
-      .catch((error) => console.log(error));
+      .catch((error) => console.log("failed to populate projects", error));
 
   React.useEffect(() => {
     fetchMilestones();
@@ -44,14 +44,14 @@ function Milestones() {
   }, []);
 
   // populates milestones for the selected project
-  const handleProjectClick = (projectId) =>
+  const handleProjectClick = (Id) =>
     axios
-      .get(`/milestones/${projectId}`, authHeader)
+      .get(`/milestones/${Id}`, authHeader)
       .then((response) => {
-        setTodos(response.data);
-        setCurrentProjectId(projectId);
-        setActiveProject(projectId);
-        localStorage.setItem("activeProject", projectId);
+        setMilestones(response.data);
+        setCurrentProjectId(Id);
+        setActiveProject(Id);
+        localStorage.setItem("activeProject", Id);
       })
       .then(() => populateProjects())
       .catch((error) => console.log(error));
@@ -90,7 +90,7 @@ function Milestones() {
   };
 
   // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeItem = (Id) => {
+  const removeMilestone = (Id) => {
     const reqBody = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -107,37 +107,37 @@ function Milestones() {
   };
 
   // updates milestone status in api and component
-  const handleStatus = (todo) => {
-    const todoId = todo.id;
+  const handleStatusChange = (milestone) => {
+    const milestoneId = milestone.id;
     if (todo.ms_status === "TODO") {
-      todo.ms_status = "IN PROGRESS";
+      milestone.ms_status = "IN PROGRESS";
       axios.put(
-        `/milestones/${todoId}`,
+        `/milestones/${milestoneId}`,
         {
           ms_status: "IN PROGRESS",
         },
         authHeader
       );
-    } else if (todo.ms_status === "IN PROGRESS") {
-      todo.ms_status = "COMPLETED";
+    } else if (milestone.ms_status === "IN PROGRESS") {
+      milestone.ms_status = "COMPLETED";
       axios.put(
-        `/milestones/${todoId}`,
+        `/milestones/${milestoneId}`,
         {
           ms_status: "COMPLETED",
         },
         authHeader
       );
-    } else if (todo.ms_status === "COMPLETED") {
-      todo.ms_status = "TODO";
+    } else if (milestone.ms_status === "COMPLETED") {
+      milestone.ms_status = "TODO";
       axios.put(
-        `/milestones/${todoId}`,
+        `/milestones/${milestoneId}`,
         {
           ms_status: "TODO",
         },
         authHeader
       );
     }
-    setTodos([...todos]);
+    setMilestones([...milestones]);
   };
 
   return (
@@ -185,9 +185,9 @@ function Milestones() {
           )}
         </div>
         <TimelineElement
-          todos={todos}
-          handleClick={handleStatus}
-          removeItem={removeItem}
+          milestones={milestones}
+          handleStatusChange={handleStatusChange}
+          removeMilestone={removeMilestone}
           authHeader={authHeader}
         />
       </div>

@@ -9,6 +9,7 @@ export default function Devlog() {
   const token = localStorage.getItem("token");
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [activeProject, setActiveProject] = useState(cachedActiveProject);
   const [projectId, setProjectId] = useState(cachedActiveProject);
 
@@ -19,19 +20,32 @@ export default function Devlog() {
   };
 
   useEffect(() => {
-    user &&
-      axios
-        .get("/users", authHeader)
-        .then((response) => {
-          setIsMod(
-            response.data.find((x) => x.username === user).isModerator === 1
-              ? true
-              : false
-          );
-        })
-        .then(() => fetchLogs())
-        .then((error) => console.log(error));
+    checkModPrivilege();
+    fetchProjects();
+    fetchLogs();
   }, []);
+
+  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
+  const checkModPrivilege = () =>
+    user &&
+    axios
+      .get("/users", authHeader)
+      .then((response) => {
+        setIsMod(
+          response.data.find((x) => x.username === user)?.isModerator === 1
+            ? true
+            : false
+        );
+      })
+      .catch((error) =>
+        console.log("failed to retrieve moderator status", error)
+      );
+
+  const fetchProjects = () =>
+    axios
+      .get("/projects", authHeader)
+      .then((response) => setProjects(response.data))
+      .catch((error) => console.log("failed to populate projects", error));
 
   const fetchLogs = () =>
     axios
@@ -39,7 +53,7 @@ export default function Devlog() {
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
 
-  const removeItem = (Id) => {
+  const removeLog = (Id) => {
     const reqBody = {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -87,6 +101,12 @@ export default function Devlog() {
       </div>
       {/* accordion starts below */}
       <Container className="p-12">
+        {projects && (
+          <h1 className="d-flex p-6 justify-content-center">
+            {activeProject &&
+              projects.find((x) => x.id == activeProject)?.title}
+          </h1>
+        )}
         <Accordion defaultActiveKey="0" className="p-12">
           {logs.map((log, idx) => (
             <Card key={idx} style={{ backgroundColor: "#708090" }}>
@@ -102,7 +122,7 @@ export default function Devlog() {
                 {isMod && (
                   <Button
                     variant="danger"
-                    onClick={() => removeItem(log.id)}
+                    onClick={() => removeLog(log.id)}
                     size="sm"
                     className="d-flex ml-auto"
                   >

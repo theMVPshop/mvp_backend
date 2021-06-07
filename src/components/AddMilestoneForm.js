@@ -1,11 +1,12 @@
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 
+// props inherited from Milestones.js
 function AddMilestoneForm({ onSubmit, onChange, input }) {
   return (
     <div>
       <Container className="d-flex p-6 justify-content-around">
-        <form onSubmit={onSubmit} style={{alignItems:"center"}}>
+        <form onSubmit={onSubmit} style={{ alignItems: "center" }}>
           <input
             type="text"
             name="title"

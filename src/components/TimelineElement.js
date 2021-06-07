@@ -6,13 +6,13 @@ import {
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 
-function TimelineElement({ todos, handleClick, removeItem }) {
+function TimelineElement({ milestones, handleStatusChange, removeMilestone }) {
   return (
     <Container style={{ backgroundColor: "lightslategray" }} className="p-12">
       <VerticalTimeline>
-        {todos.map((todo) => (
+        {milestones.map((milestone) => (
           <VerticalTimelineElement
-            key={todo.id}
+            key={milestone.id}
             className="vertical-timeline-element--work"
             contentStyle={{
               background: "#20B2AA",
@@ -21,15 +21,15 @@ function TimelineElement({ todos, handleClick, removeItem }) {
             contentArrowStyle={{
               borderRight: "7px solid white",
             }}
-            date={todo.due_date}
+            date={milestone.due_date}
             dateClassName="timeline-date"
             iconStyle={{
               background: `${
-                todo.ms_status === "COMPLETED"
+                milestone.ms_status === "COMPLETED"
                   ? "mediumseagreen"
-                  : todo.ms_status === "IN PROGRESS"
+                  : milestone.ms_status === "IN PROGRESS"
                   ? "darkorange"
-                  : todo.ms_status === "TODO"
+                  : milestone.ms_status === "TODO"
                   ? "firebrick"
                   : "gray"
               }`,
@@ -38,31 +38,33 @@ function TimelineElement({ todos, handleClick, removeItem }) {
             // pick the icon to show up in the middle circle for each timeline element
             // icon={<WorkIcon />}
           >
-            <h3 className="vertical-timeline-element-title">{todo.title}</h3>
+            <h3 className="vertical-timeline-element-title">
+              {milestone.title}
+            </h3>
             <h4 className="vertical-timeline-element-subtitle">
-              {todo.subtitle}
+              {milestone.subtitle}
             </h4>
-            <p>{todo.description}</p>
+            <p>{milestone.description}</p>
             <Button
               variant={
-                todo.ms_status === "COMPLETED"
+                milestone.ms_status === "COMPLETED"
                   ? "success"
-                  : todo.ms_status === "IN PROGRESS"
+                  : milestone.ms_status === "IN PROGRESS"
                   ? "warning"
-                  : todo.ms_status === "TODO"
+                  : milestone.ms_status === "TODO"
                   ? "danger"
                   : "primary"
               }
-              onClick={() => handleClick(todo)}
-              value={todo.id}
-              id={todo.id}
+              onClick={() => handleStatusChange(milestone)}
+              value={milestone.id}
+              id={milestone.id}
               size="sm"
             >
-              {todo.ms_status}
+              {milestone.ms_status}
             </Button>
             <Button
               variant="danger"
-              onClick={() => removeItem(todo.id)}
+              onClick={() => removeMilestone(milestone.id)}
               size="sm"
               className="d-flex ml-auto"
             >

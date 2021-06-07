@@ -4,55 +4,31 @@ import { Container, Button } from "react-bootstrap";
 import SetRolesModal from "./SetRolesModal";
 
 // inheriting props/state from ProjectsTable.js
-function AddProjectForm({ isMod, projects, setProjects }) {
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
+function AddProjectForm({ isMod, projects, setProjects, authHeader }) {
   const [input, setInput] = useState({
     title: "",
     description: "",
   });
 
-  // controls all the input fields in the add project form
-  const onChange = (event) => {
+  // controls all the input fields in the form
+  const onChange = (event) =>
     setInput((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
     }));
-  };
 
-  // creates new project and stores it in hook and also the API
+  // creates new project and stores it in (inhereted) hook and also the API
   const onSubmit = (event) => {
     event.preventDefault();
-
-    let project = {
-      title: input.title,
-      description: input.description,
-    };
-
-    axios
-      .post("/projects", project, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then(() => {
-        axios
-          .get("/projects", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          .then((response) => {
-            project.id = response.data[response.data.length - 1].id;
-            setProjects([...response.data]);
-          });
+    const project = { title: input.title, description: input.description };
+    const postProject = () => axios.post("/projects", project, authHeader);
+    const repopulateList = () =>
+      axios.get("/projects", authHeader).then((response) => {
+        project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
+        setProjects(response.data);
       });
-
-    // clear input fields
-    setInput({
-      title: "",
-      description: "",
-    });
+    postProject().then(() => repopulateList());
+    setInput({ title: "", description: "" }); // clear input field
   };
 
   return (
@@ -85,8 +61,8 @@ function AddProjectForm({ isMod, projects, setProjects }) {
               Add Project
             </Button>
             <Container className="d-flex p-6 justify-content-center">
-              {/* render SetRolesModal button */}
-              <SetRolesModal projects={projects} />
+              {/* line below renders SetRolesModal button */}
+              <SetRolesModal projects={projects} authHeader={authHeader} />
             </Container>
           </form>
         </Container>

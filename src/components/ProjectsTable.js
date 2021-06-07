@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import { Container, Table, Button } from "react-bootstrap";
 import {
   faCalendarCheck,
@@ -9,6 +9,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 
+// rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
@@ -23,6 +24,12 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const [isMod, setIsMod] = useState(false);
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
+
+  useEffect(() => {
+    checkModPrivilege();
+    fetchProjects();
+    fetchPermissions();
+  }, []);
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = () =>
@@ -54,18 +61,16 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
       .then((response) => setPermissions(response.data))
       .then((error) => console.log("failed to fetch permissions", error));
 
-  useEffect(() => {
-    checkModPrivilege();
-    fetchProjects();
-    fetchPermissions();
-  }, []);
-
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = (Id) =>
     axios
       .delete(`/projects/${Id}`, authHeader)
       .then(() => fetchProjects())
       .catch((error) => console.log("error deleting project", error));
+
+  // makes clicked-on project consistent across app experience
+  const saveActiveProjectIdToCache = (Id) =>
+    localStorage.setItem("activeProject", Id);
 
   return (
     <div className="projects">
@@ -92,6 +97,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
               isMod={isMod}
               projects={projects}
               setProjects={setProjects}
+              authHeader={authHeader}
             />
           )}
         </div>
@@ -124,7 +130,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                 isMod
                   ? projects.map((project) => (
                       <tr
-                        // the following attributes are only applicable if rendered by Milestones.js
+                        key={project.id}
                         style={
                           cachedActiveProject === project.id
                             ? {
@@ -147,10 +153,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             <td>
                               <Link
                                 onClick={() =>
-                                  localStorage.setItem(
-                                    "activeProject",
-                                    project.id
-                                  )
+                                  saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/milestones"
                                 style={{ color: "white" }}
@@ -161,10 +164,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             <td>
                               <Link
                                 onClick={() =>
-                                  localStorage.setItem(
-                                    "activeProject",
-                                    project.id
-                                  )
+                                  saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
                                 style={{ color: "white" }}
@@ -175,6 +175,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                           </>
                         )}
                         {/* end of code for icons */}
+                        {/* below lines render delete button if on Projects.js page */}
                         {!fromMilestones && (
                           <td className="d-flex justify-content-center">
                             <Button
@@ -227,14 +228,11 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             <td>{project.id}</td>
                             <td>{project.title}</td>
                             <td>{project.description}</td>
-                            {/* same deal as the above for two links/icons, except for when rendered by non-mods i.e. clients */}
+                            {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
                             <td>
                               <Link
                                 onClick={() =>
-                                  localStorage.setItem(
-                                    "activeProject",
-                                    project.id
-                                  )
+                                  saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/milestones"
                                 style={{ color: "white" }}
@@ -245,10 +243,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             <td>
                               <Link
                                 onClick={() =>
-                                  localStorage.setItem(
-                                    "activeProject",
-                                    project.id
-                                  )
+                                  saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
                                 style={{ color: "white" }}

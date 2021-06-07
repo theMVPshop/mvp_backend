@@ -2,69 +2,76 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Container, Form, Button } from "react-bootstrap";
 
-function SetRoles({ projects }) {
-  const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+// inheriting props from AddProjectForm.js > SetRolesModal.js
+function SetRoles({ projects, authHeader }) {
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
 
+  const populateUsers = () =>
+    axios
+      .get("/users", authHeader)
+      .then((response) => setUsers(response.data))
+      .catch((error) => console.log("failed to fetch users", error));
+
+  const populateUserPermissions = () =>
+    axios
+      .get("/permissions", authHeader)
+      .then((response) => setPermissions(response.data))
+      .catch((error) => console.log("failed to fetch user permissions", error));
+
   useEffect(() => {
-    axios.get("/users", authHeader).then((response) => {
-      setUsers(response.data);
-    });
-    axios.get("/permissions", authHeader).then((response) => {
-      setPermissions(response.data);
-    });
+    populateUsers();
+    populateUserPermissions();
   }, []);
 
   const handleChangeRole = (isMod, username) => {
-    axios
-      .put(
-        "/users",
-        {
-          isModerator: !isMod,
-          username,
-        },
-        authHeader
-      )
-      .then(() => {
-        axios.get("/users", authHeader).then((response) => {
-          setUsers(response.data);
-        });
-      });
+    const updateUserRole = () => {
+      const reqBody = {
+        isModerator: !isMod,
+        username,
+      };
+      axios
+        .put("/users", reqBody, authHeader)
+        .catch((error) =>
+          console.log(`failed to update ${username}'s role`, error)
+        );
+    };
+    updateUserRole().then(() => populateUsers());
   };
 
   const handleChangePermission = (
-    e,
+    event,
     project_id,
     username,
     permissionObject
   ) => {
-    let permissionId = permissionObject && permissionObject.id;
-    e.target.checked
-      ? axios
-          .post(
-            "/permissions",
-            {
-              username,
-              project_id,
-            },
-            authHeader
+    const reqBody = {
+      username,
+      project_id,
+    };
+
+    let permissionId = permissionObject?.id;
+
+    const addPermission = () =>
+      axios
+        .post("/permissions", reqBody, authHeader)
+        .catch((error) =>
+          console.log(`failed to add permission for ${username}`, error)
+        )
+        .then(() => populateUserPermissions());
+
+    const removePermission = () =>
+      axios
+        .delete(`/permissions/${permissionId}`, authHeader)
+        .catch((error) =>
+          console.log(
+            `failed to remove permission for ${username} with Id#${permissionId}`,
+            error
           )
-          .then(() => {
-            axios.get("/permissions", authHeader).then((response) => {
-              setPermissions(response.data);
-            });
-          })
-      : axios.delete(`/permissions/${permissionId}`, authHeader).then(() => {
-          axios.get("/permissions", authHeader).then((response) => {
-            setPermissions(response.data);
-          });
-        });
+        )
+        .then(() => populateUserPermissions());
+
+    event.target.checked ? addPermission() : removePermission();
   };
 
   return (
@@ -110,9 +117,9 @@ function SetRoles({ projects }) {
                             id={`inline-${type}-1`}
                             checked={permissionObject}
                             // value={}
-                            onChange={(e) =>
+                            onChange={(event) =>
                               handleChangePermission(
-                                e,
+                                event,
                                 project.id,
                                 user.username,
                                 permissionObject
