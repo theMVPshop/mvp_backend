@@ -13,12 +13,12 @@ export default function App() {
   const LoginWithRouter = withRouter(Login);
 
   const home = (
-    <HashRouter>
-      <GlobalProvider>
+    <GlobalProvider>
+      <HashRouter>
         <NavWithRouter />
         <ReactRouter />
-      </GlobalProvider>
-    </HashRouter>
+      </HashRouter>
+    </GlobalProvider>
   );
 
   const login = (
