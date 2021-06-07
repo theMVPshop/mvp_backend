@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, history }) => {
   let user = localStorage.getItem("user");
   const [input, setInput] = useState({
     username: "",
@@ -24,25 +24,26 @@ const Login = ({ setUser }) => {
       email: "",
     });
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault();
-    axios
+    await axios
       .post("/auth/login", input)
       .then((res) => {
         localStorage.setItem("user", input.username);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
         user = localStorage.getItem("user");
-        setRedirectHome(true);
+        // setRedirectHome(true);
         setUser(input.username);
         clearForm();
       })
       .catch((error) => console.log("login error", error));
+    history.push("/projects");
   };
 
   return (
     <>
-      {(redirectHome || user) && <Redirect to="/projects" />}
+      {/* {(redirectHome || user) && <Redirect to="/projects" />} */}
       <div className="container">
         <div className="row justify-content-center">
           <form onSubmit={login} className="bg-dark col-3 text-light">

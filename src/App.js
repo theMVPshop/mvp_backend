@@ -10,6 +10,7 @@ export default function App() {
   const cachedUser = localStorage.getItem("user");
   const [user, setUser] = React.useState(cachedUser);
   const NavWithRouter = withRouter(Navigation);
+  const LoginWithRouter = withRouter(Login);
 
   const home = (
     <HashRouter>
@@ -23,7 +24,7 @@ export default function App() {
   const login = (
     <HashRouter>
       <NavWithRouter />
-      <Login setUser={setUser} />
+      <LoginWithRouter setUser={setUser} />
     </HashRouter>
   );
 
