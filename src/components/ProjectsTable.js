@@ -13,11 +13,12 @@ import { useGlobal } from "../contexts/GlobalProvider";
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const { cachedActiveProjectId, user, authHeader } = useGlobal();
-  const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
-  const [isMod, setIsMod] = useState(false);
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
+
+  const [projects, setProjects] = useState([]);
+  const [isMod, setIsMod] = useState(false);
 
   useEffect(() => {
     checkModPrivilege();

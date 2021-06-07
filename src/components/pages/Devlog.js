@@ -5,12 +5,12 @@ import DevlogModal from "../DevlogModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 export default function Devlog() {
-  const { cachedActiveProjectId, user, token, authHeader } = useGlobal();
-  const [isMod, setIsMod] = useState(false);
+  const { user, token, authHeader, activeProject, setActiveProject } =
+    useGlobal();
   const [logs, setLogs] = useState([]);
+
+  const [isMod, setIsMod] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  const [projectId, setProjectId] = useState(cachedActiveProjectId);
 
   useEffect(() => {
     checkModPrivilege();
@@ -42,7 +42,7 @@ export default function Devlog() {
 
   const fetchLogs = () =>
     axios
-      .get(`/devlog/${projectId}`, authHeader)
+      .get(`/devlog/${activeProject}`, authHeader)
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
 
@@ -82,8 +82,6 @@ export default function Devlog() {
         }}
       >
         <DevlogModal
-          projectId={projectId}
-          setProjectId={setProjectId}
           setActiveProject={setActiveProject}
           activeProject={activeProject}
           authHeader={authHeader}

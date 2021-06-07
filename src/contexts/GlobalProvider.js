@@ -7,6 +7,7 @@ export const useGlobal = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children }) => {
   let cachedActiveProjectId = parseInt(localStorage.getItem("activeProject"));
+  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
@@ -14,14 +15,10 @@ export const GlobalProvider = ({ children }) => {
       Authorization: `Bearer ${token}`,
     },
   };
+  // const [isMod, setIsMod] = useState(false);
   // const [projects, setProjects] = useState(null);
   // const [permissions, setPermissions] = useState([]);
-  // const [isMod, setIsMod] = useState(false);
   // let loggedIn = localStorage.getItem("loggedIn");
-  // const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  // const [currentProjectId, setCurrentProjectId] = useState(
-  //   cachedActiveProjectId
-  // );
 
   return (
     <GlobalContext.Provider
@@ -30,13 +27,12 @@ export const GlobalProvider = ({ children }) => {
         user,
         token,
         authHeader,
-        // currentProjectId,
-        // activeProject,
-        // setActiveProject,
-        // setCurrentProjectId,
+        activeProject,
+        setActiveProject,
         // isMod,
         // setIsMod,
         // projects,
+        // setProjects,
         // permissions,
       }}
     >

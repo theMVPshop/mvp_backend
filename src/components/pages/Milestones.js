@@ -7,13 +7,8 @@ import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 function Milestones() {
-  const { cachedActiveProjectId, token, authHeader } = useGlobal();
+  const { token, authHeader, activeProject, setActiveProject } = useGlobal();
   const [milestones, setMilestones] = useState([]);
-  const [currentProjectId, setCurrentProjectId] = useState(
-    cachedActiveProjectId
-  );
-  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  const [projects, setProjects] = useState(null);
   const [input, setInput] = useState({
     title: "",
     subtitle: "",
@@ -21,10 +16,16 @@ function Milestones() {
     due_date: "",
     ms_status: "TODO",
   });
+  const [projects, setProjects] = useState(null);
+
+  React.useEffect(() => {
+    fetchMilestones();
+    populateProjects();
+  }, []);
 
   const fetchMilestones = () =>
     axios
-      .get(`/milestones/${currentProjectId}`, authHeader)
+      .get(`/milestones/${activeProject}`, authHeader)
       .then((response) => setMilestones(response.data))
       .catch((error) => console.log("failed to fetch milestones", error));
 
@@ -34,20 +35,14 @@ function Milestones() {
       .then((response) => setProjects(response.data))
       .catch((error) => console.log("failed to populate projects", error));
 
-  React.useEffect(() => {
-    fetchMilestones();
-    populateProjects();
-  }, []);
-
   // populates milestones for the selected project
   const handleProjectClick = (Id) =>
     axios
       .get(`/milestones/${Id}`, authHeader)
       .then((response) => {
-        setMilestones(response.data);
-        setCurrentProjectId(Id);
-        setActiveProject(Id);
         localStorage.setItem("activeProject", Id);
+        setActiveProject(Id);
+        setMilestones(response.data);
       })
       .then(() => populateProjects())
       .catch((error) => console.log(error));
@@ -73,7 +68,7 @@ function Milestones() {
     const postBody = {
       title: input.title,
       subtitle: input.subtitle,
-      project_id: currentProjectId,
+      project_id: activeProject,
       due_date: input.due_date,
       ms_status: "TODO",
       description: input.description,
@@ -97,7 +92,7 @@ function Milestones() {
     };
 
     axios
-      .delete(`/milestones/${currentProjectId}`, reqBody)
+      .delete(`/milestones/${activeProject}`, reqBody)
       .then(() => fetchMilestones())
       .catch((error) => console.log(error));
   };
@@ -105,7 +100,7 @@ function Milestones() {
   // updates milestone status in api and component
   const handleStatusChange = (milestone) => {
     const milestoneId = milestone.id;
-    if (todo.ms_status === "TODO") {
+    if (milestone.ms_status === "TODO") {
       milestone.ms_status = "IN PROGRESS";
       axios.put(
         `/milestones/${milestoneId}`,

@@ -6,8 +6,6 @@ import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
 // inherits props from Devlog.js
 function DevlogModal({
   isMod,
-  projectId,
-  setProjectId,
   setLogs,
   setActiveProject,
   activeProject,
@@ -19,7 +17,7 @@ function DevlogModal({
     title: "",
     description: "",
     time_stamp: "",
-    project_id: projectId,
+    project_id: activeProject,
   });
 
   const handleClose = () => setShow(false);
@@ -44,7 +42,7 @@ function DevlogModal({
     const reqBody = {
       title: input.title,
       description: input.description,
-      project_id: projectId,
+      project_id: activeProject,
       time_stamp: date,
     };
     axios
@@ -60,7 +58,6 @@ function DevlogModal({
       .then((response) => {
         localStorage.setItem("activeProject", Id);
         setActiveProject(Id);
-        setProjectId(Id);
         setLogs(response.data);
       })
       .catch((error) => console.log(error));
