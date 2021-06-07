@@ -4,13 +4,15 @@ import { Container } from "react-bootstrap";
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
+import { useGlobal } from "../../contexts/GlobalProvider";
 
 function Milestones() {
-  const token = localStorage.getItem("token");
-  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
+  const { cachedActiveProjectId, token, authHeader } = useGlobal();
   const [milestones, setMilestones] = useState([]);
-  const [currentProjectId, setCurrentProjectId] = useState(cachedActiveProject);
-  const [activeProject, setActiveProject] = useState(cachedActiveProject);
+  const [currentProjectId, setCurrentProjectId] = useState(
+    cachedActiveProjectId
+  );
+  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const [projects, setProjects] = useState(null);
   const [input, setInput] = useState({
     title: "",
@@ -19,12 +21,6 @@ function Milestones() {
     due_date: "",
     ms_status: "TODO",
   });
-
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
 
   const fetchMilestones = () =>
     axios

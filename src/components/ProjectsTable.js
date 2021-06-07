@@ -8,17 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
+import { useGlobal } from "../contexts/GlobalProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ fromMilestones, handleProjectClick }) {
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
+  const { cachedActiveProjectId, user, authHeader } = useGlobal();
   const [projects, setProjects] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [isMod, setIsMod] = useState(false);
@@ -27,8 +21,8 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
 
   useEffect(() => {
     checkModPrivilege();
-    fetchProjects();
     fetchPermissions();
+    fetchProjects();
   }, []);
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
@@ -59,7 +53,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     axios
       .get("/permissions", authHeader)
       .then((response) => setPermissions(response.data))
-      .then((error) => console.log("failed to fetch permissions", error));
+      .catch((error) => console.log("failed to fetch permissions", error));
 
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = (Id) =>
@@ -132,7 +126,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                       <tr
                         key={project.id}
                         style={
-                          cachedActiveProject === project.id
+                          cachedActiveProjectId === project.id
                             ? {
                                 backgroundColor: "#766400",
                               }
@@ -201,7 +195,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         .map((project) => (
                           <tr
                             style={
-                              cachedActiveProject === project.id
+                              cachedActiveProjectId === project.id
                                 ? {
                                     backgroundColor: "#766400",
                                   }

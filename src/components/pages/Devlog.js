@@ -2,22 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogModal from "../DevlogModal";
+import { useGlobal } from "../../contexts/GlobalProvider";
 
 export default function Devlog() {
-  let cachedActiveProject = parseInt(localStorage.getItem("activeProject"));
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
+  const { cachedActiveProjectId, user, token, authHeader } = useGlobal();
   const [isMod, setIsMod] = useState(false);
   const [logs, setLogs] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [activeProject, setActiveProject] = useState(cachedActiveProject);
-  const [projectId, setProjectId] = useState(cachedActiveProject);
-
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
+  const [projectId, setProjectId] = useState(cachedActiveProjectId);
 
   useEffect(() => {
     checkModPrivilege();

@@ -7,6 +7,11 @@ function SetRoles({ projects, authHeader }) {
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
 
+  useEffect(() => {
+    populateUsers();
+    populateUserPermissions();
+  }, []);
+
   const populateUsers = () =>
     axios
       .get("/users", authHeader)
@@ -18,11 +23,6 @@ function SetRoles({ projects, authHeader }) {
       .get("/permissions", authHeader)
       .then((response) => setPermissions(response.data))
       .catch((error) => console.log("failed to fetch user permissions", error));
-
-  useEffect(() => {
-    populateUsers();
-    populateUserPermissions();
-  }, []);
 
   const handleChangeRole = (isMod, username) => {
     const updateUserRole = () => {
