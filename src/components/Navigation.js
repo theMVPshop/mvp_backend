@@ -2,21 +2,23 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
-function Navigation({ location }) {
+function Navigation({ location, history, setUser }) {
   let user = localStorage.getItem("user");
   let loggedIn = localStorage.getItem("loggedIn");
-  const [redirectHome, setRedirectHome] = React.useState(false);
+  // const [redirectHome, setRedirectHome] = React.useState(false);
 
   const logOut = async () => {
-    await setRedirectHome(false);
-    localStorage.setItem("loggedIn", false);
+    // await setRedirectHome(false);
+    await setUser(null);
     localStorage.removeItem("user");
-    setRedirectHome(true);
+    localStorage.setItem("loggedIn", false);
+    history.push("/");
+    // setRedirectHome(true);
   };
 
   return (
     <>
-      {redirectHome && <Redirect to="/" />}
+      {/* {redirectHome && <Redirect to="/" />} */}
       <div
         className="pb-3"
         style={{ paddingBottom: "6px", backgroundColor: "#441091" }}

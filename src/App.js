@@ -15,7 +15,7 @@ export default function App() {
   const home = (
     <GlobalProvider>
       <HashRouter>
-        <NavWithRouter />
+        <NavWithRouter setUser={setUser} />
         <ReactRouter />
       </HashRouter>
     </GlobalProvider>
@@ -23,8 +23,8 @@ export default function App() {
 
   const login = (
     <HashRouter>
-      <NavWithRouter />
-      <LoginWithRouter setUser={setUser} />
+      {/* <NavWithRouter /> */}
+      <LoginWithRouter setUser={setUser} user={user} />
     </HashRouter>
   );
 
