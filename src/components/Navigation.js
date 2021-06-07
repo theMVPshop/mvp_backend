@@ -23,7 +23,7 @@ function Navigation({ location }) {
       >
         <div style={{ margin: "auto" }} className="col-7">
           <Navbar variant="dark" expand="lg">
-            <Navbar.Brand href="/projects" style={{ color: "white" }}>
+            <Navbar.Brand style={{ color: "white" }}>
               the<span style={{ fontWeight: "800", color: "orange" }}>MVP</span>
               shop
             </Navbar.Brand>
