@@ -5,34 +5,11 @@ import DevlogModal from "../DevlogModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 export default function Devlog() {
-  const { user, token, authHeader, activeProject, setActiveProject } =
+  const { token, authHeader, activeProject, setActiveProject, isMod } =
     useGlobal();
   const [logs, setLogs] = useState([]);
 
-  const [isMod, setIsMod] = useState(false);
   const [projects, setProjects] = useState([]);
-
-  useEffect(() => {
-    checkModPrivilege();
-    fetchProjects();
-    fetchLogs();
-  }, []);
-
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = () =>
-    user &&
-    axios
-      .get("/users", authHeader)
-      .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === user)?.isModerator === 1
-            ? true
-            : false
-        );
-      })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
-      );
 
   const fetchProjects = () =>
     axios
@@ -45,6 +22,11 @@ export default function Devlog() {
       .get(`/devlog/${activeProject}`, authHeader)
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
+
+  useEffect(() => {
+    fetchProjects();
+    fetchLogs();
+  }, []);
 
   const removeLog = (Id) => {
     const reqBody = {

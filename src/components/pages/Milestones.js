@@ -18,11 +18,6 @@ function Milestones() {
   });
   const [projects, setProjects] = useState(null);
 
-  React.useEffect(() => {
-    fetchMilestones();
-    populateProjects();
-  }, []);
-
   const fetchMilestones = () =>
     axios
       .get(`/milestones/${activeProject}`, authHeader)
@@ -34,6 +29,11 @@ function Milestones() {
       .get("/projects", authHeader)
       .then((response) => setProjects(response.data))
       .catch((error) => console.log("failed to populate projects", error));
+
+  React.useEffect(() => {
+    fetchMilestones();
+    populateProjects();
+  }, []);
 
   // populates milestones for the selected project
   const handleProjectClick = (Id) =>

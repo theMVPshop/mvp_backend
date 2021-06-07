@@ -12,49 +12,40 @@ import { useGlobal } from "../contexts/GlobalProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ fromMilestones, handleProjectClick }) {
-  const { cachedActiveProjectId, user, authHeader } = useGlobal();
-  const [permissions, setPermissions] = useState([]);
+  const {
+    cachedActiveProjectId,
+    user,
+    authHeader,
+    isMod,
+    projects,
+    setProjects,
+    fetchProjects,
+    permissions,
+  } = useGlobal();
+  // const [permissions, setPermissions] = useState([]);
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
-  const [projects, setProjects] = useState([]);
-  const [isMod, setIsMod] = useState(false);
-
-  useEffect(() => {
-    checkModPrivilege();
-    fetchPermissions();
-    fetchProjects();
-  }, []);
-
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = () =>
-    user &&
-    axios
-      .get("/users", authHeader)
-      .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === user)?.isModerator === 1
-            ? true
-            : false
-        );
-      })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
-      );
+  // const [projects, setProjects] = useState([]);
 
   // fetch projects table from API and store in hook
-  const fetchProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to fetch projects", error));
+  // const fetchProjects = () =>
+  //   axios
+  //     .get("/projects", authHeader)
+  //     .then((response) => setProjects(response.data))
+  //     .catch((error) => console.log("failed to fetch projects", error));
 
   // fetch permissions table from API and store in hook
-  const fetchPermissions = () =>
-    axios
-      .get("/permissions", authHeader)
-      .then((response) => setPermissions(response.data))
-      .catch((error) => console.log("failed to fetch permissions", error));
+  // const fetchPermissions = () =>
+  //   axios
+  //     .get("/permissions", authHeader)
+  //     .then((response) => setPermissions(response.data))
+  //     .catch((error) => console.log("failed to fetch permissions", error));
+
+  // useEffect(() => {
+  //   fetchPermissions();
+  //   // fetchProjects();
+  // }, []);
 
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = (Id) =>
