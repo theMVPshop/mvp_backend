@@ -7,7 +7,8 @@ import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 function Milestones() {
-  const { token, authHeader, activeProject, setActiveProject } = useGlobal();
+  const { token, authHeader, activeProject, setActiveProject, projects } =
+    useGlobal();
   const [milestones, setMilestones] = useState([]);
   const [input, setInput] = useState({
     title: "",
@@ -16,7 +17,6 @@ function Milestones() {
     due_date: "",
     ms_status: "TODO",
   });
-  const [projects, setProjects] = useState(null);
 
   const fetchMilestones = () =>
     axios
@@ -24,16 +24,9 @@ function Milestones() {
       .then((response) => setMilestones(response.data))
       .catch((error) => console.log("failed to fetch milestones", error));
 
-  const populateProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to populate projects", error));
-
   React.useEffect(() => {
     fetchMilestones();
-    populateProjects();
-  }, []);
+  }, [activeProject]);
 
   // populates milestones for the selected project
   const handleProjectClick = (Id) =>

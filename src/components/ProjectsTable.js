@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Container, Table, Button } from "react-bootstrap";
@@ -21,31 +21,10 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     setProjects,
     fetchProjects,
     permissions,
+    setActiveProject,
   } = useGlobal();
-  // const [permissions, setPermissions] = useState([]);
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
-
-  // const [projects, setProjects] = useState([]);
-
-  // fetch projects table from API and store in hook
-  // const fetchProjects = () =>
-  //   axios
-  //     .get("/projects", authHeader)
-  //     .then((response) => setProjects(response.data))
-  //     .catch((error) => console.log("failed to fetch projects", error));
-
-  // fetch permissions table from API and store in hook
-  // const fetchPermissions = () =>
-  //   axios
-  //     .get("/permissions", authHeader)
-  //     .then((response) => setPermissions(response.data))
-  //     .catch((error) => console.log("failed to fetch permissions", error));
-
-  // useEffect(() => {
-  //   fetchPermissions();
-  //   // fetchProjects();
-  // }, []);
 
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = (Id) =>
@@ -55,8 +34,10 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
       .catch((error) => console.log("error deleting project", error));
 
   // makes clicked-on project consistent across app experience
-  const saveActiveProjectIdToCache = (Id) =>
+  const saveActiveProjectIdToCache = (Id) => {
     localStorage.setItem("activeProject", Id);
+    setActiveProject(Id);
+  };
 
   return (
     <div className="projects">

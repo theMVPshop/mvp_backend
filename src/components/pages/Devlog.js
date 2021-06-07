@@ -5,17 +5,15 @@ import DevlogModal from "../DevlogModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 export default function Devlog() {
-  const { token, authHeader, activeProject, setActiveProject, isMod } =
-    useGlobal();
+  const {
+    token,
+    authHeader,
+    activeProject,
+    setActiveProject,
+    isMod,
+    projects,
+  } = useGlobal();
   const [logs, setLogs] = useState([]);
-
-  const [projects, setProjects] = useState([]);
-
-  const fetchProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to populate projects", error));
 
   const fetchLogs = () =>
     axios
@@ -24,9 +22,8 @@ export default function Devlog() {
       .catch((error) => console.log(error));
 
   useEffect(() => {
-    fetchProjects();
     fetchLogs();
-  }, []);
+  }, [activeProject]);
 
   const removeLog = (Id) => {
     const reqBody = {
