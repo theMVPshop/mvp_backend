@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
@@ -24,7 +24,7 @@ function Milestones() {
       .then((response) => setMilestones(response.data))
       .catch((error) => console.log("failed to fetch milestones", error));
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchMilestones();
   }, [activeProject]);
 
@@ -161,12 +161,10 @@ function Milestones() {
               onSubmit={onSubmit}
             />
           </Container>
-          {projects && (
-            <h1 className="d-flex p-6 justify-content-center">
-              {activeProject &&
-                projects.find((x) => x.id == activeProject)?.title}
-            </h1>
-          )}
+          <h1 className="d-flex p-6 justify-content-center">
+            {projects.find((x) => x.id == activeProject)?.title ||
+              "Please Select a Project"}
+          </h1>
         </div>
         <TimelineElement
           milestones={milestones}

@@ -34,7 +34,6 @@ export default function Devlog() {
         id: Id,
       },
     };
-
     axios
       .delete(`/devlog/${Id}`, reqBody)
       .then(() => fetchLogs())
@@ -71,12 +70,10 @@ export default function Devlog() {
       </div>
       {/* accordion starts below */}
       <Container className="p-12">
-        {projects && (
-          <h1 className="d-flex p-6 justify-content-center">
-            {activeProject &&
-              projects.find((x) => x.id == activeProject)?.title}
-          </h1>
-        )}
+        <h1 className="d-flex p-6 justify-content-center">
+          {projects.find((x) => x.id == activeProject)?.title ||
+            "Please Select a Project"}
+        </h1>
         <Accordion defaultActiveKey="0" className="p-12">
           {logs.map((log, idx) => (
             <Card key={idx} style={{ backgroundColor: "#708090" }}>

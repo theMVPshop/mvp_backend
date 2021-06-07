@@ -6,7 +6,7 @@ const GlobalContext = React.createContext();
 export const useGlobal = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children }) => {
-  let loggedIn = localStorage.getItem("loggedIn");
+  // let loggedIn = localStorage.getItem("loggedIn");
   let cachedActiveProjectId = parseInt(localStorage.getItem("activeProject"));
   const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const user = localStorage.getItem("user");
