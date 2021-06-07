@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ setUser }) => {
   let user = localStorage.getItem("user");
   const [input, setInput] = useState({
     username: "",
@@ -33,8 +33,9 @@ const Login = () => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
         user = localStorage.getItem("user");
-        clearForm();
         setRedirectHome(true);
+        setUser(input.username);
+        clearForm();
       })
       .catch((error) => console.log("login error", error));
   };

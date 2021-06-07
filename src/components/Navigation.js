@@ -16,7 +16,7 @@ function Navigation({ location }) {
 
   return (
     <>
-      {redirectHome && <Redirect to="/login" />}
+      {redirectHome && <Redirect to="/" />}
       <div
         className="pb-3"
         style={{ paddingBottom: "6px", backgroundColor: "#441091" }}
@@ -39,11 +39,11 @@ function Navigation({ location }) {
                 <Link to="/devlog" className="nav-link">
                   DevLog
                 </Link>
-                {!user && (
+                {/* {!user && (
                   <Link to="/login" className="nav-link">
                     Sign In
                   </Link>
-                )}
+                )} */}
               </Nav>
             </Navbar.Collapse>
             {user && (

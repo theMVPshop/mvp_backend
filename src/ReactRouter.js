@@ -15,7 +15,7 @@ const Router = () => {
       <Route path="/milestones" component={Milestones} />
       <Route path="/devlog" component={Devlog} />
       <Route path="/projects" component={Projects} />
-      <Route path="/login" component={Login} />
+      {/* <Route path="/login" component={Login} /> */}
       <Route path="/signup" component={Signup} />
     </Switch>
   );

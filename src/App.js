@@ -4,11 +4,14 @@ import ReactRouter from "./ReactRouter";
 import { HashRouter } from "react-router-dom";
 import { withRouter } from "react-router";
 import { GlobalProvider } from "./contexts/GlobalProvider";
+import Login from "./components/pages/Login";
 
-function App() {
+export default function App() {
+  const cachedUser = localStorage.getItem("user");
+  const [user, setUser] = React.useState(cachedUser);
   const NavWithRouter = withRouter(Navigation);
 
-  return (
+  const home = (
     <HashRouter>
       <GlobalProvider>
         <NavWithRouter />
@@ -16,6 +19,13 @@ function App() {
       </GlobalProvider>
     </HashRouter>
   );
-}
 
-export default App;
+  const login = (
+    <HashRouter>
+      <NavWithRouter />
+      <Login setUser={setUser} />
+    </HashRouter>
+  );
+
+  return user ? home : login;
+}
