@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Signup from "../pages/Signup";
 import { Redirect, Link } from "react-router-dom";
+import { Spinner, Button } from "react-bootstrap";
 
 const Login = ({ setUser, history }) => {
   let cachedUser = localStorage.getItem("user");
+  const [isLoading, setIsLoading] = useState(false);
+  const [toggleSignup, setToggleSignup] = useState(false);
   const [input, setInput] = useState({
     username: "",
     password: "",
-    email: "",
   });
+
+  const toggleForm = () => setToggleSignup(!toggleSignup);
 
   const handleChange = (e) =>
     setInput((prevState) => ({
@@ -20,10 +25,11 @@ const Login = ({ setUser, history }) => {
     setInput({
       username: "",
       password: "",
-      // email: "",
     });
 
   const login = async (e) => {
+    setIsLoading(true);
+    // clearForm();
     e.preventDefault();
     await axios
       .post("/auth/login", input)
@@ -32,87 +38,123 @@ const Login = ({ setUser, history }) => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
         setUser(input.username);
-        clearForm();
+        setIsLoading(false);
       })
-      .catch((error) => console.log("login error", error));
+      .catch((error) => {
+        alert(error);
+        console.log("login error", error);
+      })
+      .then(() => {
+        setIsLoading(false);
+      });
     history.push("/projects");
   };
 
   return (
     <>
-      {cachedUser && <Redirect to="/projects" />}
-      <div className="container">
-        <div className="row justify-content-center">
-          <form onSubmit={login} className="bg-dark col-3 text-light">
-            <h3>Sign In</h3>
-            {/* 
-            <div className="form-group">
-              <label>Email address</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                label="Email"
-                onChange={handleChange}
-                value={input.email}
-                className="form-control"
-                placeholder="Enter email"
-              />
-            </div> */}
+      {toggleSignup ? (
+        <Signup
+          history={history}
+          setUser={setUser}
+          login={login}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          toggleForm={toggleForm}
+          toggleSignup={toggleSignup}
+        />
+      ) : (
+        <>
+          {cachedUser && <Redirect to="/projects" />}
+          <div className="container">
+            <div className="row justify-content-center">
+              <form
+                onSubmit={login}
+                className="bg-dark col-3 text-light"
+                style={{ borderRadius: "1rem" }}
+              >
+                <h3>Sign In</h3>
 
-            <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                label="Username"
-                onChange={handleChange}
-                value={input.username}
-                className="form-control"
-                placeholder="Enter Username"
-              />
+                <div className="form-group">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    required
+                    id="username"
+                    name="username"
+                    label="Username"
+                    onChange={handleChange}
+                    value={input.username}
+                    className="form-control"
+                    placeholder="Enter Username"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    required
+                    onChange={handleChange}
+                    value={input.password}
+                    name="password"
+                    label="Password"
+                    type="password"
+                    id="password"
+                    className="form-control"
+                    placeholder="Enter password"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <div className="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      className="custom-control-input"
+                      id="customCheck1"
+                    />
+                    <label
+                      className="custom-control-label"
+                      htmlFor="customCheck1"
+                    >
+                      Remember me
+                    </label>
+                  </div>
+                </div>
+
+                {isLoading ? (
+                  <>
+                    <Button variant="primary btn-block" disabled>
+                      <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                      />
+                      Verifying...
+                    </Button>
+                  </>
+                ) : (
+                  <Button type="submit" className="btn btn-primary btn-block">
+                    Submit
+                  </Button>
+                )}
+
+                <p className="forgot-password text-right">
+                  <Button
+                    onClick={() => toggleForm()}
+                    className="btn mt-4"
+                    size="sm"
+                    variant="success"
+                  >
+                    New user?
+                  </Button>
+                </p>
+              </form>
             </div>
-
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                onChange={handleChange}
-                value={input.password}
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                className="form-control"
-                placeholder="Enter password"
-              />
-            </div>
-
-            <div className="form-group">
-              <div className="custom-control custom-checkbox">
-                <input
-                  type="checkbox"
-                  className="custom-control-input"
-                  id="customCheck1"
-                />
-                <label className="custom-control-label" htmlFor="customCheck1">
-                  Remember me
-                </label>
-              </div>
-            </div>
-
-            <button type="submit" className="btn btn-primary btn-block">
-              Submit
-            </button>
-            <p className="forgot-password text-right">
-              <Link to="/signup" className="nav-link">
-                New user?
-              </Link>
-            </p>
-          </form>
-        </div>
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
