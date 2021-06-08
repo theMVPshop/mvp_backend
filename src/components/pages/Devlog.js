@@ -66,8 +66,10 @@ export default function Devlog() {
       {/* accordion starts below */}
       <Container className="p-12">
         <h1 className="d-flex p-6 justify-content-center">
-          {projects?.find((x) => x.id == activeProject)?.title ||
-            "Please Select a Project"}
+          {isMod
+            ? projects?.find((x) => x.id == activeProject)?.title ||
+              "Please Select a Project"
+            : "Please inform your supervisor to assign you a project"}
         </h1>
         <Accordion defaultActiveKey="0" className="p-12">
           {logs.map((log, idx) => (

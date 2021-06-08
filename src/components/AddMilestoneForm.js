@@ -32,7 +32,7 @@ function AddMilestoneForm({ onSubmit, onChange, input }) {
             onChange={onChange}
           />
           <label
-            for="due_date"
+            htmlFor="due_date"
             style={{
               backgroundColor: "darkorange",
               color: "black",

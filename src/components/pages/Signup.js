@@ -9,7 +9,7 @@ const Signup = ({
   isLoading,
   setIsLoading,
   toggleForm,
-  toggleSignup,
+  showSignup,
 }) => {
   const [input, setInput] = useState({
     username: "",
@@ -30,9 +30,9 @@ const Signup = ({
 
   const clearForm = () =>
     setInput({
-      username: "",
+      // username: "",
       password: "",
-      email: "",
+      // email: "",
     });
 
   const login = () => {
@@ -62,13 +62,13 @@ const Signup = ({
     await axios
       .post("/users", userObject)
       .catch((error) => console.log("failed to add user to db", error));
-    // clearForm();
+    clearForm();
     login();
   };
 
   return (
     <>
-      {toggleSignup ? (
+      {showSignup ? (
         <>
           <div className="container">
             <div className="row justify-content-center">

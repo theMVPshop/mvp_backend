@@ -7,13 +7,13 @@ import { Spinner, Button } from "react-bootstrap";
 const Login = ({ setUser, history }) => {
   let cachedUser = localStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);
-  const [toggleSignup, setToggleSignup] = useState(false);
+  const [showSignup, setshowSignup] = useState(false);
   const [input, setInput] = useState({
     username: "",
     password: "",
   });
 
-  const toggleForm = () => setToggleSignup(!toggleSignup);
+  const toggleForm = () => setshowSignup(!showSignup);
 
   const handleChange = (e) =>
     setInput((prevState) => ({
@@ -21,17 +21,16 @@ const Login = ({ setUser, history }) => {
       [e.target.name]: e.target.value,
     }));
 
-  const clearForm = () =>
-    setInput({
-      username: "",
-      password: "",
-    });
+  // const clearForm = () =>
+  //   setInput({
+  //     username: "",
+  //     password: "",
+  //   });
 
-  const login = async (e) => {
-    setIsLoading(true);
+  const login = (e) => {
     // clearForm();
     e.preventDefault();
-    await axios
+    const logIn = axios
       .post("/auth/login", input)
       .then((res) => {
         localStorage.setItem("user", input.username);
@@ -47,12 +46,15 @@ const Login = ({ setUser, history }) => {
       .then(() => {
         setIsLoading(false);
       });
-    history.push("/projects");
+    setIsLoading(true, async () => {
+      await logIn;
+      history.push("/projects");
+    });
   };
 
   return (
     <>
-      {toggleSignup ? (
+      {showSignup ? (
         <Signup
           history={history}
           setUser={setUser}
@@ -60,7 +62,7 @@ const Login = ({ setUser, history }) => {
           isLoading={isLoading}
           setIsLoading={setIsLoading}
           toggleForm={toggleForm}
-          toggleSignup={toggleSignup}
+          showSignup={showSignup}
         />
       ) : (
         <>

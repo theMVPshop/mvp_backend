@@ -38,12 +38,11 @@ export const GlobalProvider = ({ children, user }) => {
         console.log("failed to retrieve moderator status", error)
       );
 
-  const fetchProjects = async () => {
-    let response = await axios
+  const fetchProjects = () =>
+    axios
       .get("/projects", authHeader)
+      .then((response) => setProjects(response.data))
       .catch((error) => console.log("failed to populate projects", error));
-    setProjects(response.data);
-  };
 
   // fetch permissions table from API and store in hook
   const fetchPermissions = () =>
