@@ -30,7 +30,6 @@ const Login = ({ setUser, history, user }) => {
         localStorage.setItem("user", input.username);
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
-        // user = localStorage.getItem("user");
         setUser(input.username);
         clearForm();
       })

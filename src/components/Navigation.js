@@ -2,23 +2,18 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 
-function Navigation({ location, history, setUser }) {
-  let user = localStorage.getItem("user");
+function Navigation({ location, history, user, setUser }) {
   let loggedIn = localStorage.getItem("loggedIn");
-  // const [redirectHome, setRedirectHome] = React.useState(false);
 
   const logOut = async () => {
-    // await setRedirectHome(false);
     await setUser(null);
     localStorage.removeItem("user");
-    localStorage.setItem("loggedIn", false);
+    localStorage.removeItem("loggedIn");
     history.push("/");
-    // setRedirectHome(true);
   };
 
   return (
     <>
-      {/* {redirectHome && <Redirect to="/" />} */}
       <div
         className="pb-3"
         style={{ paddingBottom: "6px", backgroundColor: "#441091" }}
@@ -31,22 +26,24 @@ function Navigation({ location, history, setUser }) {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto" activeKey={location.pathname}>
-                <Link to="/projects" className="nav-link">
-                  Projects
-                </Link>
-                <Link to="/milestones" className="nav-link">
-                  Milestones
-                </Link>
-                <Link to="/devlog" className="nav-link">
-                  DevLog
-                </Link>
-                {/* {!user && (
+              {user && (
+                <Nav className="mr-auto" activeKey={location.pathname}>
+                  <Link to="/projects" className="nav-link">
+                    Projects
+                  </Link>
+                  <Link to="/milestones" className="nav-link">
+                    Milestones
+                  </Link>
+                  <Link to="/devlog" className="nav-link">
+                    DevLog
+                  </Link>
+                  {/* {!user && (
                   <Link to="/login" className="nav-link">
                     Sign In
                   </Link>
                 )} */}
-              </Nav>
+                </Nav>
+              )}
             </Navbar.Collapse>
             {user && (
               <span style={{ color: "white", marginRight: "1rem" }}>
