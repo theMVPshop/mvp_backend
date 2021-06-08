@@ -25,9 +25,7 @@ function Milestones() {
       .then((response) => setMilestones(response.data))
       .catch((error) => console.log("failed to fetch milestones", error));
 
-  useEffect(() => {
-    fetchMilestones();
-  }, [activeProject]);
+  useEffect(() => fetchMilestones(), [activeProject]);
 
   // populates milestones for the selected project
   const handleProjectClick = (Id) =>

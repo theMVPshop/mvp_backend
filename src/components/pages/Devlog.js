@@ -22,9 +22,7 @@ export default function Devlog() {
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
 
-  useEffect(() => {
-    fetchLogs();
-  }, [activeProject]);
+  useEffect(() => fetchLogs(), [activeProject]);
 
   const removeLog = (Id) => {
     const reqBody = {
