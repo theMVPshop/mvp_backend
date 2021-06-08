@@ -16,28 +16,23 @@ export default function Devlog() {
   } = useGlobal();
   const [logs, setLogs] = useLocalStorage("logs", []);
 
-  const fetchLogs = async () => {
-    let response = await axios
+  const fetchLogs = () =>
+    axios
       .get(`/devlog/${activeProject}`, authHeader)
+      .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
-    setLogs(response.data);
-  };
 
   useEffect(() => fetchLogs(), [activeProject]);
 
-  const removeLog = async (Id) => {
-    let reqBody = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        id: Id,
-      },
+  const removeLog = (Id) => {
+    const reqBody = {
+      headers: { Authorization: `Bearer ${token}` },
+      data: { id: Id },
     };
-    await axios
+    axios
       .delete(`/devlog/${Id}`, reqBody)
+      .then(() => fetchLogs())
       .catch((error) => console.log("delete devlog error", error));
-    fetchLogs();
   };
 
   return (

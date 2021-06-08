@@ -23,18 +23,20 @@ export const GlobalProvider = ({ children, user }) => {
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = async () => {
-    let response = await axios
+  const checkModPrivilege = () =>
+    user &&
+    axios
       .get("/users", authHeader)
+      .then((response) => {
+        setIsMod(
+          response.data.find((x) => x.username === user)?.isModerator === 1
+            ? true
+            : false
+        );
+      })
       .catch((error) =>
         console.log("failed to retrieve moderator status", error)
       );
-    setIsMod(
-      response.data.find((x) => x.username === user)?.isModerator === 1
-        ? true
-        : false
-    );
-  };
 
   const fetchProjects = async () => {
     let response = await axios
@@ -44,12 +46,11 @@ export const GlobalProvider = ({ children, user }) => {
   };
 
   // fetch permissions table from API and store in hook
-  const fetchPermissions = async () => {
-    let response = await axios
+  const fetchPermissions = () =>
+    axios
       .get("/permissions", authHeader)
+      .then((response) => setPermissions(response.data))
       .catch((error) => console.log("failed to fetch permissions", error));
-    setPermissions(response.data);
-  };
 
   React.useEffect(() => {
     fetchProjects();

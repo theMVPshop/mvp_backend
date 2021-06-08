@@ -8,14 +8,8 @@ import { useGlobal } from "../../contexts/GlobalProvider";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 function Milestones() {
-  const {
-    token,
-    authHeader,
-    activeProject,
-    setActiveProject,
-    projects,
-    setProjects,
-  } = useGlobal();
+  const { token, authHeader, activeProject, setActiveProject, projects } =
+    useGlobal();
   const [milestones, setMilestones] = useLocalStorage("milestones", []);
   const [input, setInput] = useState({
     title: "",
@@ -25,26 +19,24 @@ function Milestones() {
     ms_status: "TODO",
   });
 
-  const fetchMilestones = async () => {
-    const url = `/milestones/${activeProject}`;
-    let response = await axios
-      .get(url, authHeader)
+  const fetchMilestones = () =>
+    axios
+      .get(`/milestones/${activeProject}`, authHeader)
+      .then((response) => setMilestones(response.data))
       .catch((error) => console.log("failed to fetch milestones", error));
-    setMilestones(response.data);
-  };
 
   useEffect(() => fetchMilestones(), [activeProject]);
 
   // populates milestones for the selected project
-  const handleProjectClick = async (Id) => {
-    let response = await axios
+  const handleProjectClick = (Id) =>
+    axios
       .get(`/milestones/${Id}`, authHeader)
+      .then((response) => {
+        localStorage.setItem("activeProject", Id);
+        setActiveProject(Id);
+        setMilestones(response.data);
+      })
       .catch((error) => console.log(error));
-    localStorage.setItem("activeProject", Id);
-    setActiveProject(Id);
-    setMilestones(response.data);
-    // setProjects(projects);
-  };
 
   // populates the add milestone form with input data in realtime
   const onChange = (event) =>
@@ -62,9 +54,9 @@ function Milestones() {
     });
 
   // posts milestone and populates it in the view, then clears input fields
-  const onSubmit = async (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
-    let postBody = {
+    const postBody = {
       title: input.title,
       subtitle: input.subtitle,
       project_id: activeProject,
@@ -72,16 +64,16 @@ function Milestones() {
       ms_status: "TODO",
       description: input.description,
     };
-    await axios
+    axios
       .post("/milestones", postBody, authHeader)
+      .then(() => fetchMilestones())
+      .then(() => clearForm())
       .catch((error) => console.log(error));
-    fetchMilestones();
-    clearForm();
   };
 
   // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeMilestone = async (Id) => {
-    let reqBody = {
+  const removeMilestone = (Id) => {
+    const reqBody = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -89,23 +81,18 @@ function Milestones() {
         id: Id,
       },
     };
-    await axios
+    axios
       .delete(`/milestones/${activeProject}`, reqBody)
+      .then(() => fetchMilestones())
       .catch((error) => console.log(error));
-    fetchMilestones();
   };
 
   // updates milestone status in api and component
   const handleStatusChange = (milestone) => {
     const milestoneId = milestone.id;
     const setStatus = (status) => {
-      axios.put(
-        `/milestones/${milestoneId}`,
-        {
-          ms_status: status,
-        },
-        authHeader
-      );
+      const url = `/milestones/${milestoneId}`;
+      axios.put(url, { ms_status: status }, authHeader);
     };
     if (milestone.ms_status === "TODO") {
       milestone.ms_status = "IN PROGRESS";
