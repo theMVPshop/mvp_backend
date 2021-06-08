@@ -22,10 +22,12 @@ export default function App() {
   );
 
   const login = (
-    <HashRouter>
-      <NavWithRouter />
-      <LoginWithRouter user={user} setUser={setUser} />
-    </HashRouter>
+    <GlobalProvider>
+      <HashRouter>
+        <NavWithRouter />
+        <LoginWithRouter user={user} setUser={setUser} />
+      </HashRouter>
+    </GlobalProvider>
   );
 
   return user ? home : login;
