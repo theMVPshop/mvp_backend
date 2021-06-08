@@ -13,7 +13,7 @@ export default function App() {
   const LoginWithRouter = withRouter(Login);
 
   const home = (
-    <GlobalProvider>
+    <GlobalProvider user={user}>
       <HashRouter>
         <NavWithRouter user={user} setUser={setUser} />
         <ReactRouter />

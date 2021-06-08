@@ -19,7 +19,7 @@ const Login = ({ setUser, history, user }) => {
     setInput({
       username: "",
       password: "",
-      email: "",
+      // email: "",
     });
 
   const login = async (e) => {
@@ -44,7 +44,7 @@ const Login = ({ setUser, history, user }) => {
         <div className="row justify-content-center">
           <form onSubmit={login} className="bg-dark col-3 text-light">
             <h3>Sign In</h3>
-
+            {/* 
             <div className="form-group">
               <label>Email address</label>
               <input
@@ -57,7 +57,7 @@ const Login = ({ setUser, history, user }) => {
                 className="form-control"
                 placeholder="Enter email"
               />
-            </div>
+            </div> */}
 
             <div className="form-group">
               <label>Username</label>

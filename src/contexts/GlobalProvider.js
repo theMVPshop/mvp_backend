@@ -5,11 +5,12 @@ const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
-export const GlobalProvider = ({ children }) => {
+export const GlobalProvider = ({ children, user }) => {
   // let loggedIn = localStorage.getItem("loggedIn");
-  let cachedActiveProjectId = parseInt(localStorage.getItem("activeProject"));
+  let cachedActiveProjectId =
+    parseInt(localStorage.getItem("activeProject")) || null;
   const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  const user = localStorage.getItem("user");
+  // const user = localStorage.getItem("user");
   const token = localStorage.getItem("token");
   const authHeader = {
     headers: {
@@ -53,7 +54,7 @@ export const GlobalProvider = ({ children }) => {
     fetchProjects();
     checkModPrivilege();
     fetchPermissions();
-  }, []);
+  }, [user]);
 
   return (
     <GlobalContext.Provider

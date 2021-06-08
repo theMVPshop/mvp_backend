@@ -8,7 +8,9 @@ function Navigation({ location, history, user, setUser }) {
   const logOut = async () => {
     await setUser(null);
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     localStorage.removeItem("loggedIn");
+    localStorage.removeItem("activeProject");
     history.push("/");
   };
 
