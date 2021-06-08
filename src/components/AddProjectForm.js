@@ -62,7 +62,7 @@ function AddProjectForm({ isMod, projects, setProjects, authHeader }) {
             </Button>
             <Container className="d-flex p-6 justify-content-center">
               {/* line below renders SetRolesModal button */}
-              <SetRolesModal projects={projects} authHeader={authHeader} />
+              {/* <SetRolesModal projects={projects} authHeader={authHeader} /> */}
             </Container>
           </form>
         </Container>

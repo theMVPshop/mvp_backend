@@ -82,7 +82,7 @@ export default function Devlog() {
                 >
                   {log.title}
                 </Accordion.Toggle>
-                <div style={{ color: "gray" }}>{log.time_stamp}</div>
+                {log.time_stamp}
                 {isMod && (
                   <Button
                     variant="danger"

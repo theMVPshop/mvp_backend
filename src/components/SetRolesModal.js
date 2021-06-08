@@ -11,7 +11,7 @@ function SetRolesModal({ projects, authHeader }) {
 
   return (
     <>
-      <Button variant="secondary" onClick={handleShow}>
+      <Button variant="success" size="sm" onClick={handleShow} className="m-1">
         Assign Roles/Projects
       </Button>
       <Modal show={show} onHide={handleClose}>

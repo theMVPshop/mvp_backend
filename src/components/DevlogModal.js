@@ -70,7 +70,6 @@ function DevlogModal({
 
   return (
     <>
-      {/* <Container className="d-flex justify-content-center"> */}
       <MilestonesProjectSelectModal
         fromMilestones={true}
         handleProjectClick={handleProjectClick}
@@ -80,14 +79,6 @@ function DevlogModal({
         AddLogButton={AddLogButton}
         isMod={isMod}
       />
-      {/* {isMod && (
-          <Container className="d-flex justify-content-center p-3">
-            <Button variant="primary" onClick={handleShow}>
-              Add Log Entry
-            </Button>
-          </Container>
-        )} */}
-      {/* </Container> */}
       <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2"
@@ -130,7 +121,7 @@ function DevlogModal({
                   <Form.Label>Description</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={3}
+                    rows={10}
                     value={input.description}
                     onChange={onChange}
                     name="description"

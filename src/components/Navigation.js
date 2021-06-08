@@ -1,8 +1,12 @@
 import React from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
+import SetRolesModal from "./SetRolesModal";
+import { useGlobal } from "../contexts/GlobalProvider";
 
+// inheriting props from App.js
 function Navigation({ location, history, user, setUser }) {
+  const { isMod, projects, authHeader } = useGlobal();
   let loggedIn = localStorage.getItem("loggedIn");
 
   const logOut = async () => {
@@ -45,12 +49,15 @@ function Navigation({ location, history, user, setUser }) {
               )}
             </Navbar.Collapse>
             {user && (
-              <span style={{ color: "white", marginRight: "1rem" }}>
+              <span style={{ color: "white" }}>
                 Welcome <span style={{ color: "orange" }}>{user}</span>!
               </span>
             )}
+            {isMod && (
+              <SetRolesModal projects={projects} authHeader={authHeader} />
+            )}
             {loggedIn === "true" && (
-              <Button variant="danger" onClick={logOut}>
+              <Button variant="danger" size="sm" onClick={logOut}>
                 Logout
               </Button>
             )}

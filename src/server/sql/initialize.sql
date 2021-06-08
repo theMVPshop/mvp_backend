@@ -40,7 +40,7 @@ FOREIGN KEY (project_id) REFERENCES projects (id)
 CREATE TABLE devlog (
 id INT NOT NULL AUTO_INCREMENT,
 title VARCHAR(50),
-description VARCHAR(50),
+description VARCHAR(500),
 project_id INT NOT NULL,
 time_stamp INT NOT NULL,
 PRIMARY KEY (id),
