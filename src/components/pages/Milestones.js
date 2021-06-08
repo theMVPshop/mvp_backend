@@ -93,33 +93,24 @@ function Milestones() {
   // updates milestone status in api and component
   const handleStatusChange = (milestone) => {
     const milestoneId = milestone.id;
+    const setStatus = (status) => {
+      axios.put(
+        `/milestones/${milestoneId}`,
+        {
+          ms_status: status,
+        },
+        authHeader
+      );
+    };
     if (milestone.ms_status === "TODO") {
       milestone.ms_status = "IN PROGRESS";
-      axios.put(
-        `/milestones/${milestoneId}`,
-        {
-          ms_status: "IN PROGRESS",
-        },
-        authHeader
-      );
+      setStatus("IN PROGRESS");
     } else if (milestone.ms_status === "IN PROGRESS") {
       milestone.ms_status = "COMPLETED";
-      axios.put(
-        `/milestones/${milestoneId}`,
-        {
-          ms_status: "COMPLETED",
-        },
-        authHeader
-      );
+      setStatus("COMPLETED");
     } else if (milestone.ms_status === "COMPLETED") {
       milestone.ms_status = "TODO";
-      axios.put(
-        `/milestones/${milestoneId}`,
-        {
-          ms_status: "TODO",
-        },
-        authHeader
-      );
+      setStatus("TODO");
     }
     setMilestones([...milestones]);
   };
@@ -162,7 +153,7 @@ function Milestones() {
             />
           </Container>
           <h1 className="d-flex p-6 justify-content-center">
-            {projects.find((x) => x.id == activeProject)?.title ||
+            {projects?.find((x) => x.id == activeProject)?.title ||
               "Please Select a Project"}
           </h1>
         </div>

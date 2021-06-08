@@ -167,6 +167,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         )
                         .map((project) => (
                           <tr
+                            key={project.id}
                             style={
                               cachedActiveProjectId === project.id
                                 ? {
@@ -191,7 +192,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             permission.username === user
                         )
                         .map((project) => (
-                          <tr>
+                          <tr key={project.id}>
                             <td>{project.id}</td>
                             <td>{project.title}</td>
                             <td>{project.description}</td>
