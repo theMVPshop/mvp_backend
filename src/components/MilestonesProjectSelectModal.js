@@ -7,6 +7,9 @@ function MilestonesProjectSelectModal({
   handleProjectClick,
   activeProject,
   setActiveProject,
+  AddLogOnClickHandleShow,
+  AddLogButton,
+  isMod,
 }) {
   const [show, setShow] = useState(false);
 
@@ -14,35 +17,40 @@ function MilestonesProjectSelectModal({
   const handleShow = () => setShow(true);
 
   return (
-    <Container className="milestones">
-      <div className="row d-flex justify-content-center">
-        <Button variant="secondary" onClick={handleShow}>
-          Select Project
-        </Button>
-        <>
-          <Modal show={show} onHide={handleClose}>
-            <Modal.Header
-              closeButton
-              style={{ backgroundColor: "var(--indigo)" }}
-            >
-              <Modal.Title style={{ color: "var(--light)" }}>
-                Your Projects
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body style={{ backgroundColor: "#441091" }}>
-              <Container className="d-flex p-6 justify-content-center">
-                <ProjectsTable
-                  style={{ backgroundColor: "var(--indigo)" }}
-                  fromMilestones={fromMilestones}
-                  handleProjectClick={handleProjectClick}
-                  setActiveProject={setActiveProject}
-                  activeProject={activeProject}
-                />
-              </Container>
-            </Modal.Body>
-          </Modal>
-        </>
-      </div>
+    <Container>
+      <Container className="milestones">
+        <Container className="d-flex justify-content-center">
+          <Button variant="secondary" onClick={handleShow}>
+            Select Project
+          </Button>
+          {isMod && <AddLogButton />}
+        </Container>
+        <div className="row d-flex justify-content-center">
+          <>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header
+                closeButton
+                style={{ backgroundColor: "var(--blue)" }}
+              >
+                <Modal.Title style={{ color: "var(--light)" }}>
+                  Your Projects
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body style={{ backgroundColor: "gray" }}>
+                <Container className="d-flex p-6 justify-content-center">
+                  <ProjectsTable
+                    style={{ backgroundColor: "var(--gray)" }}
+                    fromMilestones={fromMilestones}
+                    handleProjectClick={handleProjectClick}
+                    setActiveProject={setActiveProject}
+                    activeProject={activeProject}
+                  />
+                </Container>
+              </Modal.Body>
+            </Modal>
+          </>
+        </div>
+      </Container>
     </Container>
   );
 }

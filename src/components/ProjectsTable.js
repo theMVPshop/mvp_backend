@@ -46,14 +46,14 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
         style={{
           backgroundColor: "rgba(0,0,0,.25)",
           margin: "auto",
-          border: "solid 3px var(--indigo)",
+          border: "solid 3px var(--blue)",
           borderRadius: "30px 30px 0 0",
         }}
       >
         <div
           className="mileContainer pt-2 pb-2 mb-3"
           style={{
-            backgroundColor: "var(--indigo)",
+            // backgroundColor: "var(--  )",
             borderRadius: "25px 25px 0 0",
             filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
           }}
@@ -75,7 +75,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
             bordered
             hover
             variant="dark"
-            style={{ backgroundColor: "var(--indigo)" }}
+            style={{ backgroundColor: "var(--blue)" }}
           >
             <thead>
               <tr>
@@ -101,7 +101,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         style={
                           cachedActiveProjectId === project.id
                             ? {
-                                backgroundColor: "#766400",
+                                backgroundColor: "orange",
                               }
                             : fromMilestones && { cursor: "pointer" }
                         }
@@ -171,7 +171,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             style={
                               cachedActiveProjectId === project.id
                                 ? {
-                                    backgroundColor: "#766400",
+                                    backgroundColor: "orange",
                                   }
                                 : fromMilestones && { cursor: "pointer" }
                             }

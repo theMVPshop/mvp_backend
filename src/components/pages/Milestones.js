@@ -118,9 +118,9 @@ function Milestones() {
       <div
         className="pb-3 mb-2"
         style={{
-          backgroundColor: "rgba(0,0,0,.25",
+          backgroundColor: "rgba(0,0,0,.25)",
           margin: "auto",
-          border: "solid 3px var(--indigo)",
+          border: "solid 3px var(--blue)",
           width: "100%",
           borderRadius: "30px 30px 0 0",
         }}
@@ -128,7 +128,7 @@ function Milestones() {
         <div
           className="mileContainer pt-2 pb-2 mb-3"
           style={{
-            backgroundColor: "var(--indigo)",
+            // backgroundColor: "var(--blue)",
             color: "var(--light)",
             borderRadius: "25px 25px 0 0",
             filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
@@ -150,7 +150,10 @@ function Milestones() {
               onSubmit={onSubmit}
             />
           </Container>
-          <h1 className="d-flex p-6 justify-content-center">
+          <h1
+            className="d-flex p-6 justify-content-center"
+            style={{ color: "black" }}
+          >
             {isMod
               ? projects?.find((x) => x.id == activeProject)?.title ||
                 "Please Select a Project"

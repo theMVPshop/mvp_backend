@@ -62,30 +62,39 @@ function DevlogModal({
       })
       .catch((error) => console.log(error));
 
+  const AddLogButton = () => (
+    <Button variant="primary" onClick={handleShow}>
+      Add Log Entry
+    </Button>
+  );
+
   return (
     <>
-      {/* devLog render */}
-      <Container className="d-flex p-6 justify-content-center">
-        <MilestonesProjectSelectModal
-          fromMilestones={true}
-          handleProjectClick={handleProjectClick}
-          setActiveProject={setActiveProject}
-          activeProject={activeProject}
-        />
-      </Container>
-      {/* Only show the entry creation button if user is a moderator */}
-      {isMod && (
-        <Button variant="primary" onClick={handleShow}>
-          Add Log Entry
-        </Button>
-      )}
+      {/* <Container className="d-flex justify-content-center"> */}
+      <MilestonesProjectSelectModal
+        fromMilestones={true}
+        handleProjectClick={handleProjectClick}
+        setActiveProject={setActiveProject}
+        activeProject={activeProject}
+        AddLogOnClickHandleShow={handleShow}
+        AddLogButton={AddLogButton}
+        isMod={isMod}
+      />
+      {/* {isMod && (
+          <Container className="d-flex justify-content-center p-3">
+            <Button variant="primary" onClick={handleShow}>
+              Add Log Entry
+            </Button>
+          </Container>
+        )} */}
+      {/* </Container> */}
       <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2"
           style={{
             backgroundColor: "rgba(0,0,0,.25)",
             margin: "auto",
-            border: "solid 3px var(--indigo)",
+            border: "solid 3px var(--blue)",
             width: "100%",
             borderRadius: "30px 30px 0 0",
           }}
@@ -93,7 +102,7 @@ function DevlogModal({
           <div
             className="pt-2 pb-2 mb-3"
             style={{
-              backgroundColor: "var(--indigo)",
+              backgroundColor: "var(--blue)",
               color: "var(--light)",
               borderRadius: "25px 25px 0 0",
               filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",

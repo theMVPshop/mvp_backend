@@ -15,7 +15,7 @@ function Navigation({ location, history, user, setUser }) {
     <>
       <div
         className="pb-3"
-        style={{ paddingBottom: "6px", backgroundColor: "#441091" }}
+        style={{ paddingBottom: "6px", backgroundColor: "dimgray" }}
       >
         <div style={{ margin: "auto" }} className="col-7">
           <Navbar variant="dark" expand="lg">
