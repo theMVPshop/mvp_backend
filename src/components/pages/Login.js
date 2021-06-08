@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Redirect, Link } from "react-router-dom";
 
-const Login = ({ setUser, history, user }) => {
+const Login = ({ setUser, history }) => {
+  let cachedUser = localStorage.getItem("user");
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -39,7 +40,7 @@ const Login = ({ setUser, history, user }) => {
 
   return (
     <>
-      {user && <Redirect to="/projects" />}
+      {cachedUser && <Redirect to="/projects" />}
       <div className="container">
         <div className="row justify-content-center">
           <form onSubmit={login} className="bg-dark col-3 text-light">

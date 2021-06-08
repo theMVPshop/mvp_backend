@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogModal from "../DevlogModal";
@@ -16,16 +16,17 @@ export default function Devlog() {
   } = useGlobal();
   const [logs, setLogs] = useLocalStorage("logs", []);
 
-  const fetchLogs = () =>
-    axios
+  const fetchLogs = async () => {
+    let response = await axios
       .get(`/devlog/${activeProject}`, authHeader)
-      .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
+    setLogs(response.data);
+  };
 
   useEffect(() => fetchLogs(), [activeProject]);
 
-  const removeLog = (Id) => {
-    const reqBody = {
+  const removeLog = async (Id) => {
+    let reqBody = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -33,10 +34,10 @@ export default function Devlog() {
         id: Id,
       },
     };
-    axios
+    await axios
       .delete(`/devlog/${Id}`, reqBody)
-      .then(() => fetchLogs())
       .catch((error) => console.log("delete devlog error", error));
+    fetchLogs();
   };
 
   return (

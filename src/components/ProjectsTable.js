@@ -27,11 +27,12 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
   // removes project from api and repopulates component with projects sans deleted one
-  const deleteProject = (Id) =>
-    axios
+  const deleteProject = async (Id) => {
+    await axios
       .delete(`/projects/${Id}`, authHeader)
-      .then(() => fetchProjects())
       .catch((error) => console.log("error deleting project", error));
+    fetchProjects();
+  };
 
   // makes clicked-on project consistent across app experience
   const saveActiveProjectIdToCache = (Id) => {
@@ -95,7 +96,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
               {
                 // checks if user is a moderator to either show all projects or filter based on permissions table
                 isMod
-                  ? projects.map((project) => (
+                  ? projects?.map((project) => (
                       <tr
                         key={project.id}
                         style={
