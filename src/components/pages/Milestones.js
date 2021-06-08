@@ -5,11 +5,12 @@ import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 function Milestones() {
   const { token, authHeader, activeProject, setActiveProject, projects } =
     useGlobal();
-  const [milestones, setMilestones] = useState([]);
+  const [milestones, setMilestones] = useLocalStorage("milestones", []);
   const [input, setInput] = useState({
     title: "",
     subtitle: "",

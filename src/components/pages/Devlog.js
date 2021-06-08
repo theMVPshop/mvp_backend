@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogModal from "../DevlogModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
+import useLocalStorage from "../../hooks/useLocalStorage";
 
 export default function Devlog() {
   const {
@@ -13,7 +14,7 @@ export default function Devlog() {
     isMod,
     projects,
   } = useGlobal();
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useLocalStorage("logs", []);
 
   const fetchLogs = () =>
     axios
