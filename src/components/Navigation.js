@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar, Nav, Button } from "react-bootstrap";
 import SetRolesModal from "./SetRolesModal";
+import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
 import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from App.js
@@ -17,11 +18,8 @@ function Navigation({ location, history, user, setUser }) {
 
   return (
     <>
-      <div
-        className="pb-3"
-        style={{ paddingBottom: "6px", backgroundColor: "dimgray" }}
-      >
-        <div style={{ margin: "auto" }} className="col-7">
+      <div className="bg-primary" style={{ color: "white" }}>
+        <div className="col-7 m-auto">
           <Navbar variant="dark" expand="lg">
             <Navbar.Brand style={{ color: "white" }}>
               the<span style={{ fontWeight: "800", color: "orange" }}>MVP</span>
@@ -45,6 +43,7 @@ function Navigation({ location, history, user, setUser }) {
                     Sign In
                   </Link>
                 )} */}
+                  {/* <MilestonesProjectSelectModal /> */}
                 </Nav>
               )}
             </Navbar.Collapse>
