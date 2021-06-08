@@ -16,6 +16,7 @@ const Signup = ({
     password: "",
     email: "",
   });
+  const [error, setError] = useState("Create Account");
 
   const handleChange = (e) =>
     setInput((prevState) => ({
@@ -30,9 +31,9 @@ const Signup = ({
 
   const clearForm = () =>
     setInput({
-      // username: "",
+      username: "",
       password: "",
-      // email: "",
+      email: "",
     });
 
   const login = () => {
@@ -58,12 +59,23 @@ const Signup = ({
     e.preventDefault();
     await axios
       .post("/auth/signup", input)
-      .catch((error) => console.log("failed to create user", error));
-    await axios
-      .post("/users", userObject)
-      .catch((error) => console.log("failed to add user to db", error));
+      .then(() =>
+        axios
+          .post("/users", userObject)
+          .catch((error) => console.log("failed to add user to db", error))
+          .then(() => login())
+      )
+      .catch((error) => {
+        console.log("failed to create user", error);
+        clearForm();
+        setIsLoading(false);
+        setError(
+          error.response.status == "409"
+            ? "User Already Exists"
+            : "Login Failed"
+        );
+      });
     clearForm();
-    login();
   };
 
   return (
@@ -125,23 +137,22 @@ const Signup = ({
                 </div>
 
                 {isLoading ? (
-                  <>
-                    <Button variant="primary btn-block" disabled>
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
-                      />
-                      Verifying...
-                    </Button>
-                  </>
+                  <Button variant="primary btn-block" disabled>
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    Verifying...
+                  </Button>
                 ) : (
                   <Button type="submit" className="btn btn-primary btn-block">
-                    Submit
+                    {error}
                   </Button>
                 )}
+
                 <p className="forgot-password text-right">
                   <Button
                     onClick={() => toggleForm()}
