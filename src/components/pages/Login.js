@@ -7,6 +7,7 @@ import { Spinner, Button } from "react-bootstrap";
 const Login = ({ setUser, history }) => {
   let cachedUser = localStorage.getItem("user");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("Login");
   const [showSignup, setshowSignup] = useState(false);
   const [input, setInput] = useState({
     username: "",
@@ -40,7 +41,13 @@ const Login = ({ setUser, history }) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        alert(error);
+        setError(
+          error.response.status == "404"
+            ? "User Not Found"
+            : error.response.status == "400"
+            ? "Wrong Password"
+            : "Login Failed"
+        );
         console.log("login error", error);
       })
       .then(() => {
@@ -138,7 +145,7 @@ const Login = ({ setUser, history }) => {
                   </>
                 ) : (
                   <Button type="submit" className="btn btn-primary btn-block">
-                    Submit
+                    {error}
                   </Button>
                 )}
 
