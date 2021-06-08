@@ -24,7 +24,6 @@ export const GlobalProvider = ({ children, user }) => {
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = () =>
-    user &&
     axios
       .get("/users", authHeader)
       .then((response) => {

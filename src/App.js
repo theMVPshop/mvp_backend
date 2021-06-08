@@ -12,23 +12,16 @@ export default function App() {
   const NavWithRouter = withRouter(Navigation);
   const LoginWithRouter = withRouter(Login);
 
-  const home = (
+  return (
     <GlobalProvider user={user}>
       <HashRouter>
         <NavWithRouter user={user} setUser={setUser} />
-        <ReactRouter />
+        {user ? (
+          <ReactRouter />
+        ) : (
+          <LoginWithRouter user={user} setUser={setUser} />
+        )}
       </HashRouter>
     </GlobalProvider>
   );
-
-  const login = (
-    <GlobalProvider>
-      <HashRouter>
-        <NavWithRouter />
-        <LoginWithRouter user={user} setUser={setUser} />
-      </HashRouter>
-    </GlobalProvider>
-  );
-
-  return user ? home : login;
 }
