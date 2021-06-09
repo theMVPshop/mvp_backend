@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SetRolesModal from "./SetRolesModal";
 // import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
@@ -29,15 +29,15 @@ function Navigation({ location, history, user, setUser }) {
             <Navbar.Collapse id="basic-navbar-nav">
               {user && (
                 <Nav className="mr-auto" activeKey={location.pathname}>
-                  <Link to="/projects" className="nav-link">
+                  <NavLink to="/projects" className="nav-link">
                     Projects
-                  </Link>
-                  <Link to="/milestones" className="nav-link">
+                  </NavLink>
+                  <NavLink to="/milestones" className="nav-link">
                     Milestones
-                  </Link>
-                  <Link to="/devlog" className="nav-link">
+                  </NavLink>
+                  <NavLink to="/devlog" className="nav-link">
                     DevLog
-                  </Link>
+                  </NavLink>
                   {/* {!user && (
                   <Link to="/login" className="nav-link">
                     Sign In

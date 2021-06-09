@@ -26,7 +26,7 @@ function SetRoles({ projects, authHeader }) {
 
   const handleChangeRole = (isMod, username) => {
     const updateUserRole = () => {
-      const reqBody = {
+      let reqBody = {
         isModerator: !isMod,
         username,
       };
@@ -45,32 +45,25 @@ function SetRoles({ projects, authHeader }) {
     username,
     permissionObject
   ) => {
-    const reqBody = {
-      username,
-      project_id,
-    };
-
+    let reqBody = { username, project_id };
     let permissionId = permissionObject?.id;
-
     const addPermission = () =>
       axios
         .post("/permissions", reqBody, authHeader)
+        .then(() => populateUserPermissions())
         .catch((error) =>
           console.log(`failed to add permission for ${username}`, error)
-        )
-        .then(() => populateUserPermissions());
-
+        );
     const removePermission = () =>
       axios
         .delete(`/permissions/${permissionId}`, authHeader)
+        .then(() => populateUserPermissions())
         .catch((error) =>
           console.log(
             `failed to remove permission for ${username} with Id#${permissionId}`,
             error
           )
-        )
-        .then(() => populateUserPermissions());
-
+        );
     event.target.checked ? addPermission() : removePermission();
   };
 
@@ -85,7 +78,7 @@ function SetRoles({ projects, authHeader }) {
           </tr>
         </thead>
         <tbody>
-          {users.map((user, idx) => (
+          {users.map((user) => (
             <tr key={user.id}>
               <td>{user.username}</td>
               <td>
@@ -117,7 +110,6 @@ function SetRoles({ projects, authHeader }) {
                             type={type}
                             id={`inline-${type}-1`}
                             checked={permissionObject}
-                            // value={}
                             onChange={(event) =>
                               handleChangePermission(
                                 event,

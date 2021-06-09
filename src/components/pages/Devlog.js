@@ -79,9 +79,11 @@ export default function Devlog() {
                   as={Button}
                   variant="info"
                   eventKey={`${idx}`}
+                  className="mr-1"
                 >
                   {log.title}
                 </Accordion.Toggle>
+                <span className="text-primary">Added: </span>
                 {log.time_stamp}
                 {isMod && (
                   <Button
