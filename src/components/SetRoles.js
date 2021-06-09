@@ -86,7 +86,7 @@ function SetRoles({ projects, authHeader }) {
         </thead>
         <tbody>
           {users.map((user, idx) => (
-            <tr>
+            <tr key={user.id}>
               <td>{user.username}</td>
               <td>
                 <Button
@@ -111,6 +111,7 @@ function SetRoles({ projects, authHeader }) {
 
                         return (
                           <Form.Check
+                            key={project.id}
                             inline
                             label={project.title}
                             type={type}

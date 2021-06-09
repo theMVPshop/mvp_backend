@@ -15,7 +15,7 @@ function SetRolesModal({ projects, authHeader }) {
         Assign Roles/Projects
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+        <Modal.Header className="bg-light" closeButton>
           <Modal.Title>Assign Roles/Projects</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
