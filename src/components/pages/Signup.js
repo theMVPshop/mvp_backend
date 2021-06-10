@@ -24,17 +24,12 @@ const Signup = ({
       [e.target.name]: e.target.value,
     }));
 
-  const userObject = {
-    username: input.username,
-    isModerator: 0,
-  };
-
-  const clearForm = () =>
-    setInput({
-      username: "",
-      password: "",
-      email: "",
-    });
+  // const clearForm = () =>
+  //   setInput({
+  //     username: "",
+  //     password: "",
+  //     email: "",
+  //   });
 
   const login = () => {
     axios
@@ -55,6 +50,10 @@ const Signup = ({
   };
 
   const signup = async (e) => {
+    let userObject = {
+      username: input.username,
+      isModerator: 0,
+    };
     setIsLoading(true);
     e.preventDefault();
     await axios
@@ -67,7 +66,7 @@ const Signup = ({
       )
       .catch((error) => {
         console.log("failed to create user", error);
-        clearForm();
+        // clearForm();
         setIsLoading(false);
         setError(
           error.response.status == "409"
@@ -75,7 +74,7 @@ const Signup = ({
             : "Login Failed"
         );
       });
-    clearForm();
+    // clearForm();
   };
 
   return (
@@ -86,7 +85,7 @@ const Signup = ({
             <div className="row justify-content-center">
               <form
                 onSubmit={signup}
-                className="bg-dark col-3 text-light"
+                className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
                 style={{ borderRadius: "1rem" }}
               >
                 <h3>Sign Up</h3>

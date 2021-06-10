@@ -58,7 +58,7 @@ function Navigation({ history, location }) {
             )}
           </Navbar.Collapse>
           {user && (
-            <span className="text-light">
+            <span className="text-light d-none d-lg-block">
               Welcome <span className="text-warning">{user}</span>!
             </span>
           )}
