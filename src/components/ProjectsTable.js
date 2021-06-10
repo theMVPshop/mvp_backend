@@ -193,6 +193,10 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         .map((project) => (
                           <tr
                             key={project.id}
+                            className={
+                              cachedActiveProjectId === project.id &&
+                              "table-active"
+                            }
                             style={
                               cachedActiveProjectId === project.id
                                 ? { backgroundColor: "orange" }
@@ -226,7 +230,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/milestones"
-                                style={{ color: "white" }}
+                                className="text-light"
                               >
                                 {milestoneIcon}
                               </Link>
@@ -237,7 +241,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
-                                style={{ color: "white" }}
+                                className="text-light"
                               >
                                 {devlogIcon}
                               </Link>

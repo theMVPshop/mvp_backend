@@ -29,43 +29,31 @@ function Navigation({ history, location }) {
             {user && (
               <Nav
                 variant="pills"
-                className="mr-auto d-flex"
+                // className="mr-auto d-flex"
                 activeKey={location.pathname}
               >
-                <Nav.Item>
-                  <NavLink to="/projects" className="nav-link text-warning">
-                    Projects
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink to="/milestones" className="nav-link text-warning">
-                    Milestones
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink to="/devlog" className="nav-link text-warning">
-                    DevLog
-                  </NavLink>
-                </Nav.Item>
-                <div className="ml-auto d-flex">
-                  {isMod && (
-                    <SetRolesModal
-                      projects={projects}
-                      authHeader={authHeader}
-                      className="ml-auto"
-                    />
-                  )}
-                  {loggedIn && (
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={logOut}
-                      className="m-1 ml-auto"
-                    >
-                      Logout
-                    </Button>
-                  )}
-                </div>
+                <NavLink to="/projects" className="nav-link text-warning">
+                  Projects
+                </NavLink>
+                <NavLink to="/milestones" className="nav-link text-warning">
+                  Milestones
+                </NavLink>
+                <NavLink to="/devlog" className="nav-link text-warning">
+                  DevLog
+                </NavLink>
+                {isMod && (
+                  <SetRolesModal projects={projects} authHeader={authHeader} />
+                )}
+                {loggedIn && (
+                  <Button
+                    variant="danger"
+                    // size="sm"
+                    onClick={logOut}
+                    className="nav-link mr-auto text-danger"
+                  >
+                    Logout
+                  </Button>
+                )}
 
                 {/* {!user && (
                   <Link to="/login" className="nav-link">
@@ -76,7 +64,7 @@ function Navigation({ history, location }) {
               </Nav>
             )}
             {user && (
-              <span className="text-light d-none d-lg-block">
+              <span className="text-light d-none d-lg-block ml-auto">
                 Welcome <span className="text-warning">{user}</span>!
               </span>
             )}
