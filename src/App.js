@@ -4,6 +4,9 @@ import ReactRouter from "./ReactRouter";
 import { withRouter } from "react-router";
 import { GlobalProvider } from "./contexts/GlobalProvider";
 import Login from "./components/pages/Login";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "./App.scss";
 
 export default function App() {
   const cachedUser = localStorage.getItem("user");

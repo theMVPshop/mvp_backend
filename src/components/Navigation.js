@@ -29,7 +29,7 @@ function Navigation({ history, location }) {
             {user && (
               <Nav
                 variant="pills"
-                className="mr-auto"
+                className="mr-auto d-flex"
                 activeKey={location.pathname}
               >
                 <Nav.Item>
@@ -47,6 +47,25 @@ function Navigation({ history, location }) {
                     DevLog
                   </NavLink>
                 </Nav.Item>
+                <div className="ml-auto d-flex">
+                  {isMod && (
+                    <SetRolesModal
+                      projects={projects}
+                      authHeader={authHeader}
+                      className="ml-auto"
+                    />
+                  )}
+                  {loggedIn && (
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={logOut}
+                      className="m-1 ml-auto"
+                    >
+                      Logout
+                    </Button>
+                  )}
+                </div>
 
                 {/* {!user && (
                   <Link to="/login" className="nav-link">
@@ -56,20 +75,12 @@ function Navigation({ history, location }) {
                 {/* <MilestonesProjectSelectModal /> */}
               </Nav>
             )}
+            {user && (
+              <span className="text-light d-none d-lg-block">
+                Welcome <span className="text-warning">{user}</span>!
+              </span>
+            )}
           </Navbar.Collapse>
-          {user && (
-            <span className="text-light d-none d-lg-block">
-              Welcome <span className="text-warning">{user}</span>!
-            </span>
-          )}
-          {isMod && (
-            <SetRolesModal projects={projects} authHeader={authHeader} />
-          )}
-          {loggedIn && (
-            <Button variant="danger" size="sm" onClick={logOut}>
-              Logout
-            </Button>
-          )}
         </Navbar>
       </Container>
     </div>

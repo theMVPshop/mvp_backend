@@ -8,4 +8,7 @@ $enable-responsive-font-sizes: true;
 $table-active-bg: orange;
 // $body-bg: #adb5bd;
 // $body-color: #111;
-@import "node_modules/bootstrap/scss/bootstrap";
+// @import "node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/bootstrap";
+// @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// @import "../node_modules/bootstrap/scss/bootstrap.scss";
