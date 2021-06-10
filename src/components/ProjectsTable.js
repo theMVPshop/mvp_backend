@@ -80,8 +80,8 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
             <thead>
               <tr>
                 <th>ID#</th>
-                <th>Project Title</th>
-                <th>Project Description</th>
+                <th>Title</th>
+                <th>Description</th>
                 {/* {!fromMilestones && (
                   <>
                     <th>Milestones</th>
