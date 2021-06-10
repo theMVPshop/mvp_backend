@@ -21,12 +21,23 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
   const onSubmit = (event) => {
     event.preventDefault();
     const project = { title: input.title, description: input.description };
-    const postProject = () => axios.post("/projects", project, authHeader);
-    const repopulateList = () =>
-      axios.get("/projects", authHeader).then((response) => {
-        project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
-        setProjects(response.data);
-      });
+
+    const postProject = async () =>
+      await axios
+        .post("/projects", project, authHeader)
+        .catch((error) => console.log("failed to post project", error));
+
+    const repopulateList = async () =>
+      await axios
+        .get("/projects", authHeader)
+        .then((response) => {
+          project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
+          setProjects(response.data);
+        })
+        .catch((error) =>
+          console.log("failed to repopulate projects list", error)
+        );
+
     postProject().then(() => repopulateList());
     setInput({ title: "", description: "" }); // clear input field
   };

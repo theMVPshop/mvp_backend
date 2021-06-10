@@ -1,7 +1,12 @@
 import React from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
-import { Container, Table, Button } from "react-bootstrap";
+import {
+  Container,
+  Table,
+  Button,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import {
   faCalendarCheck,
   faClipboard,
@@ -32,6 +37,12 @@ function ProjectsTable({ asModal, handleProjectClick }) {
     setActiveProject(Id);
   };
 
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      {props}
+    </Tooltip>
+  );
+
   return (
     <Container className="projects">
       <div
@@ -61,13 +72,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
         </div>
         <Container>
           {/* table of projects */}
-          <Table
-            // striped
-            bordered
-            hover
-            variant="dark"
-            // style={{ backgroundColor: "var(--blue)" }}
-          >
+          <Table bordered hover variant="dark">
             <thead>
               <tr>
                 <th>ID#</th>
@@ -79,14 +84,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                     <th></th>
                   </>
                 )}
-                {/* <th className="d-xs-table-cell d-md-none">Todos/Log</th> */}
-                {/* {!asModal && (
-                  <>
-                    <th>Milestones</th>
-                    <th>Devlog</th>
-                  </>
-                )} */}
-                {/* {!asModal && <th>Delete</th>} */}
               </tr>
             </thead>
             <tbody>
@@ -97,7 +94,9 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                       <tr
                         key={project.id}
                         className={
-                          cachedActiveProjectId === project.id && "table-active"
+                          cachedActiveProjectId === project.id
+                            ? "table-active"
+                            : undefined
                         }
                         style={
                           cachedActiveProjectId === project.id
@@ -105,83 +104,58 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             : asModal && { cursor: "pointer" }
                         }
                         onClick={
-                          asModal ? () => handleProjectClick(project.id) : null
+                          asModal
+                            ? () => handleProjectClick(project.id)
+                            : undefined
                         }
                       >
                         <td>{project.id}</td>
-                        <td className="d-flex">
-                          {project.title}
-                          {!asModal && (
-                            <div className="d-flex ml-auto">
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/milestones"
-                                className="text-light ml-3"
-                              >
-                                {milestoneIcon}
-                              </Link>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/devlog"
-                                className="text-light ml-3"
-                              >
-                                {devlogIcon}
-                              </Link>
-                              {!asModal && (
-                                <Button
-                                  variant="danger"
-                                  size="sm"
-                                  onClick={() => deleteProject(project.id)}
-                                  className="ml-3"
+                        <OverlayTrigger
+                          placement="top"
+                          delay={{ show: 250, hide: 400 }}
+                          overlay={renderTooltip(project.description)}
+                        >
+                          <td className="d-flex">
+                            {project.title}
+                            {!asModal && (
+                              <div className="d-flex ml-auto">
+                                <Link
+                                  onClick={() =>
+                                    saveActiveProjectIdToCache(project.id)
+                                  }
+                                  to="/milestones"
+                                  className="text-light ml-3"
                                 >
-                                  X
-                                </Button>
-                              )}
-                            </div>
-                          )}
-                        </td>
+                                  {milestoneIcon}
+                                </Link>
+                                <Link
+                                  onClick={() =>
+                                    saveActiveProjectIdToCache(project.id)
+                                  }
+                                  to="/devlog"
+                                  className="text-light ml-3"
+                                >
+                                  {devlogIcon}
+                                </Link>
+                                {!asModal && (
+                                  <Button
+                                    variant="danger"
+                                    size="sm"
+                                    onClick={() => deleteProject(project.id)}
+                                    className="ml-3"
+                                  >
+                                    X
+                                  </Button>
+                                )}
+                              </div>
+                            )}
+                          </td>
+                        </OverlayTrigger>
                         <td className="d-none d-md-table-cell">
                           {project.description}
                         </td>
-
-                        {/*  */}
                       </tr>
                     ))
-                  : asModal
-                  ? // maps over permissions table to filter projects assigned to current user and render them in the table. if rendered from Milestones.js then it will have a handleclick eventlistener
-                    permissions.map((permission) =>
-                      projects
-                        .filter(
-                          (x) =>
-                            x.id === permission.project_id &&
-                            permission.username === user
-                        )
-                        .map((project) => (
-                          <tr
-                            key={project.id}
-                            className={
-                              cachedActiveProjectId === project.id &&
-                              "table-active"
-                            }
-                            style={
-                              cachedActiveProjectId === project.id
-                                ? { backgroundColor: "orange" }
-                                : asModal && { cursor: "pointer" }
-                            }
-                            onClick={() => handleProjectClick(project.id)}
-                          >
-                            <td>{project.id}</td>
-                            <td>{project.title}</td>
-                            <td className="d-none d-md-block">
-                              {project.description}
-                            </td>
-                          </tr>
-                        ))
-                    )
                   : // otherwise, it won't have the listener
                     permissions.map((permission) =>
                       projects
@@ -190,38 +164,76 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             x.id === permission.project_id &&
                             permission.username === user
                         )
-                        .map((project) => (
-                          <tr key={project.id}>
-                            <td>{project.id}</td>
-                            <td>{project.title}</td>
-                            <td className="d-none d-md-table-cell">
-                              {project.description}
-                            </td>
-                            {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
+                        .map((project) => {
+                          return (
+                            (!asModal && (
+                              <tr key={project.id}>
+                                <td>{project.id}</td>
+                                <OverlayTrigger
+                                  placement="top"
+                                  delay={{ show: 250, hide: 400 }}
+                                  overlay={renderTooltip(project.description)}
+                                >
+                                  <td>{project.title}</td>
+                                </OverlayTrigger>
+                                <td className="d-none d-md-table-cell">
+                                  {project.description}
+                                </td>
+                                {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
+                                <td>
+                                  <Link
+                                    onClick={() =>
+                                      saveActiveProjectIdToCache(project.id)
+                                    }
+                                    to="/milestones"
+                                    className="text-light"
+                                  >
+                                    {milestoneIcon}
+                                  </Link>
+                                </td>
+                                <td>
+                                  <Link
+                                    onClick={() =>
+                                      saveActiveProjectIdToCache(project.id)
+                                    }
+                                    to="/devlog"
+                                    className="text-light"
+                                  >
+                                    {devlogIcon}
+                                  </Link>
+                                </td>
+                              </tr>
+                            )) ||
+                            (asModal && (
+                              <tr
+                                key={project.id}
+                                className={
+                                  cachedActiveProjectId === project.id
+                                    ? "table-active"
+                                    : undefined
                                 }
-                                to="/milestones"
-                                className="text-light"
-                              >
-                                {milestoneIcon}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
+                                style={
+                                  cachedActiveProjectId === project.id
+                                    ? { backgroundColor: "orange" }
+                                    : asModal && { cursor: "pointer" }
                                 }
-                                to="/devlog"
-                                className="text-light"
+                                onClick={() => handleProjectClick(project.id)}
                               >
-                                {devlogIcon}
-                              </Link>
-                            </td>
-                          </tr>
-                        ))
+                                <td>{project.id}</td>
+                                <OverlayTrigger
+                                  placement="top"
+                                  delay={{ show: 250, hide: 400 }}
+                                  overlay={renderTooltip(project.description)}
+                                >
+                                  <td>{project.title}</td>
+                                </OverlayTrigger>
+                                <td className="d-none d-md-block">
+                                  {project.description}
+                                </td>
+                              </tr>
+                            ))
+                          );
+                        })
                     )
               }
             </tbody>
@@ -233,38 +245,3 @@ function ProjectsTable({ asModal, handleProjectClick }) {
 }
 
 export default ProjectsTable;
-
-{
-  /* two table cells with an icon/link in each; only rendered if on Projects.js page */
-}
-{
-  /* {!asModal && (
-                          <>
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/milestones"
-                                style={{ color: "white" }}
-                              >
-                                {milestoneIcon}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/devlog"
-                                style={{ color: "white" }}
-                              >
-                                {devlogIcon}
-                              </Link>
-                            </td>
-                          </>
-                        )} */
-}
-{
-  /* end of code for icons */
-}

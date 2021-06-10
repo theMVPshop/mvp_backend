@@ -31,27 +31,29 @@ function AddMilestoneForm({ onSubmit, onChange, input }) {
             value={input.description}
             onChange={onChange}
           />
-          <label
-            htmlFor="due_date"
-            style={{
-              backgroundColor: "darkorange",
-              color: "black",
-              flex: "2",
-              padding: "5px",
-              marginBottom: "5px",
-              // border: "1px solid black",
-            }}
-          >
-            Due Date:{" "}
-          </label>
-          <input
-            type="date"
-            name="due_date"
-            style={{ flex: "10", padding: "5px" }}
-            placeholder="Due date ..."
-            value={input.due_date}
-            onChange={onChange}
-          />
+          <div>
+            <label
+              htmlFor="due_date"
+              style={{
+                // backgroundColor: "darkorange",
+                color: "black",
+                flex: "2",
+                padding: "5px",
+                marginBottom: "5px",
+                // border: "1px solid black",
+              }}
+            >
+              Due Date:{" "}
+            </label>
+            <input
+              type="date"
+              name="due_date"
+              style={{ flex: "10", padding: "5px" }}
+              placeholder="Due date ..."
+              value={input.due_date}
+              onChange={onChange}
+            />
+          </div>
           {/* <input
             type="select"
             name="status"
