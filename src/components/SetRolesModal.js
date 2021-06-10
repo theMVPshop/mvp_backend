@@ -13,9 +13,9 @@ function SetRolesModal({ projects, authHeader }) {
     <>
       <Button
         variant="success"
-        size="sm"
+        // size="sm"
         onClick={handleShow}
-        className="nav-link text-info mr-auto"
+        className="nav-link text-warning"
       >
         Assign
       </Button>

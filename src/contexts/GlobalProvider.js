@@ -17,6 +17,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
   const [isMod, setIsMod] = useState(false);
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
+  const [expanded, setExpanded] = useState(false);
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = () =>
@@ -76,6 +77,8 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         fetchPermissions,
         permissions,
         deleteProject,
+        expanded,
+        setExpanded,
       }}
     >
       {children}

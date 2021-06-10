@@ -75,17 +75,16 @@ function SetRoles({ projects, authHeader }) {
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-                <div className="m-1">
-                  <Button
-                    variant={user.isModerator ? "success" : "warning"}
-                    onClick={() =>
-                      handleChangeRole(user.isModerator, user.username)
-                    }
-                    size="sm"
-                  >
-                    {user.isModerator ? "Moderator" : "Client"}
-                  </Button>
-                </div>
+
+                <Button
+                  variant={user.isModerator ? "success" : "warning"}
+                  onClick={() =>
+                    handleChangeRole(user.isModerator, user.username)
+                  }
+                  size="sm"
+                >
+                  {user.isModerator ? "Moderator" : "Client"}
+                </Button>
               </td>
               <td>
                 <Form>

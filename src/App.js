@@ -2,6 +2,7 @@ import React from "react";
 import Navigation from "./components/Navigation";
 import ReactRouter from "./ReactRouter";
 import { withRouter } from "react-router";
+import OutsideAlerter from "./hooks/OutsideAlerter.js";
 import { GlobalProvider } from "./contexts/GlobalProvider";
 import { DevlogProvider } from "./contexts/DevlogProvider";
 import { MilestonesProvider } from "./contexts/MilestonesProvider";
@@ -20,7 +21,9 @@ export default function App() {
     <GlobalProvider user={user} setUser={setUser}>
       <DevlogProvider>
         <MilestonesProvider>
-          <NavWithRouter />
+          <OutsideAlerter>
+            <NavWithRouter />
+          </OutsideAlerter>
           {user ? <ReactRouter /> : <LoginWithRouter />}
         </MilestonesProvider>
       </DevlogProvider>

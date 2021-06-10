@@ -7,7 +7,8 @@ import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from App.js
 function Navigation({ history, location }) {
-  const { user, setUser, isMod, projects, authHeader } = useGlobal();
+  const { user, setUser, isMod, projects, authHeader, expanded, setExpanded } =
+    useGlobal();
   let loggedIn = localStorage.getItem("loggedIn");
 
   const logOut = async () => {
@@ -19,12 +20,15 @@ function Navigation({ history, location }) {
   return (
     <div className="bg-primary">
       <Container className="col-lg-7 m-auto">
-        <Navbar variant="dark" expand="lg" className="">
+        <Navbar variant="dark" expand="lg" expanded={expanded}>
           <Navbar.Brand className="text-light">
             the<span style={{ fontWeight: "800", color: "orange" }}>MVP</span>
             shop
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle
+            aria-controls="basic-navbar-nav"
+            onClick={() => setExpanded(expanded ? false : "expanded")}
+          />
           <Navbar.Collapse id="basic-navbar-nav">
             {user && (
               <Nav
@@ -32,18 +36,35 @@ function Navigation({ history, location }) {
                 // className="mr-auto d-flex"
                 activeKey={location.pathname}
               >
-                <NavLink to="/projects" className="nav-link text-warning">
+                <NavLink
+                  to="/projects"
+                  className="nav-link text-warning"
+                  onClick={() => setExpanded(false)}
+                >
                   Projects
                 </NavLink>
-                <NavLink to="/milestones" className="nav-link text-warning">
+                <NavLink
+                  to="/milestones"
+                  className="nav-link text-warning"
+                  onClick={() => setExpanded(false)}
+                >
                   Milestones
                 </NavLink>
-                <NavLink to="/devlog" className="nav-link text-warning">
+                <NavLink
+                  to="/devlog"
+                  className="nav-link text-warning"
+                  onClick={() => setExpanded(false)}
+                >
                   DevLog
                 </NavLink>
-                {isMod && (
-                  <SetRolesModal projects={projects} authHeader={authHeader} />
-                )}
+                <Nav.Item>
+                  {isMod && (
+                    <SetRolesModal
+                      projects={projects}
+                      authHeader={authHeader}
+                    />
+                  )}
+                </Nav.Item>
 
                 {/* {!user && (
                   <Link to="/login" className="nav-link">
