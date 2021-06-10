@@ -40,7 +40,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
   };
 
   return (
-    <div className="projects">
+    <Container className="projects mw-100">
       <div
         className="pb-3 mb-2 mt-2"
         style={{
@@ -81,7 +81,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
               <tr>
                 <th>ID#</th>
                 <th>Project Title</th>
-                <th>Project Description</th>
+                <th className="d-none d-lg-block">Project Description</th>
                 {/* {!fromMilestones && (
                   <>
                     <th>Milestones</th>
@@ -130,14 +130,16 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
-                                className="text-warning ml-3"
+                                className="text-light ml-3"
                               >
                                 {devlogIcon}
                               </Link>
                             </div>
                           )}
                         </td>
-                        <td>{project.description}</td>
+                        <td className="d-none d-lg-block">
+                          {project.description}
+                        </td>
                         {/* two table cells with an icon/link in each; only rendered if on Projects.js page */}
                         {/* {!fromMilestones && (
                           <>
@@ -251,7 +253,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
           </Table>
         </Container>
       </div>
-    </div>
+    </Container>
   );
 }
 
