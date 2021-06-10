@@ -121,7 +121,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/milestones"
-                                className="text-light m-1"
+                                className="text-light m-3"
                               >
                                 {milestoneIcon}
                               </Link>
@@ -130,7 +130,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
-                                className="text-light m-1"
+                                className="text-warning m-3"
                               >
                                 {devlogIcon}
                               </Link>

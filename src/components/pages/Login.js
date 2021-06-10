@@ -80,7 +80,7 @@ const Login = ({ history }) => {
             <div className="row justify-content-center">
               <form
                 onSubmit={login}
-                className="bg-dark col-3 text-light"
+                className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
                 style={{ borderRadius: "1rem" }}
               >
                 <h3>Sign In</h3>
