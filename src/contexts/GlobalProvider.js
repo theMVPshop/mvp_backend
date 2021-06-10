@@ -73,6 +73,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         projects,
         setProjects,
         fetchProjects,
+        fetchPermissions,
         permissions,
         deleteProject,
       }}

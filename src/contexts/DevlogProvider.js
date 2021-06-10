@@ -17,18 +17,18 @@ export const DevlogProvider = ({ children }) => {
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
 
-  const removeLog = (Id) => {
+  useEffect(() => fetchLogs(), [activeProject]);
+
+  const removeLog = (id) => {
     const reqBody = {
       headers: { Authorization: `Bearer ${token}` },
-      data: { id: Id },
+      data: { id },
     };
     axios
-      .delete(`/devlog/${Id}`, reqBody)
+      .delete(`/devlog/${id}`, reqBody)
       .then(() => fetchLogs())
       .catch((error) => console.log("delete devlog error", error));
   };
-
-  useEffect(() => fetchLogs(), [activeProject]);
 
   const handleProjectClick = (Id) =>
     axios

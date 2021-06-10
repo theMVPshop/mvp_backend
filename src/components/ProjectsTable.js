@@ -54,7 +54,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
           {!fromMilestones && (
             <AddProjectForm
               isMod={isMod}
-              projects={projects}
               setProjects={setProjects}
               authHeader={authHeader}
             />
