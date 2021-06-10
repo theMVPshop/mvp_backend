@@ -11,7 +11,7 @@ import AddProjectForm from "./AddProjectForm";
 import { useGlobal } from "../contexts/GlobalProvider";
 
 // rendered from multiple components, and inherits behavior based on which
-function ProjectsTable({ fromMilestones, handleProjectClick }) {
+function ProjectsTable({ asModal, handleProjectClick }) {
   const {
     cachedActiveProjectId,
     user,
@@ -51,7 +51,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
           }}
         >
           {/* form to add a project */}
-          {!fromMilestones && (
+          {!asModal && (
             <AddProjectForm
               isMod={isMod}
               setProjects={setProjects}
@@ -73,20 +73,20 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                 <th>ID#</th>
                 <th>Project Title</th>
                 <th className="d-none d-md-table-cell">Project Description</th>
-                {!fromMilestones && !isMod && (
+                {!asModal && !isMod && (
                   <>
                     <th></th>
                     <th></th>
                   </>
                 )}
                 {/* <th className="d-xs-table-cell d-md-none">Todos/Log</th> */}
-                {/* {!fromMilestones && (
+                {/* {!asModal && (
                   <>
                     <th>Milestones</th>
                     <th>Devlog</th>
                   </>
                 )} */}
-                {/* {!fromMilestones && <th>Delete</th>} */}
+                {/* {!asModal && <th>Delete</th>} */}
               </tr>
             </thead>
             <tbody>
@@ -102,18 +102,16 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         style={
                           cachedActiveProjectId === project.id
                             ? { backgroundColor: "orange" }
-                            : fromMilestones && { cursor: "pointer" }
+                            : asModal && { cursor: "pointer" }
                         }
                         onClick={
-                          fromMilestones
-                            ? () => handleProjectClick(project.id)
-                            : null
+                          asModal ? () => handleProjectClick(project.id) : null
                         }
                       >
                         <td>{project.id}</td>
                         <td className="d-flex">
                           {project.title}
-                          {!fromMilestones && (
+                          {!asModal && (
                             <div className="d-flex ml-auto">
                               <Link
                                 onClick={() =>
@@ -133,7 +131,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                               >
                                 {devlogIcon}
                               </Link>
-                              {!fromMilestones && (
+                              {!asModal && (
                                 <Button
                                   variant="danger"
                                   size="sm"
@@ -153,7 +151,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         {/*  */}
                       </tr>
                     ))
-                  : fromMilestones
+                  : asModal
                   ? // maps over permissions table to filter projects assigned to current user and render them in the table. if rendered from Milestones.js then it will have a handleclick eventlistener
                     permissions.map((permission) =>
                       projects
@@ -172,7 +170,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             style={
                               cachedActiveProjectId === project.id
                                 ? { backgroundColor: "orange" }
-                                : fromMilestones && { cursor: "pointer" }
+                                : asModal && { cursor: "pointer" }
                             }
                             onClick={() => handleProjectClick(project.id)}
                           >
@@ -240,7 +238,7 @@ export default ProjectsTable;
   /* two table cells with an icon/link in each; only rendered if on Projects.js page */
 }
 {
-  /* {!fromMilestones && (
+  /* {!asModal && (
                           <>
                             <td>
                               <Link

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Container, Button, Form, Modal } from "react-bootstrap";
-import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
+import ProjectSelectModal from "./ProjectSelectModal";
 import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
@@ -61,8 +61,8 @@ function DevlogModal({
 
   return (
     <>
-      <MilestonesProjectSelectModal
-        fromMilestones={true}
+      <ProjectSelectModal
+        asModal={true}
         handleProjectClick={handleProjectClick}
         setActiveProject={setActiveProject}
         activeProject={activeProject}

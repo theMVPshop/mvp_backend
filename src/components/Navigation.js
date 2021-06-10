@@ -2,7 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SetRolesModal from "./SetRolesModal";
-// import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
 import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from App.js
@@ -71,7 +70,7 @@ function Navigation({ history, location }) {
                   Sign In
                   </Link>
                 )} */}
-                {/* <MilestonesProjectSelectModal /> */}
+                {/* <ProjectSelectModal /> */}
               </Nav>
             )}
             {loggedIn && (

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Container, Modal, Button } from "react-bootstrap";
 import ProjectsTable from "./ProjectsTable";
 
-function MilestonesProjectSelectModal({
-  fromMilestones,
+function ProjectSelectModal({
+  asModal,
   handleProjectClick,
   activeProject,
   setActiveProject,
-  AddLogOnClickHandleShow,
+  // AddLogOnClickHandleShow,
   AddLogButton,
   isMod,
 }) {
@@ -40,7 +40,7 @@ function MilestonesProjectSelectModal({
                 <Container className="d-flex p-6 justify-content-center">
                   <ProjectsTable
                     style={{ backgroundColor: "var(--gray)" }}
-                    fromMilestones={fromMilestones}
+                    asModal={asModal}
                     handleProjectClick={handleProjectClick}
                     setActiveProject={setActiveProject}
                     activeProject={activeProject}
@@ -55,4 +55,4 @@ function MilestonesProjectSelectModal({
   );
 }
 
-export default MilestonesProjectSelectModal;
+export default ProjectSelectModal;

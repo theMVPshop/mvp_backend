@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
-import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
+import ProjectSelectModal from "../ProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
@@ -82,8 +82,8 @@ function Milestones() {
               filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
             }}
           >
-            <MilestonesProjectSelectModal
-              fromMilestones={true}
+            <ProjectSelectModal
+              asModal={true}
               handleProjectClick={handleProjectClick}
               setActiveProject={setActiveProject}
               activeProject={activeProject}
