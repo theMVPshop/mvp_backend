@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
-import DevlogModal from "../DevlogModal";
+import DevlogAddFormModal from "../DevlogAddFormModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useDevlog } from "../../contexts/DevlogProvider";
 
@@ -26,7 +26,7 @@ export default function Devlog() {
           filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
         }}
       >
-        <DevlogModal
+        <DevlogAddFormModal
           setActiveProject={setActiveProject}
           activeProject={activeProject}
           authHeader={authHeader}

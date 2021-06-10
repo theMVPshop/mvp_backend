@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Signup from "../pages/Signup";
-import { Redirect, Link } from "react-router-dom";
+import Signup from "./Signup";
+import { Redirect } from "react-router-dom";
 import { Spinner, Button, Container } from "react-bootstrap";
-import { useGlobal } from "../../contexts/GlobalProvider";
+import { useGlobal } from "../contexts/GlobalProvider";
 
 const Login = ({ history }) => {
   let cachedUser = localStorage.getItem("user");

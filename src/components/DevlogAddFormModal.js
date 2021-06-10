@@ -5,7 +5,7 @@ import ProjectSelectModal from "./ProjectSelectModal";
 import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
-function DevlogModal({
+function DevlogAddFormModal({
   isMod,
   setActiveProject,
   activeProject,
@@ -134,4 +134,4 @@ function DevlogModal({
   );
 }
 
-export default DevlogModal;
+export default DevlogAddFormModal;
