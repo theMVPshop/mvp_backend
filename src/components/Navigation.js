@@ -35,27 +35,33 @@ function Navigation({ history, location }) {
                 // className="mr-auto d-flex"
                 activeKey={location.pathname}
               >
-                <NavLink
-                  to="/projects"
-                  className="nav-link text-warning"
-                  onClick={() => setExpanded(false)}
-                >
-                  Projects
-                </NavLink>
-                <NavLink
-                  to="/milestones"
-                  className="nav-link text-warning"
-                  onClick={() => setExpanded(false)}
-                >
-                  Milestones
-                </NavLink>
-                <NavLink
-                  to="/devlog"
-                  className="nav-link text-warning"
-                  onClick={() => setExpanded(false)}
-                >
-                  DevLog
-                </NavLink>
+                <Nav.Item>
+                  <NavLink
+                    to="/projects"
+                    className="nav-link text-warning"
+                    onClick={() => setExpanded(false)}
+                  >
+                    Projects
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/milestones"
+                    className="nav-link text-warning"
+                    onClick={() => setExpanded(false)}
+                  >
+                    Milestones
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/devlog"
+                    className="nav-link text-warning"
+                    onClick={() => setExpanded(false)}
+                  >
+                    DevLog
+                  </NavLink>
+                </Nav.Item>
                 <Nav.Item>
                   {isMod && (
                     <SetRolesModal
@@ -73,21 +79,25 @@ function Navigation({ history, location }) {
                 {/* <ProjectSelectModal /> */}
               </Nav>
             )}
-            {loggedIn && (
-              <Button
-                variant="danger"
-                // size="sm"
-                onClick={logOut}
-                className="ml-auto"
-              >
-                Logout
-              </Button>
-            )}
-            {user && (
-              <span className="text-light d-none d-lg-block ml-auto">
-                Welcome <span className="text-warning">{user}</span>!
-              </span>
-            )}
+            <div className="ml-auto">
+              {user && (
+                <span className="text-light d-none d-lg-block ml-auto">
+                  Welcome <span className="text-warning">{user}</span>!
+                  <span className="ml-1">
+                    {loggedIn && (
+                      <Button
+                        variant="danger"
+                        // size="sm"
+                        onClick={logOut}
+                        className="ml-auto"
+                      >
+                        Logout
+                      </Button>
+                    )}
+                  </span>
+                </span>
+              )}
+            </div>
           </Navbar.Collapse>
         </Navbar>
       </Container>

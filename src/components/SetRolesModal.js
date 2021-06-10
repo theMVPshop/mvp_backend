@@ -16,6 +16,7 @@ function SetRolesModal({ projects, authHeader }) {
         // size="sm"
         onClick={handleShow}
         className="nav-link text-warning"
+        style={{ marginTop: ".5px" }}
       >
         Assign
       </Button>
