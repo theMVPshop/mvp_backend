@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { HashRouter } from "react-router-dom";
-import "./_custom.scss";
 import App from "./App";
+import "./_custom.scss";
 
 ReactDOM.render(
   <React.StrictMode>

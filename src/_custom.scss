@@ -1,10 +1,11 @@
 // variable overrides
-// .nav-pills .nav-link {
+// .nav-pills {
 //   background-color: rgba(255, 0, 0, 0.2);
-//   color: white;
+//   color: orange;
 // }
+$nav-pills-link-active-bg: rgba(255, 0, 0, 0.2);
 $enable-responsive-font-sizes: true;
-$table-active-bg: #7ea840;
-$body-bg: #adb5bd;
-$body-color: #111;
+$table-active-bg: orange;
+// $body-bg: #adb5bd;
+// $body-color: #111;
 @import "node_modules/bootstrap/scss/bootstrap";

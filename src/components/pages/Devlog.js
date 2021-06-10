@@ -73,8 +73,11 @@ export default function Devlog() {
         </h1>
         <Accordion defaultActiveKey="0" className="p-12">
           {logs.map((log, idx) => (
-            <Card key={idx} style={{ backgroundColor: "#708090" }}>
-              <Card.Header style={{ backgroundColor: "lemonchiffon" }}>
+            <Card key={idx} className="bg-dark text-light">
+              <Card.Header
+                style={{ backgroundColor: "lemonchiffon" }}
+                className="d-flex"
+              >
                 <Accordion.Toggle
                   as={Button}
                   variant="info"
@@ -83,14 +86,16 @@ export default function Devlog() {
                 >
                   {log.title}
                 </Accordion.Toggle>
-                <span className="text-primary">Added: </span>
-                {log.time_stamp}
+                <span className="text-primary">
+                  Added:
+                  <span className="text-danger"> {log.time_stamp}</span>
+                </span>
                 {isMod && (
                   <Button
                     variant="danger"
                     onClick={() => removeLog(log.id)}
                     size="sm"
-                    className="d-flex ml-auto mb-auto lead"
+                    className="ml-auto mb-auto"
                   >
                     X
                   </Button>

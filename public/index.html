@@ -5,7 +5,10 @@
     <link rel="icon" href="%PUBLIC_URL%/favico.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
 
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>theMVPshop2</title>
@@ -15,38 +18,35 @@
     <div id="root"></div>
   </body>
 
-  <link rel="stylesheet" href="bootstrap.min.css">
+  <link rel="stylesheet" href="bootstrap.min.css" />
 
   <style>
+    @media (min-width: 576px) {
+      .modal {
+        margin: auto;
+      }
 
-@media (min-width: 576px) {
+      .modal-dialog {
+        margin: 1.75rem auto;
+      }
+    }
 
-  .modal {
-    margin:auto;
-  }
+    .modal-content {
+      background-color: rgba(0, 0, 0, 0);
+    }
 
-  .modal-dialog {
-      margin: 1.75rem auto;
-  }
-}
+    .modal-body {
+      background-color: rgb(68, 16, 145);
+      color: var(--light);
+    }
 
-.modal-content {
-    background-color: rgba(0,0,0,0);
-}
+    .modal-header {
+      border-top-left-radius: calc(0.3rem - 1px);
+      border-top-right-radius: calc(0.3rem - 1px);
+    }
 
-.modal-body {
-  background-color: rgb(68, 16, 145);
-  color: var(--light);
-}
-
-.modal-header {
-  border-top-left-radius: calc(0.3rem - 1px);
-  border-top-right-radius: calc(0.3rem - 1px);
-}
-
-input {
-  margin: 4px;
-}
-
+    input {
+      margin: 4px;
+    }
   </style>
 </html>
