@@ -103,9 +103,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         }
                         style={
                           cachedActiveProjectId === project.id
-                            ? {
-                                backgroundColor: "orange",
-                              }
+                            ? { backgroundColor: "orange" }
                             : fromMilestones && { cursor: "pointer" }
                         }
                         onClick={
@@ -197,9 +195,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                             key={project.id}
                             style={
                               cachedActiveProjectId === project.id
-                                ? {
-                                    backgroundColor: "orange",
-                                  }
+                                ? { backgroundColor: "orange" }
                                 : fromMilestones && { cursor: "pointer" }
                             }
                             onClick={() => handleProjectClick(project.id)}
