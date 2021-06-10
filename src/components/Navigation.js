@@ -33,17 +33,17 @@ function Navigation({ history, location }) {
                 activeKey={location.pathname}
               >
                 <Nav.Item>
-                  <NavLink to="/projects" className="nav-link">
+                  <NavLink to="/projects" className="nav-link text-warning">
                     Projects
                   </NavLink>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLink to="/milestones" className="nav-link">
+                  <NavLink to="/milestones" className="nav-link text-warning">
                     Milestones
                   </NavLink>
                 </Nav.Item>
                 <Nav.Item>
-                  <NavLink to="/devlog" className="nav-link">
+                  <NavLink to="/devlog" className="nav-link text-warning">
                     DevLog
                   </NavLink>
                 </Nav.Item>

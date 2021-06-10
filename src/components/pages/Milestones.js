@@ -124,13 +124,16 @@ function Milestones() {
         <div
           className="mileContainer pt-2 pb-2 mb-3"
           style={{
-            // backgroundColor: "var(--blue)",
-            color: "var(--light)",
-            borderRadius: "25px 25px 0 0",
-            filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
-          }}
-        >
-          <Container className="d-flex p-6 justify-content-evenly mt-2">
+              // backgroundColor: "var(--blue)",
+              color: "var(--light)",
+              borderRadius: "25px 25px 0 0",
+            }}
+          >
+          <Container className="d-flex p-6 justify-content-evenly mt-2"
+            style={{
+              filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
+            }}
+          >
             <MilestonesProjectSelectModal
               fromMilestones={true}
               handleProjectClick={handleProjectClick}

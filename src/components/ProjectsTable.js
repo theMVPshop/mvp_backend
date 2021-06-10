@@ -75,20 +75,20 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
             bordered
             hover
             variant="dark"
-            style={{ backgroundColor: "var(--blue)" }}
+            // style={{ backgroundColor: "var(--blue)" }}
           >
             <thead>
               <tr>
                 <th>ID#</th>
                 <th>Project Title</th>
-                <th className="d-none d-lg-block">Project Description</th>
+                <th className="d-none d-md-table-cell">Project Description</th>
                 {/* {!fromMilestones && (
                   <>
                     <th>Milestones</th>
                     <th>Devlog</th>
                   </>
                 )} */}
-                {!fromMilestones && <th>Delete</th>}
+                {/* {!fromMilestones && <th>Delete</th>} */}
               </tr>
             </thead>
             <tbody>
@@ -134,10 +134,20 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                               >
                                 {devlogIcon}
                               </Link>
+                              {!fromMilestones && (
+                                <Button
+                                  variant="danger"
+                                  size="sm"
+                                  onClick={() => deleteProject(project.id)}
+                                  className="ml-3"
+                                >
+                                  X
+                                </Button>
+                              )}
                             </div>
                           )}
                         </td>
-                        <td className="d-none d-lg-block">
+                        <td className="d-none d-md-table-cell">
                           {project.description}
                         </td>
                         {/* two table cells with an icon/link in each; only rendered if on Projects.js page */}
@@ -168,18 +178,6 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                           </>
                         )} */}
                         {/* end of code for icons */}
-                        {/* below lines render delete button if on Projects.js page */}
-                        {!fromMilestones && (
-                          <td className="d-flex justify-content-center">
-                            <Button
-                              variant="danger"
-                              size="sm"
-                              onClick={() => deleteProject(project.id)}
-                            >
-                              X
-                            </Button>
-                          </td>
-                        )}
                       </tr>
                     ))
                   : fromMilestones
