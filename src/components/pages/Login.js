@@ -3,9 +3,11 @@ import axios from "axios";
 import Signup from "../pages/Signup";
 import { Redirect, Link } from "react-router-dom";
 import { Spinner, Button } from "react-bootstrap";
+import { useGlobal } from "../../contexts/GlobalProvider";
 
-const Login = ({ setUser, history }) => {
+const Login = ({ history }) => {
   let cachedUser = localStorage.getItem("user");
+  const { setUser } = useGlobal();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("Login");
   const [showSignup, setshowSignup] = useState(false);

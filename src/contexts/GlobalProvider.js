@@ -6,7 +6,7 @@ const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
-export const GlobalProvider = ({ children, user }) => {
+export const GlobalProvider = ({ children, user, setUser }) => {
   // let loggedIn = localStorage.getItem("loggedIn");
   // const user = localStorage.getItem("user");
   let cachedActiveProjectId =
@@ -61,6 +61,7 @@ export const GlobalProvider = ({ children, user }) => {
       value={{
         cachedActiveProjectId,
         user,
+        setUser,
         token,
         authHeader,
         activeProject,
