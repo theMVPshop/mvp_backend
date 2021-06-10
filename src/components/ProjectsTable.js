@@ -115,13 +115,13 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         <td className="d-flex">
                           {project.title}
                           {!fromMilestones && (
-                            <div className="ml-auto">
+                            <div className="d-flex ml-auto">
                               <Link
                                 onClick={() =>
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/milestones"
-                                className="text-light m-3"
+                                className="text-light ml-3"
                               >
                                 {milestoneIcon}
                               </Link>
@@ -130,7 +130,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                                   saveActiveProjectIdToCache(project.id)
                                 }
                                 to="/devlog"
-                                className="text-warning m-3"
+                                className="text-warning ml-3"
                               >
                                 {devlogIcon}
                               </Link>

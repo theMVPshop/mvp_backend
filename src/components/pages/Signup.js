@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button, Spinner } from "react-bootstrap";
 import Login from "./Login";
 
+// inheriting props from--and is always rendered by--Login.js
 const Signup = ({
   history,
   setUser,
@@ -49,20 +50,20 @@ const Signup = ({
     history.push("/projects");
   };
 
-  const signup = async (e) => {
+  const signup = (e) => {
+    e.preventDefault();
     let userObject = {
       username: input.username,
       isModerator: 0,
     };
     setIsLoading(true);
-    e.preventDefault();
-    await axios
+    axios
       .post("/auth/signup", input)
       .then(() =>
         axios
           .post("/users", userObject)
-          .catch((error) => console.log("failed to add user to db", error))
           .then(() => login())
+          .catch((error) => console.log("failed to add user to db", error))
       )
       .catch((error) => {
         console.log("failed to create user", error);
