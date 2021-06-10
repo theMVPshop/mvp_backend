@@ -80,12 +80,8 @@ function Milestones() {
   // deletes milestone in api and repopulates component with milestones sans deleted one
   const removeMilestone = (Id) => {
     const reqBody = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        id: Id,
-      },
+      headers: { Authorization: `Bearer ${token}` },
+      data: { id: Id },
     };
     axios
       .delete(`/milestones/${activeProject}`, reqBody)
@@ -153,16 +149,16 @@ function Milestones() {
               onSubmit={onSubmit}
             />
           </Container>
-          <h1
-            className="d-flex p-6 justify-content-center"
-            style={{ color: "black" }}
-          >
-            {isMod
-              ? projects?.find((x) => x.id == activeProject)?.title ||
-                "Please Select a Project"
-              : "Please inform your supervisor to assign you a project"}
-          </h1>
         </div>
+        <h1
+          className="d-flex p-6 justify-content-center"
+          style={{ color: "black" }}
+        >
+          {isMod
+            ? projects?.find((x) => x.id == activeProject)?.title ||
+              "Please Select a Project"
+            : "Please inform your supervisor to assign you a project"}
+        </h1>
         <TimelineElement
           milestones={milestones}
           handleStatusChange={handleStatusChange}

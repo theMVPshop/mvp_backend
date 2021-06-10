@@ -82,12 +82,12 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                 <th>ID#</th>
                 <th>Project Title</th>
                 <th>Project Description</th>
-                {!fromMilestones && (
+                {/* {!fromMilestones && (
                   <>
                     <th>Milestones</th>
                     <th>Devlog</th>
                   </>
-                )}
+                )} */}
                 {!fromMilestones && <th>Delete</th>}
               </tr>
             </thead>
@@ -112,10 +112,34 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         }
                       >
                         <td>{project.id}</td>
-                        <td>{project.title}</td>
+                        <td className="d-flex">
+                          {project.title}
+                          {!fromMilestones && (
+                            <div className="ml-auto">
+                              <Link
+                                onClick={() =>
+                                  saveActiveProjectIdToCache(project.id)
+                                }
+                                to="/milestones"
+                                className="text-light m-1"
+                              >
+                                {milestoneIcon}
+                              </Link>
+                              <Link
+                                onClick={() =>
+                                  saveActiveProjectIdToCache(project.id)
+                                }
+                                to="/devlog"
+                                className="text-light m-1"
+                              >
+                                {devlogIcon}
+                              </Link>
+                            </div>
+                          )}
+                        </td>
                         <td>{project.description}</td>
                         {/* two table cells with an icon/link in each; only rendered if on Projects.js page */}
-                        {!fromMilestones && (
+                        {/* {!fromMilestones && (
                           <>
                             <td>
                               <Link
@@ -140,7 +164,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                               </Link>
                             </td>
                           </>
-                        )}
+                        )} */}
                         {/* end of code for icons */}
                         {/* below lines render delete button if on Projects.js page */}
                         {!fromMilestones && (

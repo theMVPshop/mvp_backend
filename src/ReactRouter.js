@@ -6,7 +6,7 @@ import Milestones from "./components/pages/Milestones";
 import Projects from "./components/pages/Projects";
 import Devlog from "./components/pages/Devlog";
 import Login from "./components/pages/Login";
-import Signup from "./components/pages/Signup";
+// import Signup from "./components/pages/Signup";
 
 const Router = () => {
   return (
@@ -16,7 +16,7 @@ const Router = () => {
       <Route path="/devlog" component={Devlog} />
       <Route path="/projects" component={Projects} />
       {/* <Route path="/login" component={Login} /> */}
-      <Route path="/signup" component={Signup} />
+      {/* <Route path="/signup" component={Signup} /> */}
     </Switch>
   );
 };

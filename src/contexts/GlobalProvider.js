@@ -6,7 +6,7 @@ const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
-export const GlobalProvider = ({ children, user }) => {
+export const GlobalProvider = ({ children, user, setUser }) => {
   // let loggedIn = localStorage.getItem("loggedIn");
   // const user = localStorage.getItem("user");
   let cachedActiveProjectId =
@@ -24,7 +24,6 @@ export const GlobalProvider = ({ children, user }) => {
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = () =>
-    user &&
     axios
       .get("/users", authHeader)
       .then((response) => {
@@ -62,6 +61,7 @@ export const GlobalProvider = ({ children, user }) => {
       value={{
         cachedActiveProjectId,
         user,
+        setUser,
         token,
         authHeader,
         activeProject,

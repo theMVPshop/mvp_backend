@@ -1,7 +1,6 @@
 import React from "react";
 import Navigation from "./components/Navigation";
 import ReactRouter from "./ReactRouter";
-import { HashRouter } from "react-router-dom";
 import { withRouter } from "react-router";
 import { GlobalProvider } from "./contexts/GlobalProvider";
 import Login from "./components/pages/Login";
@@ -12,23 +11,10 @@ export default function App() {
   const NavWithRouter = withRouter(Navigation);
   const LoginWithRouter = withRouter(Login);
 
-  const home = (
-    <GlobalProvider user={user}>
-      <HashRouter>
-        <NavWithRouter user={user} setUser={setUser} />
-        <ReactRouter />
-      </HashRouter>
+  return (
+    <GlobalProvider user={user} setUser={setUser}>
+      <NavWithRouter />
+      {user ? <ReactRouter /> : <LoginWithRouter />}
     </GlobalProvider>
   );
-
-  const login = (
-    <GlobalProvider>
-      <HashRouter>
-        <NavWithRouter />
-        <LoginWithRouter user={user} setUser={setUser} />
-      </HashRouter>
-    </GlobalProvider>
-  );
-
-  return user ? home : login;
 }
