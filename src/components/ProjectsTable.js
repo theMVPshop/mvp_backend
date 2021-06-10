@@ -71,7 +71,7 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
         <Container>
           {/* table of projects */}
           <Table
-            striped
+            // striped
             bordered
             hover
             variant="dark"
@@ -98,6 +98,9 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                   ? projects.map((project) => (
                       <tr
                         key={project.id}
+                        className={
+                          cachedActiveProjectId === project.id && "table-active"
+                        }
                         style={
                           cachedActiveProjectId === project.id
                             ? {
