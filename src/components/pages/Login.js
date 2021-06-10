@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Signup from "../pages/Signup";
 import { Redirect, Link } from "react-router-dom";
-import { Spinner, Button } from "react-bootstrap";
+import { Spinner, Button, Container } from "react-bootstrap";
 import { useGlobal } from "../../contexts/GlobalProvider";
 
 const Login = ({ history }) => {
@@ -77,92 +77,94 @@ const Login = ({ history }) => {
         <>
           {cachedUser && <Redirect to="/projects" />}
           <div className="container">
-            <div className="row justify-content-center">
-              <form
-                onSubmit={login}
-                className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
-                style={{ borderRadius: "1rem" }}
-              >
-                <h3>Sign In</h3>
+            <Container className="bg-light vh-100 vw-100">
+              <div className="row justify-content-center">
+                <form
+                  onSubmit={login}
+                  className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
+                  style={{ borderRadius: "1rem" }}
+                >
+                  <h3>Sign In</h3>
 
-                <div className="form-group">
-                  <label>Username</label>
-                  <input
-                    type="text"
-                    required
-                    id="username"
-                    name="username"
-                    label="Username"
-                    onChange={handleChange}
-                    value={input.username}
-                    className="form-control"
-                    placeholder="Enter Username"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label>Password</label>
-                  <input
-                    type="password"
-                    required
-                    onChange={handleChange}
-                    value={input.password}
-                    name="password"
-                    label="Password"
-                    type="password"
-                    id="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <div className="custom-control custom-checkbox">
+                  <div className="form-group">
+                    <label>Username</label>
                     <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id="customCheck1"
+                      type="text"
+                      required
+                      id="username"
+                      name="username"
+                      label="Username"
+                      onChange={handleChange}
+                      value={input.username}
+                      className="form-control"
+                      placeholder="Enter Username"
                     />
-                    <label
-                      className="custom-control-label"
-                      htmlFor="customCheck1"
-                    >
-                      Remember me
-                    </label>
                   </div>
-                </div>
 
-                {isLoading ? (
-                  <>
-                    <Button variant="primary btn-block" disabled>
-                      <Spinner
-                        as="span"
-                        animation="grow"
-                        size="sm"
-                        role="status"
-                        aria-hidden="true"
+                  <div className="form-group">
+                    <label>Password</label>
+                    <input
+                      type="password"
+                      required
+                      onChange={handleChange}
+                      value={input.password}
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      className="form-control"
+                      placeholder="Enter password"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        className="custom-control-input"
+                        id="customCheck1"
                       />
-                      Verifying...
-                    </Button>
-                  </>
-                ) : (
-                  <Button type="submit" className="btn btn-primary btn-block">
-                    {error}
-                  </Button>
-                )}
+                      <label
+                        className="custom-control-label"
+                        htmlFor="customCheck1"
+                      >
+                        Remember me
+                      </label>
+                    </div>
+                  </div>
 
-                <p className="forgot-password text-right">
-                  <Button
-                    onClick={() => toggleForm()}
-                    className="btn mt-4"
-                    size="sm"
-                    variant="success"
-                  >
-                    New user?
-                  </Button>
-                </p>
-              </form>
-            </div>
+                  {isLoading ? (
+                    <>
+                      <Button variant="primary btn-block" disabled>
+                        <Spinner
+                          as="span"
+                          animation="grow"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        Verifying...
+                      </Button>
+                    </>
+                  ) : (
+                    <Button type="submit" className="btn btn-primary btn-block">
+                      {error}
+                    </Button>
+                  )}
+
+                  <p className="forgot-password text-right">
+                    <Button
+                      onClick={() => toggleForm()}
+                      className="btn mt-4"
+                      size="sm"
+                      variant="success"
+                    >
+                      New user?
+                    </Button>
+                  </p>
+                </form>
+              </div>
+            </Container>
           </div>
         </>
       )}
