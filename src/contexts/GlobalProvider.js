@@ -13,11 +13,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
     parseInt(localStorage.getItem("activeProject")) || null;
   const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  const authHeader = { headers: { Authorization: `Bearer ${token}` } };
   const [isMod, setIsMod] = useState(false);
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
@@ -56,6 +52,13 @@ export const GlobalProvider = ({ children, user, setUser }) => {
     fetchPermissions();
   }, [user]);
 
+  // removes project from api and repopulates component with projects sans deleted one
+  const deleteProject = (Id) =>
+    axios
+      .delete(`/projects/${Id}`, authHeader)
+      .then(() => fetchProjects())
+      .catch((error) => console.log("error deleting project", error));
+
   return (
     <GlobalContext.Provider
       value={{
@@ -71,6 +74,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         setProjects,
         fetchProjects,
         permissions,
+        deleteProject,
       }}
     >
       {children}

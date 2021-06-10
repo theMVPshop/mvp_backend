@@ -4,7 +4,7 @@ import { Container, Button } from "react-bootstrap";
 // import SetRolesModal from "./SetRolesModal";
 
 // inheriting props/state from ProjectsTable.js
-function AddProjectForm({ isMod, projects, setProjects, authHeader }) {
+function AddProjectForm({ isMod, setProjects, authHeader }) {
   const [input, setInput] = useState({
     title: "",
     description: "",

@@ -1,79 +1,79 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { useGlobal } from "./GlobalProvider";
 import axios from "axios";
 
-const GlobalContext = React.createContext();
+const MilestonesContext = React.createContext();
 
-export const useGlobal = () => useContext(GlobalContext);
+export const useMilestones = () => useContext(MilestonesContext);
 
-export const GlobalProvider = ({ children, user, setUser }) => {
-  // let loggedIn = localStorage.getItem("loggedIn");
-  // const user = localStorage.getItem("user");
-  let cachedActiveProjectId =
-    parseInt(localStorage.getItem("activeProject")) || null;
-  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const [isMod, setIsMod] = useState(false);
-  const [projects, setProjects] = useLocalStorage("projects", []);
-  const [permissions, setPermissions] = useLocalStorage("permissions", []);
+export const MilestonesProvider = ({ children }) => {
+  const { activeProject, setActiveProject, authHeader, token } = useGlobal();
 
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = () =>
+  const [milestones, setMilestones] = useLocalStorage("milestones", []);
+
+  const fetchMilestones = () =>
     axios
-      .get("/users", authHeader)
+      .get(`/milestones/${activeProject}`, authHeader)
+      .then((response) => setMilestones(response.data))
+      .catch((error) => console.log("failed to fetch milestones", error));
+
+  useEffect(() => fetchMilestones(), [activeProject]);
+
+  // populates milestones for the selected project
+  const handleProjectClick = (Id) =>
+    axios
+      .get(`/milestones/${Id}`, authHeader)
       .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === user)?.isModerator === 1
-            ? true
-            : false
-        );
+        localStorage.setItem("activeProject", Id);
+        setActiveProject(Id);
+        setMilestones(response.data);
       })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
-      );
+      .catch((error) => console.log(error));
 
-  const fetchProjects = () =>
+  // deletes milestone in api and repopulates component with milestones sans deleted one
+  const removeMilestone = (Id) => {
+    const reqBody = {
+      headers: { Authorization: `Bearer ${token}` },
+      data: { id: Id },
+    };
     axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to populate projects", error));
+      .delete(`/milestones/${activeProject}`, reqBody)
+      .then(() => fetchMilestones())
+      .catch((error) => console.log(error));
+  };
 
-  // fetch permissions table from API and store in hook
-  const fetchPermissions = () =>
-    axios
-      .get("/permissions", authHeader)
-      .then((response) => setPermissions(response.data))
-      .catch((error) => console.log("failed to fetch permissions", error));
-
-  React.useEffect(() => {
-    fetchProjects();
-    checkModPrivilege();
-    fetchPermissions();
-  }, [user]);
+  // updates milestone status in api and component
+  const handleStatusChange = (milestone) => {
+    const milestoneId = milestone.id;
+    const setStatus = (status) => {
+      const url = `/milestones/${milestoneId}`;
+      axios.put(url, { ms_status: status }, authHeader);
+    };
+    if (milestone.ms_status === "TODO") {
+      milestone.ms_status = "IN PROGRESS";
+      setStatus("IN PROGRESS");
+    } else if (milestone.ms_status === "IN PROGRESS") {
+      milestone.ms_status = "COMPLETED";
+      setStatus("COMPLETED");
+    } else if (milestone.ms_status === "COMPLETED") {
+      milestone.ms_status = "TODO";
+      setStatus("TODO");
+    }
+    setMilestones([...milestones]);
+  };
 
   return (
-    <GlobalContext.Provider
+    <MilestonesContext.Provider
       value={{
-        cachedActiveProjectId,
-        user,
-        setUser,
-        token,
-        authHeader,
-        activeProject,
-        setActiveProject,
-        isMod,
-        projects,
-        setProjects,
-        fetchProjects,
-        permissions,
+        milestones,
+        fetchMilestones,
+        handleProjectClick,
+        removeMilestone,
+        handleStatusChange,
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </MilestonesContext.Provider>
   );
 };

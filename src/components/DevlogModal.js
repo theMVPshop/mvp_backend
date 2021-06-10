@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Container, Button, Form, Modal } from "react-bootstrap";
 import MilestonesProjectSelectModal from "./MilestonesProjectSelectModal";
+import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
 function DevlogModal({
   isMod,
-  setLogs,
   setActiveProject,
   activeProject,
   authHeader,
   fetchLogs,
 }) {
+  const { handleProjectClick } = useDevlog();
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
     title: "",
@@ -52,16 +53,6 @@ function DevlogModal({
       .catch((error) => console.log(error));
   };
 
-  const handleProjectClick = (Id) =>
-    axios
-      .get(`/devlog/${Id}`, authHeader)
-      .then((response) => {
-        localStorage.setItem("activeProject", Id);
-        setActiveProject(Id);
-        setLogs(response.data);
-      })
-      .catch((error) => console.log(error));
-
   const AddLogButton = () => (
     <Button variant="primary" onClick={handleShow}>
       Add Log Entry
@@ -81,12 +72,10 @@ function DevlogModal({
       />
       <Modal show={show} onHide={handleClose}>
         <div
-          className="devlogContainer pb-3 mb-2"
+          className="devlogContainer pb-3 mb-2 m-auto w-100"
           style={{
             backgroundColor: "rgba(0,0,0,.25)",
-            margin: "auto",
             border: "solid 3px var(--blue)",
-            width: "100%",
             borderRadius: "30px 30px 0 0",
           }}
         >

@@ -5,18 +5,18 @@ import MilestonesProjectSelectModal from "../MilestonesProjectSelectModal";
 import AddMilestoneForm from "../AddMilestoneForm";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import { useMilestones } from "../../contexts/MilestonesProvider";
 
 function Milestones() {
+  const { authHeader, activeProject, setActiveProject, projects, isMod } =
+    useGlobal();
   const {
-    token,
-    authHeader,
-    activeProject,
-    setActiveProject,
-    projects,
-    isMod,
-  } = useGlobal();
-  const [milestones, setMilestones] = useLocalStorage("milestones", []);
+    milestones,
+    fetchMilestones,
+    handleProjectClick,
+    removeMilestone,
+    handleStatusChange,
+  } = useMilestones();
   const [input, setInput] = useState({
     title: "",
     subtitle: "",
@@ -24,25 +24,6 @@ function Milestones() {
     due_date: "",
     ms_status: "TODO",
   });
-
-  const fetchMilestones = () =>
-    axios
-      .get(`/milestones/${activeProject}`, authHeader)
-      .then((response) => setMilestones(response.data))
-      .catch((error) => console.log("failed to fetch milestones", error));
-
-  useEffect(() => fetchMilestones(), [activeProject]);
-
-  // populates milestones for the selected project
-  const handleProjectClick = (Id) =>
-    axios
-      .get(`/milestones/${Id}`, authHeader)
-      .then((response) => {
-        localStorage.setItem("activeProject", Id);
-        setActiveProject(Id);
-        setMilestones(response.data);
-      })
-      .catch((error) => console.log(error));
 
   // populates the add milestone form with input data in realtime
   const onChange = (event) =>
@@ -77,59 +58,26 @@ function Milestones() {
       .catch((error) => console.log(error));
   };
 
-  // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeMilestone = (Id) => {
-    const reqBody = {
-      headers: { Authorization: `Bearer ${token}` },
-      data: { id: Id },
-    };
-    axios
-      .delete(`/milestones/${activeProject}`, reqBody)
-      .then(() => fetchMilestones())
-      .catch((error) => console.log(error));
-  };
-
-  // updates milestone status in api and component
-  const handleStatusChange = (milestone) => {
-    const milestoneId = milestone.id;
-    const setStatus = (status) => {
-      const url = `/milestones/${milestoneId}`;
-      axios.put(url, { ms_status: status }, authHeader);
-    };
-    if (milestone.ms_status === "TODO") {
-      milestone.ms_status = "IN PROGRESS";
-      setStatus("IN PROGRESS");
-    } else if (milestone.ms_status === "IN PROGRESS") {
-      milestone.ms_status = "COMPLETED";
-      setStatus("COMPLETED");
-    } else if (milestone.ms_status === "COMPLETED") {
-      milestone.ms_status = "TODO";
-      setStatus("TODO");
-    }
-    setMilestones([...milestones]);
-  };
-
   return (
     <>
-      <div
-        className="pb-3 mb-2"
+      <Container
+        className="pb-3 mb-2 m-auto"
         style={{
           backgroundColor: "rgba(0,0,0,.25)",
-          margin: "auto",
           border: "solid 3px var(--blue)",
-          width: "100%",
           borderRadius: "30px 30px 0 0",
         }}
       >
         <div
           className="mileContainer pt-2 pb-2 mb-3"
           style={{
-              // backgroundColor: "var(--blue)",
-              color: "var(--light)",
-              borderRadius: "25px 25px 0 0",
-            }}
-          >
-          <Container className="d-flex p-6 justify-content-evenly mt-2"
+            // backgroundColor: "var(--blue)",
+            color: "var(--light)",
+            borderRadius: "25px 25px 0 0",
+          }}
+        >
+          <Container
+            className="d-flex p-6 justify-content-evenly mt-2"
             style={{
               filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
             }}
@@ -165,7 +113,7 @@ function Milestones() {
           removeMilestone={removeMilestone}
           authHeader={authHeader}
         />
-      </div>
+      </Container>
     </>
   );
 }

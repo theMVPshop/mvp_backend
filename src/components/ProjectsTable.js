@@ -19,19 +19,12 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
     isMod,
     projects,
     setProjects,
-    fetchProjects,
     permissions,
     setActiveProject,
+    deleteProject,
   } = useGlobal();
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
-
-  // removes project from api and repopulates component with projects sans deleted one
-  const deleteProject = (Id) =>
-    axios
-      .delete(`/projects/${Id}`, authHeader)
-      .then(() => fetchProjects())
-      .catch((error) => console.log("error deleting project", error));
 
   // makes clicked-on project consistent across app experience
   const saveActiveProjectIdToCache = (Id) => {
@@ -40,12 +33,11 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
   };
 
   return (
-    <Container className="projects mw-100">
+    <Container className="projects">
       <div
-        className="pb-3 mb-2 mt-2"
+        className="pb-3 mb-2 mt-2 m-auto"
         style={{
           backgroundColor: "rgba(0,0,0,.25)",
-          margin: "auto",
           border: "solid 3px var(--blue)",
           borderRadius: "30px 30px 0 0",
         }}
@@ -82,6 +74,13 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                 <th>ID#</th>
                 <th>Project Title</th>
                 <th className="d-none d-md-table-cell">Project Description</th>
+                {!fromMilestones && !isMod && (
+                  <>
+                    <th></th>
+                    <th></th>
+                  </>
+                )}
+                {/* <th className="d-xs-table-cell d-md-none">Todos/Log</th> */}
                 {/* {!fromMilestones && (
                   <>
                     <th>Milestones</th>
@@ -151,34 +150,8 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                         <td className="d-none d-md-table-cell">
                           {project.description}
                         </td>
-                        {/* two table cells with an icon/link in each; only rendered if on Projects.js page */}
-                        {/* {!fromMilestones && (
-                          <>
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/milestones"
-                                style={{ color: "white" }}
-                              >
-                                {milestoneIcon}
-                              </Link>
-                            </td>
-                            <td>
-                              <Link
-                                onClick={() =>
-                                  saveActiveProjectIdToCache(project.id)
-                                }
-                                to="/devlog"
-                                style={{ color: "white" }}
-                              >
-                                {devlogIcon}
-                              </Link>
-                            </td>
-                          </>
-                        )} */}
-                        {/* end of code for icons */}
+
+                        {/*  */}
                       </tr>
                     ))
                   : fromMilestones
@@ -206,7 +179,9 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                           >
                             <td>{project.id}</td>
                             <td>{project.title}</td>
-                            <td>{project.description}</td>
+                            <td className="d-none d-md-block">
+                              {project.description}
+                            </td>
                           </tr>
                         ))
                     )
@@ -222,7 +197,9 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
                           <tr key={project.id}>
                             <td>{project.id}</td>
                             <td>{project.title}</td>
-                            <td>{project.description}</td>
+                            <td className="d-none d-md-table-cell">
+                              {project.description}
+                            </td>
                             {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
                             <td>
                               <Link
@@ -259,3 +236,38 @@ function ProjectsTable({ fromMilestones, handleProjectClick }) {
 }
 
 export default ProjectsTable;
+
+{
+  /* two table cells with an icon/link in each; only rendered if on Projects.js page */
+}
+{
+  /* {!fromMilestones && (
+                          <>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  saveActiveProjectIdToCache(project.id)
+                                }
+                                to="/milestones"
+                                style={{ color: "white" }}
+                              >
+                                {milestoneIcon}
+                              </Link>
+                            </td>
+                            <td>
+                              <Link
+                                onClick={() =>
+                                  saveActiveProjectIdToCache(project.id)
+                                }
+                                to="/devlog"
+                                style={{ color: "white" }}
+                              >
+                                {devlogIcon}
+                              </Link>
+                            </td>
+                          </>
+                        )} */
+}
+{
+  /* end of code for icons */
+}

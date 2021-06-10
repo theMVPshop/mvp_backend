@@ -1,48 +1,20 @@
-import React, { useEffect } from "react";
-import axios from "axios";
+import React from "react";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogModal from "../DevlogModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
-import useLocalStorage from "../../hooks/useLocalStorage";
+import { useDevlog } from "../../contexts/DevlogProvider";
 
 export default function Devlog() {
-  const {
-    token,
-    authHeader,
-    activeProject,
-    setActiveProject,
-    isMod,
-    projects,
-  } = useGlobal();
-  const [logs, setLogs] = useLocalStorage("logs", []);
-
-  const fetchLogs = () =>
-    axios
-      .get(`/devlog/${activeProject}`, authHeader)
-      .then((response) => setLogs(response.data))
-      .catch((error) => console.log(error));
-
-  useEffect(() => fetchLogs(), [activeProject]);
-
-  const removeLog = (Id) => {
-    const reqBody = {
-      headers: { Authorization: `Bearer ${token}` },
-      data: { id: Id },
-    };
-    axios
-      .delete(`/devlog/${Id}`, reqBody)
-      .then(() => fetchLogs())
-      .catch((error) => console.log("delete devlog error", error));
-  };
+  const { authHeader, activeProject, setActiveProject, isMod, projects } =
+    useGlobal();
+  const { logs, setLogs, fetchLogs, removeLog } = useDevlog();
 
   return (
-    <div
-      className="pb-3 mb-2"
+    <Container
+      className="pb-3 mb-2 m-auto"
       style={{
-        backgroundColor: "rgba(0,0,0,.25)",
-        margin: "auto",
+        // backgroundColor: "rgba(0,0,0,.25)",
         border: "solid 3px var(--blue)",
-        width: "100%",
         borderRadius: "30px 30px 0 0",
       }}
     >
@@ -108,6 +80,6 @@ export default function Devlog() {
           ))}
         </Accordion>
       </Container>
-    </div>
+    </Container>
   );
 }

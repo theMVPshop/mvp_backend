@@ -77,7 +77,7 @@ const Login = ({ history }) => {
         <>
           {cachedUser && <Redirect to="/projects" />}
           <div className="container">
-            <Container className="bg-light vh-100 vw-100">
+            <Container className="bg-light vh-100">
               <div className="row justify-content-center">
                 <form
                   onSubmit={login}

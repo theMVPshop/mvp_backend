@@ -3,6 +3,8 @@ import Navigation from "./components/Navigation";
 import ReactRouter from "./ReactRouter";
 import { withRouter } from "react-router";
 import { GlobalProvider } from "./contexts/GlobalProvider";
+import { DevlogProvider } from "./contexts/DevlogProvider";
+import { MilestonesProvider } from "./contexts/MilestonesProvider";
 import Login from "./components/pages/Login";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,8 +18,12 @@ export default function App() {
 
   return (
     <GlobalProvider user={user} setUser={setUser}>
-      <NavWithRouter />
-      {user ? <ReactRouter /> : <LoginWithRouter />}
+      <DevlogProvider>
+        <MilestonesProvider>
+          <NavWithRouter />
+          {user ? <ReactRouter /> : <LoginWithRouter />}
+        </MilestonesProvider>
+      </DevlogProvider>
     </GlobalProvider>
   );
 }

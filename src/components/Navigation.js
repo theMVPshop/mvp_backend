@@ -44,24 +44,24 @@ function Navigation({ history, location }) {
                 {isMod && (
                   <SetRolesModal projects={projects} authHeader={authHeader} />
                 )}
-                {loggedIn && (
-                  <Button
-                    variant="danger"
-                    // size="sm"
-                    onClick={logOut}
-                    className="nav-link mr-auto text-danger"
-                  >
-                    Logout
-                  </Button>
-                )}
 
                 {/* {!user && (
                   <Link to="/login" className="nav-link">
-                    Sign In
+                  Sign In
                   </Link>
                 )} */}
                 {/* <MilestonesProjectSelectModal /> */}
               </Nav>
+            )}
+            {loggedIn && (
+              <Button
+                variant="danger"
+                // size="sm"
+                onClick={logOut}
+                className="ml-auto"
+              >
+                Logout
+              </Button>
             )}
             {user && (
               <span className="text-light d-none d-lg-block ml-auto">

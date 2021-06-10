@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useGlobal } from "./GlobalProvider";
 import axios from "axios";
@@ -7,19 +7,15 @@ const DevlogContext = React.createContext();
 
 export const useDevlog = () => useContext(DevlogContext);
 
-export const DevlogProvider = ({ children, user, setUser }) => {
-  // let loggedIn = localStorage.getItem("loggedIn");
-  // const user = localStorage.getItem("user");
-  let cachedActiveProjectId =
-    parseInt(localStorage.getItem("activeProject")) || null;
+export const DevlogProvider = ({ children }) => {
+  const { activeProject, setActiveProject, authHeader, token } = useGlobal();
+  const [logs, setLogs] = useLocalStorage("logs", []);
 
   const fetchLogs = () =>
     axios
       .get(`/devlog/${activeProject}`, authHeader)
       .then((response) => setLogs(response.data))
       .catch((error) => console.log(error));
-
-  useEffect(() => fetchLogs(), [activeProject]);
 
   const removeLog = (Id) => {
     const reqBody = {
@@ -32,21 +28,26 @@ export const DevlogProvider = ({ children, user, setUser }) => {
       .catch((error) => console.log("delete devlog error", error));
   };
 
+  useEffect(() => fetchLogs(), [activeProject]);
+
+  const handleProjectClick = (Id) =>
+    axios
+      .get(`/devlog/${Id}`, authHeader)
+      .then((response) => {
+        localStorage.setItem("activeProject", Id);
+        setActiveProject(Id);
+        setLogs(response.data);
+      })
+      .catch((error) => console.log(error));
+
   return (
     <DevlogContext.Provider
       value={{
-        cachedActiveProjectId,
-        user,
-        setUser,
-        token,
-        authHeader,
-        activeProject,
-        setActiveProject,
-        isMod,
-        projects,
-        setProjects,
-        fetchProjects,
-        permissions,
+        removeLog,
+        logs,
+        setLogs,
+        fetchLogs,
+        handleProjectClick,
       }}
     >
       {children}
