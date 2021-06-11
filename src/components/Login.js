@@ -37,10 +37,10 @@ const Login = ({ history }) => {
     axios
       .post("/auth/login", input)
       .then((res) => {
-        localStorage.setItem("user", input.username);
+        localStorage.setItem("user", input.username.toLowerCase());
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("loggedIn", true);
-        setUser(input.username);
+        setUser(input.username.toLowerCase());
         setIsLoading(false);
         history.push("/projects");
       })
