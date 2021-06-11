@@ -14,7 +14,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
   const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const token = localStorage.getItem("token");
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
-  const [isMod, setIsMod] = useState(false);
+  const [isMod, setIsMod] = useLocalStorage("isMod", false);
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
   const [expanded, setExpanded] = useState(false);

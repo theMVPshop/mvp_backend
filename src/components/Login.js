@@ -33,7 +33,8 @@ const Login = ({ history }) => {
   const login = async (e) => {
     // clearForm();
     e.preventDefault();
-    const logIn = await axios
+    setIsLoading(true);
+    await axios
       .post("/auth/login", input)
       .then((res) => {
         localStorage.setItem("user", input.username);
@@ -56,7 +57,6 @@ const Login = ({ history }) => {
       .then(() => {
         setIsLoading(false);
       });
-    setIsLoading(true, () => logIn());
   };
 
   return (
