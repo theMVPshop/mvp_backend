@@ -38,7 +38,7 @@ function Navigation({ history, location }) {
                 <Nav.Item>
                   <NavLink
                     to="/projects"
-                    className="nav-link text-warning"
+                    className="nav-link text-light"
                     onClick={() => setExpanded(false)}
                   >
                     Projects
@@ -47,7 +47,7 @@ function Navigation({ history, location }) {
                 <Nav.Item>
                   <NavLink
                     to="/milestones"
-                    className="nav-link text-warning"
+                    className="nav-link text-light"
                     onClick={() => setExpanded(false)}
                   >
                     Milestones
@@ -56,7 +56,7 @@ function Navigation({ history, location }) {
                 <Nav.Item>
                   <NavLink
                     to="/devlog"
-                    className="nav-link text-warning"
+                    className="nav-link text-light"
                     onClick={() => setExpanded(false)}
                   >
                     DevLog

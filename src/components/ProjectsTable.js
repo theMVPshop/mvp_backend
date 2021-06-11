@@ -114,6 +114,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                           placement="top"
                           delay={{ show: 250, hide: 400 }}
                           overlay={renderTooltip(project.description)}
+                          className="d-md-none"
                         >
                           <td className="d-flex">
                             {project.title}
@@ -156,7 +157,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                         </td>
                       </tr>
                     ))
-                  : // otherwise, it won't have the listener
+                  : // two more conditional renderings if not moderator
                     permissions.map((permission) =>
                       projects
                         .filter(
