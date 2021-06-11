@@ -111,10 +111,9 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                       >
                         <td>{project.id}</td>
                         <OverlayTrigger
-                          placement="top"
+                          placement="left-start"
                           delay={{ show: 250, hide: 400 }}
                           overlay={renderTooltip(project.description)}
-                          className="d-md-none"
                         >
                           <td className="d-flex">
                             {project.title}

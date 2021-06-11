@@ -30,11 +30,11 @@ const Login = ({ history }) => {
   //     password: "",
   //   });
 
-  const login = async (e) => {
+  const login = (e) => {
     // clearForm();
     e.preventDefault();
     setIsLoading(true);
-    await axios
+    axios
       .post("/auth/login", input)
       .then((res) => {
         localStorage.setItem("user", input.username);
