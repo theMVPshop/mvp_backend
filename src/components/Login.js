@@ -30,10 +30,10 @@ const Login = ({ history }) => {
   //     password: "",
   //   });
 
-  const login = (e) => {
+  const login = async (e) => {
     // clearForm();
     e.preventDefault();
-    const logIn = axios
+    const logIn = await axios
       .post("/auth/login", input)
       .then((res) => {
         localStorage.setItem("user", input.username);
@@ -41,6 +41,7 @@ const Login = ({ history }) => {
         localStorage.setItem("loggedIn", true);
         setUser(input.username);
         setIsLoading(false);
+        history.push("/projects");
       })
       .catch((error) => {
         setError(
@@ -55,10 +56,7 @@ const Login = ({ history }) => {
       .then(() => {
         setIsLoading(false);
       });
-    setIsLoading(true, async () => {
-      await logIn;
-      history.push("/projects");
-    });
+    setIsLoading(true, () => logIn());
   };
 
   return (

@@ -79,24 +79,24 @@ function Navigation({ history, location }) {
                 {/* <ProjectSelectModal /> */}
               </Nav>
             )}
-            <div className="ml-auto">
+            <div className="d-flex ml-auto">
               {user && (
-                <span className="text-light d-none d-lg-block ml-auto">
+                <span className="text-light d-none d-lg-block ml-auto align-self-center pr-2">
                   Welcome <span className="text-warning">{user}</span>!
-                  <span className="ml-1">
-                    {loggedIn && (
-                      <Button
-                        variant="danger"
-                        // size="sm"
-                        onClick={logOut}
-                        className="ml-auto"
-                      >
-                        Logout
-                      </Button>
-                    )}
-                  </span>
                 </span>
               )}
+              <span className="">
+                {loggedIn && (
+                  <Button
+                    variant="danger"
+                    // size="sm"
+                    onClick={logOut}
+                    className="ml-auto"
+                  >
+                    Logout
+                  </Button>
+                )}
+              </span>
             </div>
           </Navbar.Collapse>
         </Navbar>
