@@ -7,6 +7,7 @@ import {
   Col,
   InputGroup,
   FormControl,
+  Spinner,
 } from "react-bootstrap";
 import { useGlobal } from "../contexts/GlobalProvider";
 import { useMilestones } from "../contexts/MilestonesProvider";
@@ -22,6 +23,7 @@ function AddMilestoneForm({ handleClose }) {
     due_date: "",
     ms_status: "TODO",
   });
+  const [loading, setLoading] = useState(false);
 
   // populates the add milestone form with input data in realtime
   const onChange = (event) =>
@@ -38,24 +40,42 @@ function AddMilestoneForm({ handleClose }) {
       due_date: "",
     });
 
-  // posts milestone and populates it in the view, then clears input fields
-  const onSubmit = (event) => {
-    event.preventDefault();
-    let postBody = {
-      title: input.title,
-      subtitle: input.subtitle,
-      project_id: activeProject,
-      due_date: input.due_date,
-      ms_status: "TODO",
-      description: input.description,
-    };
-    axios
-      .post("/milestones", postBody, authHeader)
-      .then(() => fetchMilestones())
-      .then(() => clearForm())
-      .catch((error) => console.log(error));
-    handleClose();
+  let postBody = {
+    title: input.title,
+    subtitle: input.subtitle,
+    project_id: activeProject,
+    due_date: input.due_date,
+    ms_status: "TODO",
+    description: input.description,
   };
+
+  // posts milestone and populates it in the view, then clears input fields
+  const onSubmit = async (event) => {
+    setLoading(true);
+    event.preventDefault();
+    try {
+      await axios.post("/milestones", postBody, authHeader);
+      await fetchMilestones();
+      clearForm();
+      setLoading(false);
+      handleClose();
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  // const onSubmit = (event) => {
+  //   setLoading(true);
+  //   event.preventDefault();
+  //   axios
+  //     .post("/milestones", postBody, authHeader)
+  //     .then(() => fetchMilestones())
+  //     .then(() => clearForm())
+  //     .then(() => setLoading(false))
+  //     .then(() => handleClose())
+  //     .catch((error) => console.log(error));
+  // };
 
   return (
     <Container className="d-flex p-6 justify-content-around m-auto">
@@ -155,15 +175,30 @@ function AddMilestoneForm({ handleClose }) {
 
         {/* </Form.Row> */}
 
-        <Button
-          as={Col}
-          variant="primary"
-          type="submit"
-          className="m-auto"
-          onClick={onSubmit}
-        >
-          Submit
-        </Button>
+        {loading ? (
+          <>
+            <Button variant="primary btn-block" disabled>
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              Adding...
+            </Button>
+          </>
+        ) : (
+          <Button
+            as={Col}
+            variant="primary"
+            type="submit"
+            className="m-auto"
+            onClick={onSubmit}
+          >
+            Submit
+          </Button>
+        )}
       </Form>
     </Container>
   );
