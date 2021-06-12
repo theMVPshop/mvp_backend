@@ -4,7 +4,7 @@ import Login from "./Login";
 
 // inheriting props from--and is always rendered by--Login.js
 const Signup = ({
-  isLoading,
+  loading,
   toggleForm,
   showSignup,
   signup,
@@ -70,7 +70,7 @@ const Signup = ({
                   />
                 </div>
 
-                {isLoading ? (
+                {loading ? (
                   <Button variant="primary btn-block" disabled>
                     <Spinner
                       as="span"

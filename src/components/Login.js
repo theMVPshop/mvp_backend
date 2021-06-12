@@ -8,7 +8,7 @@ import { useGlobal } from "../contexts/GlobalProvider";
 const Login = ({ history }) => {
   let cachedUser = localStorage.getItem("user");
   const { setUser, setIsMod } = useGlobal();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("Login");
   const [showSignup, setshowSignup] = useState(false);
   const [input, setInput] = useState({
@@ -48,7 +48,7 @@ const Login = ({ history }) => {
 
   const login = async (event) => {
     event?.preventDefault();
-    setIsLoading(true);
+    setLoading(true);
     try {
       const response = await axios.post("/auth/login", input);
       if (response.status === 200) {
@@ -61,7 +61,7 @@ const Login = ({ history }) => {
         setUser(lowercasedUsername);
         checkModPrivilege(lowercasedUsername, authHeader);
         history.push("/projects");
-        setIsLoading(false);
+        setLoading(false);
       }
     } catch (error) {
       setError(
@@ -71,7 +71,7 @@ const Login = ({ history }) => {
           ? "Wrong Password"
           : "Login Failed"
       );
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -81,7 +81,7 @@ const Login = ({ history }) => {
       username: input.username,
       isModerator: 0,
     };
-    setIsLoading(true);
+    setLoading(true);
     try {
       const response = await axios.post("/auth/signup", input);
       if (response.status === 200) {
@@ -90,7 +90,7 @@ const Login = ({ history }) => {
       }
     } catch (error) {
       console.log("failed to create user", error);
-      setIsLoading(false);
+      setLoading(false);
       setError(
         error.response.status == 409 ? "User Already Exists" : "Login Failed"
       );
@@ -102,7 +102,7 @@ const Login = ({ history }) => {
     <>
       {showSignup ? (
         <Signup
-          isLoading={isLoading}
+          loading={loading}
           toggleForm={toggleForm}
           showSignup={showSignup}
           signup={signup}
@@ -170,7 +170,7 @@ const Login = ({ history }) => {
                     </div>
                   </div>
 
-                  {isLoading ? (
+                  {loading ? (
                     <>
                       <Button variant="primary btn-block" disabled>
                         <Spinner

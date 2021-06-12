@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Container, Form, Button } from "react-bootstrap";
+import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
 import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
 function SetRoles({ projects, authHeader }) {
   const { fetchPermissions, permissions } = useProjects();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const populateUsers = () =>
     axios
@@ -14,51 +15,43 @@ function SetRoles({ projects, authHeader }) {
       .then((response) => setUsers(response.data))
       .catch((error) => console.log("failed to fetch users", error));
 
-  useEffect(() => {
-    populateUsers();
-  }, []);
+  useEffect(() => populateUsers(), []);
 
-  const handleChangeRole = (isMod, username) => {
-    const updateUserRole = async () => {
-      let reqBody = {
-        isModerator: !isMod,
-        username,
-      };
-      await axios
-        .put("/users", reqBody, authHeader)
-        .catch((error) =>
-          console.log(`failed to update ${username}'s role`, error)
-        );
+  const handleChangeRole = async (isMod, username) => {
+    setLoading(true);
+    const reqBody = {
+      isModerator: !isMod,
+      username,
     };
-    updateUserRole().then(() => populateUsers());
+    try {
+      await axios.put("/users", reqBody, authHeader);
+      await populateUsers();
+      setLoading(false);
+    } catch (error) {
+      console.log(`failed to update ${username}'s role`, error);
+      setLoading(false);
+    }
   };
 
-  const handleChangePermission = (
+  const handleChangePermission = async (
     event,
     project_id,
     username,
     permissionObject
   ) => {
-    let reqBody = { username, project_id };
-    let permissionId = permissionObject?.id;
-    const addPermission = async () =>
-      await axios
-        .post("/permissions", reqBody, authHeader)
-        .then(() => fetchPermissions())
-        .catch((error) =>
-          console.log(`failed to add permission for ${username}`, error)
-        );
-    const removePermission = async () =>
-      await axios
-        .delete(`/permissions/${permissionId}`, authHeader)
-        .then(() => fetchPermissions())
-        .catch((error) =>
-          console.log(
-            `failed to remove permission for ${username} with Id#${permissionId}`,
-            error
-          )
-        );
-    event.target.checked ? addPermission() : removePermission();
+    const reqBody = { username, project_id };
+    const permissionId = permissionObject?.id;
+    try {
+      event.target.checked
+        ? await axios.post("/permissions", reqBody, authHeader)
+        : await axios.delete(`/permissions/${permissionId}`, authHeader);
+      await fetchPermissions();
+    } catch (error) {
+      console.log(
+        `failed to remove permission for ${username} with Id#${permissionId}`,
+        error
+      );
+    }
   };
 
   return (
@@ -71,12 +64,21 @@ function SetRoles({ projects, authHeader }) {
           </tr>
         </thead>
         <tbody>
+          {loading && (
+            <Spinner
+              as="span"
+              animation="grow"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          )}
           {users.map((user) => (
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-
                 <Button
+                  key={user.id}
                   variant={user.isModerator ? "success" : "warning"}
                   onClick={() =>
                     handleChangeRole(user.isModerator, user.username)

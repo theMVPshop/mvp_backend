@@ -42,10 +42,7 @@ function Milestones() {
             </Container>
           )}
         </div>
-        <h1
-          className="d-flex p-6 justify-content-center"
-          style={{ color: "black" }}
-        >
+        <h1 className="d-flex p-6 justify-content-center text-light font-weight-bolder bg-primary">
           {activeProjectTitle ||
             (permissions
               ? "Please Select a Project"

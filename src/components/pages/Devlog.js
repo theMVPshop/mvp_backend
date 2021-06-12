@@ -7,9 +7,9 @@ import { useProjects } from "../../contexts/ProjectsProvider";
 import ProjectSelectModal from "../ProjectSelectModal";
 
 export default function Devlog() {
-  const { authHeader, activeProject, setActiveProject, isMod } = useGlobal();
+  const { authHeader, activeProject, isMod } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
-  const { logs, setLogs, fetchLogs, removeLog } = useDevlog();
+  const { logs, fetchLogs, removeLog } = useDevlog();
 
   return (
     <Container
@@ -32,25 +32,27 @@ export default function Devlog() {
           <ProjectSelectModal asModal={true} route={"devlog"} />
           {isMod && (
             <DevlogAddFormModal
-              setActiveProject={setActiveProject}
               activeProject={activeProject}
               authHeader={authHeader}
-              setLogs={setLogs}
               fetchLogs={fetchLogs}
-              isMod={isMod}
             />
           )}
         </div>
       </div>
       {/* accordion starts below */}
       <Container className="p-12">
-        <h1 className="d-flex p-6 justify-content-center">
+        <h1 className="d-flex p-6 justify-content-center text-light font-weight-bolder bg-primary">
           {activeProjectTitle ||
             (permissions
               ? "Please Select a Project"
               : "Please inform your supervisor to assign you a project")}
         </h1>
         <Accordion defaultActiveKey="0" className="p-12">
+          {!logs.length && (
+            <h1 className="display-4 text-center text-dark bg-warning">
+              No Logs For Current Project
+            </h1>
+          )}
           {logs.map((log, idx) => (
             <Card key={idx} className="bg-dark text-light">
               <Card.Header
