@@ -8,7 +8,7 @@ import { useGlobal } from "../../contexts/GlobalProvider";
 import { useMilestones } from "../../contexts/MilestonesProvider";
 
 function Milestones() {
-  const { authHeader, activeProject, setActiveProject, projects, isMod } =
+  const { authHeader, activeProject, setActiveProject, projects, permissions } =
     useGlobal();
   const {
     milestones,
@@ -102,10 +102,10 @@ function Milestones() {
           className="d-flex p-6 justify-content-center"
           style={{ color: "black" }}
         >
-          {isMod
-            ? projects?.find((x) => x.id == activeProject)?.title ||
-              "Please Select a Project"
-            : "Please inform your supervisor to assign you a project"}
+          {projects?.find((x) => x.id == activeProject)?.title ||
+            (permissions
+              ? "Please Select a Project"
+              : "Please inform your supervisor to assign you a project")}
         </h1>
         <TimelineElement
           milestones={milestones}

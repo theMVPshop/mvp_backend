@@ -7,9 +7,8 @@ function ProjectSelectModal({
   handleProjectClick,
   activeProject,
   setActiveProject,
-  // AddLogOnClickHandleShow,
-  AddLogButton,
-  isMod,
+  // AddLogButton,
+  // isMod,
 }) {
   const [show, setShow] = useState(false);
 
@@ -17,40 +16,38 @@ function ProjectSelectModal({
   const handleShow = () => setShow(true);
 
   return (
-    <Container>
-      <Container className="milestones">
-        <Container className="d-flex justify-content-center">
-          <Button variant="secondary" onClick={handleShow}>
-            Select Project
-          </Button>
-          {isMod && <AddLogButton />}
-        </Container>
-        <div className="row d-flex justify-content-center">
-          <>
-            <Modal show={show} onHide={handleClose}>
-              <Modal.Header
-                closeButton
-                style={{ backgroundColor: "var(--blue)" }}
-              >
-                <Modal.Title style={{ color: "var(--light)" }}>
-                  Your Projects
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body style={{ backgroundColor: "gray" }}>
-                <Container className="d-flex p-6 justify-content-center">
-                  <ProjectsTable
-                    style={{ backgroundColor: "var(--gray)" }}
-                    asModal={asModal}
-                    handleProjectClick={handleProjectClick}
-                    setActiveProject={setActiveProject}
-                    activeProject={activeProject}
-                  />
-                </Container>
-              </Modal.Body>
-            </Modal>
-          </>
-        </div>
+    <Container className="milestones">
+      <Container className="d-flex justify-content-center">
+        <Button variant="secondary" onClick={handleShow} className="m-2">
+          Select Project
+        </Button>
+        {/* {isMod && <AddLogButton />} */}
       </Container>
+      <div className="row d-flex justify-content-center">
+        <>
+          <Modal show={show} onHide={handleClose}>
+            <Modal.Header
+              closeButton
+              style={{ backgroundColor: "var(--blue)" }}
+            >
+              <Modal.Title style={{ color: "var(--light)" }}>
+                Your Projects
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{ backgroundColor: "gray" }}>
+              <Container className="d-flex p-6 justify-content-center">
+                <ProjectsTable
+                  style={{ backgroundColor: "var(--gray)" }}
+                  asModal={asModal}
+                  handleProjectClick={handleProjectClick}
+                  setActiveProject={setActiveProject}
+                  activeProject={activeProject}
+                />
+              </Container>
+            </Modal.Body>
+          </Modal>
+        </>
+      </div>
     </Container>
   );
 }

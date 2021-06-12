@@ -3,11 +3,19 @@ import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogAddFormModal from "../DevlogAddFormModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useDevlog } from "../../contexts/DevlogProvider";
+import ProjectSelectModal from "../ProjectSelectModal";
 
 export default function Devlog() {
-  const { authHeader, activeProject, setActiveProject, isMod, projects } =
-    useGlobal();
-  const { logs, setLogs, fetchLogs, removeLog } = useDevlog();
+  const {
+    authHeader,
+    activeProject,
+    setActiveProject,
+    isMod,
+    projects,
+    permissions,
+  } = useGlobal();
+  const { logs, setLogs, fetchLogs, removeLog, handleProjectClick } =
+    useDevlog();
 
   return (
     <Container
@@ -26,22 +34,30 @@ export default function Devlog() {
           filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
         }}
       >
-        <DevlogAddFormModal
-          setActiveProject={setActiveProject}
-          activeProject={activeProject}
-          authHeader={authHeader}
-          setLogs={setLogs}
-          fetchLogs={fetchLogs}
-          isMod={isMod}
-        />
+        <div className="d-flex row">
+          <ProjectSelectModal
+            asModal={true}
+            handleProjectClick={handleProjectClick}
+          />
+          {isMod && (
+            <DevlogAddFormModal
+              setActiveProject={setActiveProject}
+              activeProject={activeProject}
+              authHeader={authHeader}
+              setLogs={setLogs}
+              fetchLogs={fetchLogs}
+              isMod={isMod}
+            />
+          )}
+        </div>
       </div>
       {/* accordion starts below */}
       <Container className="p-12">
         <h1 className="d-flex p-6 justify-content-center">
-          {isMod
-            ? projects?.find((x) => x.id == activeProject)?.title ||
-              "Please Select a Project"
-            : "Please inform your supervisor to assign you a project"}
+          {projects?.find((x) => x.id == activeProject)?.title ||
+            (permissions
+              ? "Please Select a Project"
+              : "Please inform your supervisor to assign you a project")}
         </h1>
         <Accordion defaultActiveKey="0" className="p-12">
           {logs.map((log, idx) => (
