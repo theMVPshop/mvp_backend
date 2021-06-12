@@ -1,86 +1,17 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Button, Spinner } from "react-bootstrap";
 import Login from "./Login";
-import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from--and is always rendered by--Login.js
 const Signup = ({
-  history,
-  setUser,
   isLoading,
-  setIsLoading,
   toggleForm,
   showSignup,
+  signup,
+  handleChange,
+  input,
+  error,
 }) => {
-  const { setModPrivilege } = useGlobal();
-  const [input, setInput] = useState({
-    username: "",
-    password: "",
-    email: "",
-  });
-  const [error, setError] = useState("Create Account");
-
-  const handleChange = (e) =>
-    setInput((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-
-  // const clearForm = () =>
-  //   setInput({
-  //     username: "",
-  //     password: "",
-  //     email: "",
-  //   });
-
-  const signup = (e) => {
-    e.preventDefault();
-    let userObject = {
-      username: input.username,
-      isModerator: 0,
-    };
-    setIsLoading(true);
-    axios
-      .post("/auth/signup", input)
-      .then(() =>
-        axios
-          .post("/users", userObject)
-          .then(() => login())
-          .catch((error) => console.log("failed to add user to db", error))
-      )
-      .catch((error) => {
-        console.log("failed to create user", error);
-        // clearForm();
-        setIsLoading(false);
-        setError(
-          error.response.status == "409"
-            ? "User Already Exists"
-            : "Login Failed"
-        );
-      });
-    // clearForm();
-  };
-
-  const login = () => {
-    axios
-      .post("/auth/login", input)
-      .then((res) => {
-        localStorage.setItem("user", input.username);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("loggedIn", true);
-        setUser(input.username);
-        setModPrivilege(input.username);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        alert(error);
-        console.log("failed to log in", error);
-      })
-      .then(() => setIsLoading(false));
-    history.push("/projects");
-  };
-
   return (
     <>
       {showSignup ? (

@@ -14,6 +14,7 @@ const Login = ({ history }) => {
   const [input, setInput] = useState({
     username: "",
     password: "",
+    email: "",
   });
 
   const toggleForm = () => setshowSignup(!showSignup);
@@ -24,73 +25,90 @@ const Login = ({ history }) => {
       [e.target.name]: e.target.value,
     }));
 
-  // const clearForm = () =>
-  //   setInput({
-  //     username: "",
-  //     password: "",
-  //   });
+  const clearForm = () =>
+    setInput({
+      username: "",
+      password: "",
+    });
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const setModPrivilege = (username, authHeader) =>
-    axios
-      .get("/users", authHeader)
-      .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === username)?.isModerator === 1
-            ? true
-            : false
-        );
-      })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
+  const checkModPrivilege = async (username, authHeader) => {
+    try {
+      const response = await axios.get("/users", authHeader);
+      const users = await response.data;
+      setIsMod(
+        users.find((x) => x.username === username)?.isModerator === 1
+          ? true
+          : false
       );
+    } catch (error) {
+      console.log("failed to retrieve moderator status", error);
+    }
+  };
 
-  const login = (e) => {
-    // clearForm();
-    e.preventDefault();
+  const login = async (event) => {
+    event?.preventDefault();
     setIsLoading(true);
-    axios
-      .post("/auth/login", input)
-      .then((res) => {
-        console.log("res status!", res.status);
-        const lowerCasedUsername = input.username.toLowerCase();
-        const token = res.data.token;
-        localStorage.setItem("user", lowerCasedUsername);
+    try {
+      const response = await axios.post("/auth/login", input);
+      if (response.status === 200) {
+        const lowercasedUsername = input.username.toLowerCase();
+        const token = response.data.token;
+        const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+        localStorage.setItem("user", lowercasedUsername);
         localStorage.setItem("token", token);
         localStorage.setItem("loggedIn", true);
-        setUser(lowerCasedUsername);
-        setModPrivilege(lowerCasedUsername, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setIsLoading(false);
+        setUser(lowercasedUsername);
+        checkModPrivilege(lowercasedUsername, authHeader);
         history.push("/projects");
-      })
-      .catch((error) => {
-        setError(
-          error.response.status == "404"
-            ? "User Not Found"
-            : error.response.status == "400"
-            ? "Wrong Password"
-            : "Login Failed"
-        );
-        console.log("login error", error);
-      })
-      .then(() => {
         setIsLoading(false);
-      });
+      }
+    } catch (error) {
+      setError(
+        error.response.status == 404
+          ? "User Not Found"
+          : error.response.status == 400
+          ? "Wrong Password"
+          : "Login Failed"
+      );
+      setIsLoading(false);
+    }
+  };
+
+  const signup = async (e) => {
+    e.preventDefault();
+    const userObject = {
+      username: input.username,
+      isModerator: 0,
+    };
+    setIsLoading(true);
+    try {
+      const response = await axios.post("/auth/signup", input);
+      if (response.status === 200) {
+        await axios.post("/users", userObject);
+        login();
+      }
+    } catch (error) {
+      console.log("failed to create user", error);
+      setIsLoading(false);
+      setError(
+        error.response.status == 409 ? "User Already Exists" : "Login Failed"
+      );
+    }
+    clearForm();
   };
 
   return (
     <>
       {showSignup ? (
         <Signup
-          history={history}
-          setUser={setUser}
-          login={login}
           isLoading={isLoading}
-          setIsLoading={setIsLoading}
           toggleForm={toggleForm}
           showSignup={showSignup}
+          signup={signup}
+          handleChange={handleChange}
+          input={input}
+          error={error}
         />
       ) : (
         <>
