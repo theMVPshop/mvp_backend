@@ -61,65 +61,6 @@ function AddMilestoneForm({ handleClose }) {
     <Container className="d-flex p-6 justify-content-around m-auto">
       <Form>
         {/* <Form.Row> */}
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text className="bg-info text-light" id="title-addon1">
-              Title
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={input.title}
-            onChange={onChange}
-            aria-label="Milestone Title"
-            aria-describedby="title-addon1"
-          />
-        </InputGroup>
-
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text
-              className="bg-info text-light"
-              id="subtitle-addon1"
-            >
-              Subtitle
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            type="text"
-            name="subtitle"
-            placeholder="Subtitle"
-            value={input.subtitle}
-            onChange={onChange}
-            aria-label="Milestone Subtitle"
-            aria-describedby="subtitle-addon1"
-          />
-        </InputGroup>
-        {/* </Form.Row> */}
-        {/* <Form.Row> */}
-        <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text
-              className="bg-dark text-light"
-              id="description-addon1"
-            >
-              Description
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            type="text"
-            as="textarea"
-            feedback
-            name="description"
-            placeholder="Description"
-            value={input.description}
-            onChange={onChange}
-            aria-label="Milestone Description"
-            aria-describedby="description-addon1"
-          />
-        </InputGroup>
 
         <InputGroup className="mb-3">
           <InputGroup.Prepend>
@@ -137,6 +78,81 @@ function AddMilestoneForm({ handleClose }) {
             aria-describedby="date-addon1"
           />
         </InputGroup>
+
+        <InputGroup className="mb-3">
+          {/* <InputGroup.Prepend>
+            <InputGroup.Text className="bg-info text-light" id="title-addon1">
+              Title
+            </InputGroup.Text>
+          </InputGroup.Prepend> */}
+          <FormControl
+            type="text"
+            name="title"
+            placeholder="Title"
+            value={input.title}
+            onChange={onChange}
+            aria-label="Milestone Title"
+            aria-describedby="title-addon1"
+          />
+        </InputGroup>
+
+        <InputGroup className="mb-3">
+          {/* <InputGroup.Prepend>
+            <InputGroup.Text
+              className="bg-info text-light"
+              id="subtitle-addon1"
+            >
+              Subtitle
+            </InputGroup.Text>
+          </InputGroup.Prepend> */}
+          <FormControl
+            type="text"
+            name="subtitle"
+            placeholder="Subtitle"
+            value={input.subtitle}
+            onChange={onChange}
+            aria-label="Milestone Subtitle"
+            aria-describedby="subtitle-addon1"
+          />
+        </InputGroup>
+
+        {/* </Form.Row> */}
+        {/* <Form.Row> */}
+        {/* <InputGroup className="mb-3">
+          <InputGroup.Prepend>
+            <InputGroup.Text
+              className="bg-dark text-light"
+              id="description-addon1"
+            >
+              Description
+            </InputGroup.Text>
+          </InputGroup.Prepend>
+          <FormControl
+            type="text"
+            as="textarea"
+            rows={5}
+            name="description"
+            placeholder="Description"
+            value={input.description}
+            onChange={onChange}
+            aria-label="Milestone Description"
+            aria-describedby="description-addon1"
+          />
+        </InputGroup> */}
+
+        <Form.Group controlId="formGridDescription">
+          {/* <Form.Label>Description</Form.Label> */}
+          <Form.Control
+            type="text"
+            as="textarea"
+            rows={5}
+            name="description"
+            placeholder="Description"
+            value={input.description}
+            onChange={onChange}
+          />
+        </Form.Group>
+
         {/* </Form.Row> */}
 
         <Button

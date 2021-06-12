@@ -36,8 +36,8 @@ export const ProjectsProvider = ({ children }) => {
 
   React.useEffect(() => {
     function init() {
-      fetchProjects();
       fetchPermissions();
+      fetchProjects();
     }
     user && init();
   }, [user]);

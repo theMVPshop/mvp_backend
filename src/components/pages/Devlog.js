@@ -7,14 +7,8 @@ import { useProjects } from "../../contexts/ProjectsProvider";
 import ProjectSelectModal from "../ProjectSelectModal";
 
 export default function Devlog() {
-  const {
-    authHeader,
-    activeProject,
-    setActiveProject,
-    isMod,
-    activeProjectTitle,
-  } = useGlobal();
-  const { permissions } = useProjects();
+  const { authHeader, activeProject, setActiveProject, isMod } = useGlobal();
+  const { permissions, activeProjectTitle } = useProjects();
   const { logs, setLogs, fetchLogs, removeLog, handleProjectClick } =
     useDevlog();
 

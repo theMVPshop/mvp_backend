@@ -12,11 +12,10 @@ function AddMilestoneModal({ onChange, onSubmit, input }) {
   return (
     <>
       <Button
-        // variant="success"
         size="sm"
+        variant="success"
         onClick={handleShow}
-        // className="nav-link text-success"
-        style={{ marginTop: ".5px" }}
+        style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
       >
         Create Milestone
       </Button>

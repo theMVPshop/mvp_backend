@@ -43,7 +43,7 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
   };
 
   return (
-    <div>
+    <>
       {isMod && (
         <Container className="d-flex p-6 justify-content-center">
           <form onSubmit={onSubmit}>
@@ -78,7 +78,7 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
           </form>
         </Container>
       )}
-    </div>
+    </>
   );
 }
 

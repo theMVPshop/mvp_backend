@@ -8,9 +8,8 @@ import { useMilestones } from "../../contexts/MilestonesProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
 
 function Milestones() {
-  const { authHeader, activeProject, setActiveProject, activeProjectTitle } =
-    useGlobal();
-  const { permissions } = useProjects();
+  const { authHeader, activeProject, setActiveProject } = useGlobal();
+  const { permissions, activeProjectTitle } = useProjects();
   const {
     milestones,
     handleProjectClick,
@@ -38,9 +37,7 @@ function Milestones() {
         >
           <Container
             className="d-flex p-6 justify-content-evenly mt-2"
-            style={{
-              filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
-            }}
+            style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
           >
             <ProjectSelectModal
               asModal={true}
@@ -49,8 +46,8 @@ function Milestones() {
               activeProject={activeProject}
             />
           </Container>
-          <Container className="d-flex p-6 justify-content-center mt-2 mb-2 ms-2">
-            <AddMilestoneModal className="ms-3 me-2" />
+          <Container className="d-flex justify-content-center">
+            <AddMilestoneModal />
           </Container>
         </div>
         <h1
