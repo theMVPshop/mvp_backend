@@ -6,7 +6,7 @@ import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from Navigation.js
 function SetRolesModal({ projects, authHeader }) {
-  const { fetchPermissions, permissions } = useProjects();
+  const { fetchPermissions, permissions, loadingPermissions } = useProjects();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ function SetRolesModal({ projects, authHeader }) {
       .then((response) => setUsers(response.data))
       .catch((error) => console.log("failed to fetch users", error));
 
-  useEffect(() => fetchUsers(), []);
+  useEffect(() => fetchUsers(), [permissions]);
 
   const handleChangeRole = async (isMod, username) => {
     setLoading(true);
@@ -86,7 +86,7 @@ function SetRolesModal({ projects, authHeader }) {
         <Modal.Header className="bg-light" closeButton>
           <Modal.Title>
             Assign Roles/Projects
-            {loading && (
+            {(loading || loadingPermissions) && (
               <Spinner
                 as="span"
                 variant="danger"
