@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Container } from "react-bootstrap";
 import ProjectSelectModal from "../ProjectSelectModal";
-import AddMilestoneForm from "../AddMilestoneForm";
+import AddMilestoneModal from "../AddMilestoneModal";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useMilestones } from "../../contexts/MilestonesProvider";
@@ -90,11 +90,11 @@ function Milestones() {
             />
           </Container>
           <Container className="d-flex p-6 justify-content-center mt-2 mb-2 ms-2">
-            <AddMilestoneForm
+            <AddMilestoneModal
               className="ms-3 me-2"
-              onChange={onChange}
-              input={input}
-              onSubmit={onSubmit}
+              // onChange={onChange}
+              // input={input}
+              // onSubmit={onSubmit}
             />
           </Container>
         </div>

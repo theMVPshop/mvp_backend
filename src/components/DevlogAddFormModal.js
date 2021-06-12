@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Container, Button, Form, Modal } from "react-bootstrap";
-import ProjectSelectModal from "./ProjectSelectModal";
-import { useDevlog } from "../contexts/DevlogProvider";
+// import ProjectSelectModal from "./ProjectSelectModal";
+// import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
 function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
