@@ -7,7 +7,7 @@ import { useGlobal } from "../contexts/GlobalProvider";
 
 const Login = ({ history }) => {
   let cachedUser = localStorage.getItem("user");
-  const { setUser } = useGlobal();
+  const { setUser, setIsMod } = useGlobal();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("Login");
   const [showSignup, setshowSignup] = useState(false);
@@ -30,6 +30,21 @@ const Login = ({ history }) => {
   //     password: "",
   //   });
 
+  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
+  const setModPrivilege = (username, authHeader) =>
+    axios
+      .get("/users", authHeader)
+      .then((response) => {
+        setIsMod(
+          response.data.find((x) => x.username === username)?.isModerator === 1
+            ? true
+            : false
+        );
+      })
+      .catch((error) =>
+        console.log("failed to retrieve moderator status", error)
+      );
+
   const login = (e) => {
     // clearForm();
     e.preventDefault();
@@ -37,10 +52,16 @@ const Login = ({ history }) => {
     axios
       .post("/auth/login", input)
       .then((res) => {
-        localStorage.setItem("user", input.username.toLowerCase());
-        localStorage.setItem("token", res.data.token);
+        console.log("res status!", res.status);
+        const lowerCasedUsername = input.username.toLowerCase();
+        const token = res.data.token;
+        localStorage.setItem("user", lowerCasedUsername);
+        localStorage.setItem("token", token);
         localStorage.setItem("loggedIn", true);
-        setUser(input.username.toLowerCase());
+        setUser(lowerCasedUsername);
+        setModPrivilege(lowerCasedUsername, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setIsLoading(false);
         history.push("/projects");
       })

@@ -19,21 +19,6 @@ export const GlobalProvider = ({ children, user, setUser }) => {
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
   const [expanded, setExpanded] = useState(false);
 
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const setModPrivilege = (user) =>
-    axios
-      .get("/users", authHeader)
-      .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === user)?.isModerator === 1
-            ? true
-            : false
-        );
-      })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
-      );
-
   const fetchProjects = () =>
     axios
       .get("/projects", authHeader)
@@ -64,7 +49,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
   return (
     <GlobalContext.Provider
       value={{
-        setModPrivilege,
+        // setModPrivilege,
         cachedActiveProjectId,
         user,
         setUser,
@@ -72,6 +57,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         authHeader,
         activeProject,
         setActiveProject,
+        setIsMod,
         isMod,
         projects,
         setProjects,
