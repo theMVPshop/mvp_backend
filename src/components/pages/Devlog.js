@@ -3,6 +3,7 @@ import { Container, Accordion, Card, Button } from "react-bootstrap";
 import DevlogAddFormModal from "../DevlogAddFormModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useDevlog } from "../../contexts/DevlogProvider";
+import { useProjects } from "../../contexts/ProjectsProvider";
 import ProjectSelectModal from "../ProjectSelectModal";
 
 export default function Devlog() {
@@ -12,8 +13,8 @@ export default function Devlog() {
     setActiveProject,
     isMod,
     activeProjectTitle,
-    permissions,
   } = useGlobal();
+  const { permissions } = useProjects();
   const { logs, setLogs, fetchLogs, removeLog, handleProjectClick } =
     useDevlog();
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Container, Form, Button } from "react-bootstrap";
-import { useGlobal } from "../contexts/GlobalProvider";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
 function SetRoles({ projects, authHeader }) {
-  const { fetchPermissions, permissions } = useGlobal();
+  const { fetchPermissions, permissions } = useProjects();
   const [users, setUsers] = useState([]);
 
   const populateUsers = () =>

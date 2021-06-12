@@ -1,55 +1,22 @@
 import React, { useState, useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
-import axios from "axios";
 
 const GlobalContext = React.createContext();
 
 export const useGlobal = () => useContext(GlobalContext);
 
 export const GlobalProvider = ({ children, user, setUser }) => {
-  // let loggedIn = localStorage.getItem("loggedIn");
-  // const user = localStorage.getItem("user");
   let cachedActiveProjectId =
     parseInt(localStorage.getItem("activeProject")) || null;
   const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
   const token = localStorage.getItem("token");
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
   const [isMod, setIsMod] = useLocalStorage("isMod", false);
-  const [projects, setProjects] = useLocalStorage("projects", []);
-  const [permissions, setPermissions] = useLocalStorage("permissions", []);
   const [expanded, setExpanded] = useState(false);
-
-  const fetchProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to populate projects", error));
-
-  // fetch permissions table from API and store in hook
-  const fetchPermissions = () =>
-    axios
-      .get("/permissions", authHeader)
-      .then((response) => setPermissions(response.data))
-      .catch((error) => console.log("failed to fetch permissions", error));
-
-  React.useEffect(() => {
-    fetchProjects();
-    fetchPermissions();
-  }, [user]);
-
-  // removes project from api and repopulates component with projects sans deleted one
-  const deleteProject = (Id) =>
-    axios
-      .delete(`/projects/${Id}`, authHeader)
-      .then(() => fetchProjects())
-      .catch((error) => console.log("error deleting project", error));
-
-  let activeProjectTitle = projects?.find((x) => x.id == activeProject)?.title;
 
   return (
     <GlobalContext.Provider
       value={{
-        // setModPrivilege,
         cachedActiveProjectId,
         user,
         setUser,
@@ -59,15 +26,8 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         setActiveProject,
         setIsMod,
         isMod,
-        projects,
-        setProjects,
-        fetchProjects,
-        fetchPermissions,
-        permissions,
-        deleteProject,
         expanded,
         setExpanded,
-        activeProjectTitle,
       }}
     >
       {children}

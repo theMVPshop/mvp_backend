@@ -5,15 +5,12 @@ import AddMilestoneModal from "../AddMilestoneModal";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useMilestones } from "../../contexts/MilestonesProvider";
+import { useProjects } from "../../contexts/ProjectsProvider";
 
 function Milestones() {
-  const {
-    authHeader,
-    activeProject,
-    setActiveProject,
-    activeProjectTitle,
-    permissions,
-  } = useGlobal();
+  const { authHeader, activeProject, setActiveProject, activeProjectTitle } =
+    useGlobal();
+  const { permissions } = useProjects();
   const {
     milestones,
     handleProjectClick,

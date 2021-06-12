@@ -3,11 +3,13 @@ import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
 import SetRolesModal from "./SetRolesModal";
 import { useGlobal } from "../contexts/GlobalProvider";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from App.js
 function Navigation({ history, location }) {
-  const { user, setUser, isMod, projects, authHeader, expanded, setExpanded } =
+  const { user, setUser, isMod, authHeader, expanded, setExpanded } =
     useGlobal();
+  const { projects } = useProjects();
   let loggedIn = localStorage.getItem("loggedIn");
 
   const logOut = async () => {

@@ -14,20 +14,13 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 import { useGlobal } from "../contexts/GlobalProvider";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ asModal, handleProjectClick }) {
-  const {
-    cachedActiveProjectId,
-    user,
-    authHeader,
-    isMod,
-    projects,
-    setProjects,
-    permissions,
-    setActiveProject,
-    deleteProject,
-  } = useGlobal();
+  const { cachedActiveProjectId, user, authHeader, isMod, setActiveProject } =
+    useGlobal();
+  const { projects, setProjects, permissions, deleteProject } = useProjects();
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 

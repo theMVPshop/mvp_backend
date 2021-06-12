@@ -7,8 +7,6 @@ function ProjectSelectModal({
   handleProjectClick,
   activeProject,
   setActiveProject,
-  // AddLogButton,
-  // isMod,
 }) {
   const [show, setShow] = useState(false);
 

@@ -1,41 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import axios from "axios";
+import { useGlobal } from "./GlobalProvider";
 
-const GlobalContext = React.createContext();
+const ProjectsContext = React.createContext();
 
-export const useGlobal = () => useContext(GlobalContext);
+export const useProjects = () => useContext(ProjectsContext);
 
-export const GlobalProvider = ({ children, user, setUser }) => {
-  // let loggedIn = localStorage.getItem("loggedIn");
-  // const user = localStorage.getItem("user");
-  let cachedActiveProjectId =
-    parseInt(localStorage.getItem("activeProject")) || null;
-  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
-  const token = localStorage.getItem("token");
-  const authHeader = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const [isMod, setIsMod] = useState(false);
+export const ProjectsProvider = ({ children }) => {
+  const { user, authHeader, activeProject } = useGlobal();
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
-
-  // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = () =>
-    axios
-      .get("/users", authHeader)
-      .then((response) => {
-        setIsMod(
-          response.data.find((x) => x.username === user)?.isModerator === 1
-            ? true
-            : false
-        );
-      })
-      .catch((error) =>
-        console.log("failed to retrieve moderator status", error)
-      );
 
   const fetchProjects = () =>
     axios
@@ -50,30 +25,36 @@ export const GlobalProvider = ({ children, user, setUser }) => {
       .then((response) => setPermissions(response.data))
       .catch((error) => console.log("failed to fetch permissions", error));
 
+  // removes project from api and repopulates component with projects sans deleted one
+  const deleteProject = (Id) =>
+    axios
+      .delete(`/projects/${Id}`, authHeader)
+      .then(() => fetchProjects())
+      .catch((error) => console.log("error deleting project", error));
+
+  let activeProjectTitle = projects?.find((x) => x.id == activeProject)?.title;
+
   React.useEffect(() => {
-    fetchProjects();
-    checkModPrivilege();
-    fetchPermissions();
+    function init() {
+      fetchProjects();
+      fetchPermissions();
+    }
+    user && init();
   }, [user]);
 
   return (
-    <GlobalContext.Provider
+    <ProjectsContext.Provider
       value={{
-        cachedActiveProjectId,
-        user,
-        setUser,
-        token,
-        authHeader,
-        activeProject,
-        setActiveProject,
-        isMod,
         projects,
         setProjects,
         fetchProjects,
+        fetchPermissions,
+        deleteProject,
         permissions,
+        activeProjectTitle,
       }}
     >
       {children}
-    </GlobalContext.Provider>
+    </ProjectsContext.Provider>
   );
 };
