@@ -12,10 +12,10 @@ function SetRolesModal({ projects, authHeader }) {
   return (
     <>
       <Button
-        variant="success"
-        // size="sm"
+        // variant="success"
+        size="sm"
         onClick={handleShow}
-        className="nav-link text-warning"
+        className="nav-link text-success"
         style={{ marginTop: ".5px" }}
       >
         Assign

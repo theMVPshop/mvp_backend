@@ -30,11 +30,7 @@ function Navigation({ history, location }) {
           />
           <Navbar.Collapse id="basic-navbar-nav">
             {user && (
-              <Nav
-                variant="pills"
-                // className="mr-auto d-flex"
-                activeKey={location.pathname}
-              >
+              <Nav variant="pills" activeKey={location.pathname}>
                 <Nav.Item>
                   <NavLink
                     to="/projects"
@@ -70,13 +66,6 @@ function Navigation({ history, location }) {
                     />
                   )}
                 </Nav.Item>
-
-                {/* {!user && (
-                  <Link to="/login" className="nav-link">
-                  Sign In
-                  </Link>
-                )} */}
-                {/* <ProjectSelectModal /> */}
               </Nav>
             )}
             <div className="d-flex ml-auto">
@@ -85,11 +74,11 @@ function Navigation({ history, location }) {
                   Welcome <span className="text-warning">{user}</span>!
                 </span>
               )}
-              <span className="">
+              <span>
                 {loggedIn && (
                   <Button
                     variant="danger"
-                    // size="sm"
+                    size="sm"
                     onClick={logOut}
                     className="ml-auto"
                   >

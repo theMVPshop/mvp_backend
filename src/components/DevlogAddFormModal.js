@@ -5,14 +5,7 @@ import ProjectSelectModal from "./ProjectSelectModal";
 import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
-function DevlogAddFormModal({
-  isMod,
-  setActiveProject,
-  activeProject,
-  authHeader,
-  fetchLogs,
-}) {
-  const { handleProjectClick } = useDevlog();
+function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
   const [show, setShow] = useState(false);
   const [input, setInput] = useState({
     title: "",
@@ -53,26 +46,11 @@ function DevlogAddFormModal({
       .catch((error) => console.log(error));
   };
 
-  // const AddLogButton = () => (
-  //   <Button variant="primary" onClick={handleShow}>
-  //     Add Log Entry
-  //   </Button>
-  // );
-
   return (
     <>
       <Button variant="success" onClick={handleShow} className="w-auto m-auto">
         Add Log Entry
       </Button>
-      {/* <ProjectSelectModal
-        asModal={true}
-        handleProjectClick={handleProjectClick}
-        setActiveProject={setActiveProject}
-        activeProject={activeProject}
-        AddLogOnClickHandleShow={handleShow}
-        AddLogButton={AddLogButton}
-        isMod={isMod}
-      /> */}
       <Modal show={show} onHide={handleClose}>
         <div
           className="devlogContainer pb-3 mb-2 m-auto w-100"
