@@ -1,13 +1,67 @@
-import React, { useState } from "react";
-import { Container, Modal, Button } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Spinner, Container, Modal, Button } from "react-bootstrap";
 import SetRoles from "./SetRoles";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from Navigation.js
 function SetRolesModal({ projects, authHeader }) {
+  const { fetchPermissions, permissions } = useProjects();
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const fetchUsers = () =>
+    axios
+      .get("/users", authHeader)
+      .then((response) => setUsers(response.data))
+      .catch((error) => console.log("failed to fetch users", error));
+
+  useEffect(() => fetchUsers(), []);
+
+  const handleChangeRole = async (isMod, username) => {
+    setLoading(true);
+    const reqBody = {
+      isModerator: !isMod,
+      username,
+    };
+    try {
+      await axios.put("/users", reqBody, authHeader);
+      await fetchUsers();
+      setLoading(false);
+    } catch (error) {
+      console.log(`failed to update ${username}'s role`, error);
+      setLoading(false);
+    }
+  };
+
+  const handleChangePermission = async (
+    event,
+    project_id,
+    username,
+    permissionObject
+  ) => {
+    setLoading(true);
+    const reqBody = { username, project_id };
+    const permissionId = permissionObject?.id;
+    try {
+      event.target.checked
+        ? await axios.post("/permissions", reqBody, authHeader)
+        : await axios.delete(`/permissions/${permissionId}`, authHeader);
+      await fetchPermissions();
+      setLoading(false);
+    } catch (error) {
+      console.log(
+        `failed to remove permission for ${username} with Id#${permissionId}`,
+        error
+      );
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -30,12 +84,31 @@ function SetRolesModal({ projects, authHeader }) {
         animation
       >
         <Modal.Header className="bg-light" closeButton>
-          <Modal.Title>Assign Roles/Projects</Modal.Title>
+          <Modal.Title>
+            Assign Roles/Projects
+            {loading && (
+              <Spinner
+                as="span"
+                variant="danger"
+                animation="border"
+                role="status"
+                aria-hidden="true"
+                className="ml-1"
+              />
+            )}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
           <Container className="d-flex p-6 justify-content-center">
             {/* line below renders SetRoles component */}
-            <SetRoles projects={projects} authHeader={authHeader} />
+            <SetRoles
+              projects={projects}
+              loading={loading}
+              users={users}
+              permissions={permissions}
+              handleChangePermission={handleChangePermission}
+              handleChangeRole={handleChangeRole}
+            />
           </Container>
         </Modal.Body>
       </Modal>

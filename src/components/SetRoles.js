@@ -1,59 +1,14 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
-import { useProjects } from "../contexts/ProjectsProvider";
+import React from "react";
+import { Table, Container, Form, Button } from "react-bootstrap";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
-function SetRoles({ projects, authHeader }) {
-  const { fetchPermissions, permissions } = useProjects();
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  const populateUsers = () =>
-    axios
-      .get("/users", authHeader)
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.log("failed to fetch users", error));
-
-  useEffect(() => populateUsers(), []);
-
-  const handleChangeRole = async (isMod, username) => {
-    setLoading(true);
-    const reqBody = {
-      isModerator: !isMod,
-      username,
-    };
-    try {
-      await axios.put("/users", reqBody, authHeader);
-      await populateUsers();
-      setLoading(false);
-    } catch (error) {
-      console.log(`failed to update ${username}'s role`, error);
-      setLoading(false);
-    }
-  };
-
-  const handleChangePermission = async (
-    event,
-    project_id,
-    username,
-    permissionObject
-  ) => {
-    const reqBody = { username, project_id };
-    const permissionId = permissionObject?.id;
-    try {
-      event.target.checked
-        ? await axios.post("/permissions", reqBody, authHeader)
-        : await axios.delete(`/permissions/${permissionId}`, authHeader);
-      await fetchPermissions();
-    } catch (error) {
-      console.log(
-        `failed to remove permission for ${username} with Id#${permissionId}`,
-        error
-      );
-    }
-  };
-
+function SetRoles({
+  projects,
+  users,
+  permissions,
+  handleChangePermission,
+  handleChangeRole,
+}) {
   return (
     <Container>
       <Table striped bordered hover variant="dark">
@@ -64,15 +19,6 @@ function SetRoles({ projects, authHeader }) {
           </tr>
         </thead>
         <tbody>
-          {loading && (
-            <Spinner
-              as="span"
-              animation="grow"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-            />
-          )}
           {users.map((user) => (
             <tr key={user.id}>
               <td>
