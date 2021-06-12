@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Button, Spinner } from "react-bootstrap";
 import Login from "./Login";
+import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from--and is always rendered by--Login.js
 const Signup = ({
@@ -12,6 +13,7 @@ const Signup = ({
   toggleForm,
   showSignup,
 }) => {
+  const { setModPrivilege } = useGlobal();
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -31,24 +33,6 @@ const Signup = ({
   //     password: "",
   //     email: "",
   //   });
-
-  const login = () => {
-    axios
-      .post("/auth/login", input)
-      .then((res) => {
-        localStorage.setItem("user", input.username);
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("loggedIn", true);
-        setUser(input.username);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        alert(error);
-        console.log("failed to log in", error);
-      })
-      .then(() => setIsLoading(false));
-    history.push("/projects");
-  };
 
   const signup = (e) => {
     e.preventDefault();
@@ -78,6 +62,25 @@ const Signup = ({
     // clearForm();
   };
 
+  const login = () => {
+    axios
+      .post("/auth/login", input)
+      .then((res) => {
+        localStorage.setItem("user", input.username);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("loggedIn", true);
+        setUser(input.username);
+        setModPrivilege(input.username);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+        console.log("failed to log in", error);
+      })
+      .then(() => setIsLoading(false));
+    history.push("/projects");
+  };
+
   return (
     <>
       {showSignup ? (
@@ -86,7 +89,7 @@ const Signup = ({
             <div className="row justify-content-center">
               <form
                 onSubmit={signup}
-                className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
+                className="bg-primary m-3 col-sm-1 col-lg-3 text-light"
                 style={{ borderRadius: "1rem" }}
               >
                 <h3>Sign Up</h3>

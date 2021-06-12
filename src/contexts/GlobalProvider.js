@@ -20,7 +20,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
   const [expanded, setExpanded] = useState(false);
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
-  const checkModPrivilege = () =>
+  const setModPrivilege = (user) =>
     axios
       .get("/users", authHeader)
       .then((response) => {
@@ -49,7 +49,6 @@ export const GlobalProvider = ({ children, user, setUser }) => {
 
   React.useEffect(() => {
     fetchProjects();
-    checkModPrivilege();
     fetchPermissions();
   }, [user]);
 
@@ -60,9 +59,12 @@ export const GlobalProvider = ({ children, user, setUser }) => {
       .then(() => fetchProjects())
       .catch((error) => console.log("error deleting project", error));
 
+  let activeProjectTitle = projects?.find((x) => x.id == activeProject)?.title;
+
   return (
     <GlobalContext.Provider
       value={{
+        setModPrivilege,
         cachedActiveProjectId,
         user,
         setUser,
@@ -79,6 +81,7 @@ export const GlobalProvider = ({ children, user, setUser }) => {
         deleteProject,
         expanded,
         setExpanded,
+        activeProjectTitle,
       }}
     >
       {children}

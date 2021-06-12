@@ -11,7 +11,7 @@ export default function Devlog() {
     activeProject,
     setActiveProject,
     isMod,
-    projects,
+    activeProjectTitle,
     permissions,
   } = useGlobal();
   const { logs, setLogs, fetchLogs, removeLog, handleProjectClick } =
@@ -54,7 +54,7 @@ export default function Devlog() {
       {/* accordion starts below */}
       <Container className="p-12">
         <h1 className="d-flex p-6 justify-content-center">
-          {projects?.find((x) => x.id == activeProject)?.title ||
+          {activeProjectTitle ||
             (permissions
               ? "Please Select a Project"
               : "Please inform your supervisor to assign you a project")}

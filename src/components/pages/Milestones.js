@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Container } from "react-bootstrap";
 import ProjectSelectModal from "../ProjectSelectModal";
 import AddMilestoneModal from "../AddMilestoneModal";
@@ -8,55 +7,19 @@ import { useGlobal } from "../../contexts/GlobalProvider";
 import { useMilestones } from "../../contexts/MilestonesProvider";
 
 function Milestones() {
-  const { authHeader, activeProject, setActiveProject, projects, permissions } =
-    useGlobal();
+  const {
+    authHeader,
+    activeProject,
+    setActiveProject,
+    activeProjectTitle,
+    permissions,
+  } = useGlobal();
   const {
     milestones,
-    fetchMilestones,
     handleProjectClick,
     removeMilestone,
     handleStatusChange,
   } = useMilestones();
-  const [input, setInput] = useState({
-    title: "",
-    subtitle: "",
-    description: "",
-    due_date: "",
-    ms_status: "TODO",
-  });
-
-  // populates the add milestone form with input data in realtime
-  const onChange = (event) =>
-    setInput((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-
-  const clearForm = () =>
-    setInput({
-      title: "",
-      subtitle: "",
-      description: "",
-      due_date: "",
-    });
-
-  // posts milestone and populates it in the view, then clears input fields
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const postBody = {
-      title: input.title,
-      subtitle: input.subtitle,
-      project_id: activeProject,
-      due_date: input.due_date,
-      ms_status: "TODO",
-      description: input.description,
-    };
-    axios
-      .post("/milestones", postBody, authHeader)
-      .then(() => fetchMilestones())
-      .then(() => clearForm())
-      .catch((error) => console.log(error));
-  };
 
   return (
     <>
@@ -90,19 +53,14 @@ function Milestones() {
             />
           </Container>
           <Container className="d-flex p-6 justify-content-center mt-2 mb-2 ms-2">
-            <AddMilestoneModal
-              className="ms-3 me-2"
-              // onChange={onChange}
-              // input={input}
-              // onSubmit={onSubmit}
-            />
+            <AddMilestoneModal className="ms-3 me-2" />
           </Container>
         </div>
         <h1
           className="d-flex p-6 justify-content-center"
           style={{ color: "black" }}
         >
-          {projects?.find((x) => x.id == activeProject)?.title ||
+          {activeProjectTitle ||
             (permissions
               ? "Please Select a Project"
               : "Please inform your supervisor to assign you a project")}

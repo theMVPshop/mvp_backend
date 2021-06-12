@@ -75,11 +75,11 @@ const Login = ({ history }) => {
         <>
           {cachedUser && <Redirect to="/projects" />}
           <div className="container">
-            <Container className="bg-light vh-100">
+            <Container className="">
               <div className="row justify-content-center">
                 <form
                   onSubmit={login}
-                  className="bg-dark m-3 col-sm-1 col-lg-3 text-light"
+                  className="bg-primary m-3 col-sm-1 col-lg-3 text-light"
                   style={{ borderRadius: "1rem" }}
                 >
                   <h3>Sign In</h3>

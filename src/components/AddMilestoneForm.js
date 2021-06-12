@@ -110,6 +110,8 @@ function AddMilestoneForm({ handleClose }) {
           </InputGroup.Prepend>
           <FormControl
             type="text"
+            as="textarea"
+            feedback
             name="description"
             placeholder="Description"
             value={input.description}
