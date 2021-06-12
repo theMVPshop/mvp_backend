@@ -8,7 +8,7 @@ const DevlogContext = React.createContext();
 export const useDevlog = () => useContext(DevlogContext);
 
 export const DevlogProvider = ({ children }) => {
-  const { activeProject, setActiveProject, authHeader, token } = useGlobal();
+  const { activeProject, authHeader, token } = useGlobal();
   const [logs, setLogs] = useLocalStorage("logs", []);
 
   const fetchLogs = () =>
@@ -30,26 +30,8 @@ export const DevlogProvider = ({ children }) => {
       .catch((error) => console.log("delete devlog error", error));
   };
 
-  const handleProjectClick = (Id) =>
-    axios
-      .get(`/devlog/${Id}`, authHeader)
-      .then((response) => {
-        localStorage.setItem("activeProject", Id);
-        setActiveProject(Id);
-        setLogs(response.data);
-      })
-      .catch((error) => console.log(error));
-
   return (
-    <DevlogContext.Provider
-      value={{
-        removeLog,
-        logs,
-        setLogs,
-        fetchLogs,
-        handleProjectClick,
-      }}
-    >
+    <DevlogContext.Provider value={{ removeLog, logs, setLogs, fetchLogs }}>
       {children}
     </DevlogContext.Provider>
   );

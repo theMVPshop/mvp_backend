@@ -8,7 +8,7 @@ const MilestonesContext = React.createContext();
 export const useMilestones = () => useContext(MilestonesContext);
 
 export const MilestonesProvider = ({ children }) => {
-  const { activeProject, setActiveProject, authHeader, token } = useGlobal();
+  const { activeProject, authHeader, token } = useGlobal();
 
   const [milestones, setMilestones] = useLocalStorage("milestones", []);
 
@@ -19,17 +19,6 @@ export const MilestonesProvider = ({ children }) => {
       .catch((error) => console.log("failed to fetch milestones", error));
 
   useEffect(() => fetchMilestones(), [activeProject]);
-
-  // populates milestones for the selected project
-  const handleProjectClick = (Id) =>
-    axios
-      .get(`/milestones/${Id}`, authHeader)
-      .then((response) => {
-        localStorage.setItem("activeProject", Id);
-        setActiveProject(Id);
-        setMilestones(response.data);
-      })
-      .catch((error) => console.log(error));
 
   // deletes milestone in api and repopulates component with milestones sans deleted one
   const removeMilestone = (Id) => {
@@ -67,8 +56,8 @@ export const MilestonesProvider = ({ children }) => {
     <MilestonesContext.Provider
       value={{
         milestones,
+        setMilestones,
         fetchMilestones,
-        handleProjectClick,
         removeMilestone,
         handleStatusChange,
       }}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Button } from "react-bootstrap";
+import { Spinner, Container, Button } from "react-bootstrap";
 // import SetRolesModal from "./SetRolesModal";
 
 // inheriting props/state from ProjectsTable.js
@@ -9,6 +9,7 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
     title: "",
     description: "",
   });
+  const [isLoading, setLoading] = useState(false);
 
   // controls all the input fields in the form
   const onChange = (event) =>
@@ -19,6 +20,7 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
 
   // creates new project and stores it in (inhereted) hook and also the API
   const onSubmit = (event) => {
+    setLoading(true);
     event.preventDefault();
     const project = { title: input.title, description: input.description };
 
@@ -34,11 +36,12 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
           project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
           setProjects(response.data);
         })
-        .catch((error) =>
-          console.log("failed to repopulate projects list", error)
-        );
+        .catch((error) => {
+          console.log("failed to repopulate projects list", error);
+          setLoading(false);
+        });
 
-    postProject().then(() => repopulateList());
+    postProject().then(() => repopulateList().then(() => setLoading(false)));
     setInput({ title: "", description: "" }); // clear input field
   };
 
@@ -63,14 +66,31 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
               value={input.description}
               onChange={onChange}
             />
-            <Button
-              type="submit"
-              value="Submit"
-              className="btn"
-              style={{ flex: "1" }}
-            >
-              Add Project
-            </Button>
+
+            {isLoading ? (
+              <>
+                <Button variant="success">
+                  <Spinner
+                    as="span"
+                    animation="grow"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Adding...
+                </Button>
+              </>
+            ) : (
+              <Button
+                type="submit"
+                value="Submit"
+                className="btn"
+                style={{ flex: "1" }}
+              >
+                Add Project
+              </Button>
+            )}
+
             <Container className="d-flex p-6 justify-content-center">
               {/* line below renders SetRolesModal button */}
               {/* <SetRolesModal projects={projects} authHeader={authHeader} /> */}

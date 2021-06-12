@@ -9,8 +9,7 @@ import ProjectSelectModal from "../ProjectSelectModal";
 export default function Devlog() {
   const { authHeader, activeProject, setActiveProject, isMod } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
-  const { logs, setLogs, fetchLogs, removeLog, handleProjectClick } =
-    useDevlog();
+  const { logs, setLogs, fetchLogs, removeLog } = useDevlog();
 
   return (
     <Container
@@ -30,10 +29,7 @@ export default function Devlog() {
         }}
       >
         <div className="d-flex row">
-          <ProjectSelectModal
-            asModal={true}
-            handleProjectClick={handleProjectClick}
-          />
+          <ProjectSelectModal asModal={true} route={"devlog"} />
           {isMod && (
             <DevlogAddFormModal
               setActiveProject={setActiveProject}

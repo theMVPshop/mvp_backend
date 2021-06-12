@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Modal, Button } from "react-bootstrap";
 import SetRoles from "./SetRoles";
 
-// inheriting props from AddProjectForm.js
+// inheriting props from Navigation.js
 function SetRolesModal({ projects, authHeader }) {
   const [show, setShow] = useState(false);
 
@@ -18,9 +18,17 @@ function SetRolesModal({ projects, authHeader }) {
         className="nav-link text-success"
         style={{ marginTop: ".5px" }}
       >
-        Assign
+        &#123; Assign &#125;
       </Button>
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="lg"
+        className="mh-75"
+        scrollable
+        centered
+        animation
+      >
         <Modal.Header className="bg-light" closeButton>
           <Modal.Title>Assign Roles/Projects</Modal.Title>
         </Modal.Header>

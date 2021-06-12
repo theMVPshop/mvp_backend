@@ -1,37 +1,80 @@
 import React, { useState } from "react";
-import { Container, Modal, Button } from "react-bootstrap";
+import axios from "axios";
+import { Spinner, Container, Modal, Button } from "react-bootstrap";
 import ProjectsTable from "./ProjectsTable";
+import { useGlobal } from "../contexts/GlobalProvider";
+import { useDevlog } from "../contexts/DevlogProvider";
+import { useMilestones } from "../contexts/MilestonesProvider";
 
-function ProjectSelectModal({
-  asModal,
-  handleProjectClick,
-  activeProject,
-  setActiveProject,
-}) {
+function ProjectSelectModal({ asModal, route }) {
+  const { authHeader, activeProject, setActiveProject } = useGlobal();
+  const { setMilestones } = useMilestones();
+  const { setLogs } = useDevlog();
+
+  const [loading, setLoading] = useState(false);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  // populates milestones for the selected project
+  const handleProjectClick = async (Id) => {
+    setLoading(true);
+    setActiveProject(Id);
+    localStorage.setItem("activeProject", Id);
+    try {
+      const response = await axios.get(`/${route}/${Id}`, authHeader);
+      const data = await response.data;
+      route === "milestones"
+        ? setMilestones(data)
+        : route === "devlog"
+        ? setLogs(data)
+        : null;
+      setLoading(false);
+      handleClose();
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      handleClose();
+    }
+  };
+
   return (
-    <Container className="milestones">
+    <>
       <Container className="d-flex justify-content-center">
         <Button variant="secondary" onClick={handleShow} className="m-2">
           Select Project
         </Button>
         {/* {isMod && <AddLogButton />} */}
       </Container>
-      <div className="row d-flex justify-content-center">
+      <div className="d-flex justify-content-center">
         <>
-          <Modal show={show} onHide={handleClose}>
+          <Modal
+            show={show}
+            onHide={handleClose}
+            size="lg"
+            scrollable
+            centered
+            animation
+          >
             <Modal.Header
               closeButton
               style={{ backgroundColor: "var(--blue)" }}
             >
               <Modal.Title style={{ color: "var(--light)" }}>
                 Your Projects
+                {loading && (
+                  <Spinner
+                    animation="grow"
+                    variant="warning"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                )}
               </Modal.Title>
             </Modal.Header>
+
             <Modal.Body style={{ backgroundColor: "gray" }}>
               <Container className="d-flex p-6 justify-content-center">
                 <ProjectsTable
@@ -46,7 +89,7 @@ function ProjectSelectModal({
           </Modal>
         </>
       </div>
-    </Container>
+    </>
   );
 }
 

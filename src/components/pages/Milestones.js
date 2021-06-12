@@ -8,14 +8,9 @@ import { useMilestones } from "../../contexts/MilestonesProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
 
 function Milestones() {
-  const { authHeader, activeProject, setActiveProject } = useGlobal();
+  const { authHeader, activeProject } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
-  const {
-    milestones,
-    handleProjectClick,
-    removeMilestone,
-    handleStatusChange,
-  } = useMilestones();
+  const { milestones, removeMilestone, handleStatusChange } = useMilestones();
 
   return (
     <>
@@ -39,16 +34,13 @@ function Milestones() {
             className="d-flex p-6 justify-content-evenly mt-2"
             style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
           >
-            <ProjectSelectModal
-              asModal={true}
-              handleProjectClick={handleProjectClick}
-              setActiveProject={setActiveProject}
-              activeProject={activeProject}
-            />
+            <ProjectSelectModal asModal={true} route={"milestones"} />
           </Container>
-          <Container className="d-flex justify-content-center">
-            <AddMilestoneModal />
-          </Container>
+          {activeProject && (
+            <Container className="d-flex justify-content-center">
+              <AddMilestoneModal />
+            </Container>
+          )}
         </div>
         <h1
           className="d-flex p-6 justify-content-center"

@@ -18,7 +18,7 @@ import { useProjects } from "../contexts/ProjectsProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ asModal, handleProjectClick }) {
-  const { cachedActiveProjectId, user, authHeader, isMod, setActiveProject } =
+  const { user, authHeader, isMod, activeProject, setActiveProject } =
     useGlobal();
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
@@ -87,12 +87,12 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                       <tr
                         key={project.id}
                         className={
-                          cachedActiveProjectId === project.id
+                          activeProject === project.id
                             ? "table-active"
                             : undefined
                         }
                         style={
-                          cachedActiveProjectId === project.id
+                          activeProject === project.id
                             ? { backgroundColor: "orange" }
                             : asModal && { cursor: "pointer" }
                         }
@@ -201,12 +201,12 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                               <tr
                                 key={project.id}
                                 className={
-                                  cachedActiveProjectId === project.id
+                                  activeProject === project.id
                                     ? "table-active"
                                     : undefined
                                 }
                                 style={
-                                  cachedActiveProjectId === project.id
+                                  activeProject === project.id
                                     ? { backgroundColor: "orange" }
                                     : asModal && { cursor: "pointer" }
                                 }
