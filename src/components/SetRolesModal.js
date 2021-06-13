@@ -7,6 +7,7 @@ import { useProjects } from "../contexts/ProjectsProvider";
 // inheriting props from Navigation.js
 function SetRolesModal({ projects, authHeader }) {
   const { fetchPermissions, permissions, loadingPermissions } = useProjects();
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [clickedUser, setclickedUser] = useState(null);
@@ -25,13 +26,10 @@ function SetRolesModal({ projects, authHeader }) {
   useEffect(() => fetchUsers(), [permissions]);
 
   const handleChangeRole = async (userObject) => {
-    const username = userObject.username;
+    const { username, isModerator } = userObject;
     setLoading(true);
     setclickedUser(username);
-    const reqBody = {
-      isModerator: !userObject.isModerator,
-      username,
-    };
+    const reqBody = { isModerator, username };
     try {
       await axios.put("/users", reqBody, authHeader);
       await fetchUsers();

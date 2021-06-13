@@ -25,17 +25,18 @@ function SetRoles({
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-                {clickedUser == user.username && loading ? (
-                  <Button variant="danger btn-block" disabled>
+                {clickedUser === user.username && loading ? (
+                  <Button variant="danger" disabled className="d-flex">
                     <Spinner
                       // variant="warning"
                       as="span"
-                      animation="grow"
+                      animation="border"
                       size="sm"
                       role="status"
                       aria-hidden="true"
+                      className="mr-1"
                     />
-                    Updating
+                    {/* Updating */}
                   </Button>
                 ) : (
                   <Button
