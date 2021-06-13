@@ -36,7 +36,7 @@ function SetRolesModal({ projects, authHeader }) {
       setLoading(false);
     } catch (error) {
       console.log(`failed to update ${username}'s role`, error);
-      setLoading(false);
+      // setLoading(false);
     }
   };
 

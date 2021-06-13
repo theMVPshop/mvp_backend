@@ -18,17 +18,17 @@ code {
     monospace;
 }
 
-.mileContainer {
+/* .mileContainer {
   border: solid 2px #7246d8;
   background-color: #7246d8;
   width: 100%;
-}
+} */
 
-@media (min-width: 576px) {
+/* @media (min-width: 576px) {
   .modal-dialog {
     margin: 1.75rem auto;
-  }
-}
+  } 
+} */
 
 /* input {
   margin: 4px;

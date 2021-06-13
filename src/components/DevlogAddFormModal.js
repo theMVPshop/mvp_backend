@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Button, Form, Modal } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Form,
+  Modal,
+  Spinner,
+  InputGroup,
+  FormControl,
+} from "react-bootstrap";
 // import ProjectSelectModal from "./ProjectSelectModal";
 // import { useDevlog } from "../contexts/DevlogProvider";
 
 // inherits props from Devlog.js
 function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState();
+
   const [input, setInput] = useState({
     title: "",
     description: "",
@@ -32,6 +42,7 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    setLoading(true);
     let date = new Date().toLocaleString();
     const reqBody = {
       title: input.title,
@@ -43,73 +54,105 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
       .post("/devlog", reqBody, authHeader)
       .then(() => fetchLogs())
       .then(() => clearForm())
+      .then(() => setLoading(false))
       .catch((error) => console.log(error));
   };
 
   return (
     <>
-      <Button variant="success" onClick={handleShow} className="w-auto m-auto">
+      <Button
+        variant="success"
+        onClick={handleShow}
+        className="w-auto m-auto"
+        // style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
+      >
         Add Log Entry
       </Button>
       <Modal show={show} onHide={handleClose}>
-        <div
-          className="devlogContainer pb-3 mb-2 m-auto w-100"
-          style={{
-            backgroundColor: "rgba(0,0,0,.25)",
-            border: "solid 3px var(--blue)",
-            borderRadius: "30px 30px 0 0",
-          }}
-        >
-          <div
-            className="pt-2 pb-2 mb-3"
-            style={{
-              backgroundColor: "var(--blue)",
-              color: "var(--light)",
-              borderRadius: "25px 25px 0 0",
-              filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
-            }}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Developer Log</Modal.Title>
-            </Modal.Header>
-          </div>
-          <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
-            <Container className="d-flex p-6 justify-content-center">
-              <Form className="m-4" onSubmit={onSubmit}>
-                <Form.Row>
-                  <Form.Group controlId="title">
-                    <Form.Label>Title</Form.Label>
-                    <Form.Control
-                      placeholder="Post Title..."
-                      value={input.title}
-                      onChange={onChange}
-                      name="title"
-                    />
-                  </Form.Group>
-                </Form.Row>
-                <Form.Group controlId="post">
-                  <Form.Label>Description</Form.Label>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Entry to Developer Log</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
+          <Container className="d-flex p-6 justify-content-around m-auto">
+            <Form className="" onSubmit={onSubmit}>
+              <InputGroup className="mb-3">
+                <InputGroup.Prepend>
+                  <InputGroup.Text
+                    className="bg-info text-light"
+                    id="title-addon1"
+                  >
+                    Post Title
+                  </InputGroup.Text>
+                </InputGroup.Prepend>
+                <FormControl
+                  type="text"
+                  // placeholder="Post Title..."
+                  value={input.title}
+                  onChange={onChange}
+                  name="title"
+                  aria-label="Post Title"
+                  aria-describedby="title-addon1"
+                />
+              </InputGroup>
+
+              {/* <Form.Group controlId="title">
+                  <Form.Label>Title</Form.Label>
                   <Form.Control
-                    as="textarea"
-                    rows={10}
-                    value={input.description}
+                    placeholder="Post Title..."
+                    value={input.title}
                     onChange={onChange}
-                    name="description"
-                    placeholder="description..."
+                    name="title"
                   />
-                </Form.Group>
+                </Form.Group> */}
+              <Form.Group controlId="post">
+                {/* <Form.Label>Description</Form.Label> */}
+                <Form.Control
+                  as="textarea"
+                  rows={10}
+                  value={input.description}
+                  onChange={onChange}
+                  name="description"
+                  placeholder="Post Description..."
+                />
+              </Form.Group>
+
+              {loading ? (
+                <Button
+                  variant="danger"
+                  disabled
+                  className="d-flex float-right"
+                >
+                  <Spinner
+                    // variant="warning"
+                    // as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    className="mr-1"
+                  />
+                  Adding...
+                </Button>
+              ) : (
                 <Button
                   variant="primary"
                   type="submit"
                   className="float-right"
-                  onClick={handleClose}
+                  // onClick={handleClose}
                 >
                   Add Entry
                 </Button>
-              </Form>
-            </Container>
-          </Modal.Body>
-        </div>
+              )}
+              <Button
+                variant="danger"
+                className="float-right mr-1"
+                onClick={handleClose}
+              >
+                Close
+              </Button>
+            </Form>
+          </Container>
+        </Modal.Body>
       </Modal>
     </>
   );
