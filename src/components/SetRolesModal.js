@@ -9,6 +9,7 @@ function SetRolesModal({ projects, authHeader }) {
   const { fetchPermissions, permissions, loadingPermissions } = useProjects();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [clickedUser, setclickedUser] = useState(null);
 
   const [show, setShow] = useState(false);
 
@@ -23,10 +24,12 @@ function SetRolesModal({ projects, authHeader }) {
 
   useEffect(() => fetchUsers(), [permissions]);
 
-  const handleChangeRole = async (isMod, username) => {
+  const handleChangeRole = async (userObject) => {
+    const username = userObject.username;
     setLoading(true);
+    setclickedUser(username);
     const reqBody = {
-      isModerator: !isMod,
+      isModerator: !userObject.isModerator,
       username,
     };
     try {
@@ -46,6 +49,7 @@ function SetRolesModal({ projects, authHeader }) {
     permissionObject
   ) => {
     setLoading(true);
+    setclickedUser(username);
     const reqBody = { username, project_id };
     const permissionId = permissionObject?.id;
     try {
@@ -86,10 +90,10 @@ function SetRolesModal({ projects, authHeader }) {
         <Modal.Header className="bg-light" closeButton>
           <Modal.Title>
             Assign Roles/Projects
-            {(loading || loadingPermissions) && (
+            {loadingPermissions && (
               <Spinner
                 as="span"
-                variant="danger"
+                variant="warning"
                 animation="border"
                 role="status"
                 aria-hidden="true"
@@ -108,6 +112,8 @@ function SetRolesModal({ projects, authHeader }) {
               permissions={permissions}
               handleChangePermission={handleChangePermission}
               handleChangeRole={handleChangeRole}
+              clickedUser={clickedUser}
+              loading={loading}
             />
           </Container>
         </Modal.Body>

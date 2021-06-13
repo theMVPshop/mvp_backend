@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Container, Form, Button } from "react-bootstrap";
+import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
 function SetRoles({
@@ -8,6 +8,8 @@ function SetRoles({
   permissions,
   handleChangePermission,
   handleChangeRole,
+  clickedUser,
+  loading,
 }) {
   return (
     <Container>
@@ -23,22 +25,33 @@ function SetRoles({
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-                <Button
-                  key={user.id}
-                  variant={user.isModerator ? "success" : "warning"}
-                  onClick={() =>
-                    handleChangeRole(user.isModerator, user.username)
-                  }
-                  size="sm"
-                >
-                  {user.isModerator ? "Moderator" : "Client"}
-                </Button>
+                {clickedUser == user.username && loading ? (
+                  <Button variant="danger btn-block" disabled>
+                    <Spinner
+                      // variant="warning"
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                    Updating
+                  </Button>
+                ) : (
+                  <Button
+                    variant={user.isModerator ? "success" : "warning"}
+                    onClick={() => handleChangeRole(user)}
+                    size="sm"
+                  >
+                    {user.isModerator ? "Moderator" : "Client"}
+                  </Button>
+                )}
               </td>
               <td>
                 <Form>
                   {["checkbox"].map((type) => (
                     <div key={`inline-${type}`} className="mb-3">
-                      {projects.map((project, idx) => {
+                      {projects.map((project) => {
                         let permissionObject = permissions.find(
                           (x) =>
                             x.username === user.username &&
