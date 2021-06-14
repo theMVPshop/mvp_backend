@@ -15,7 +15,7 @@ export default function Devlog() {
     <Container
       className="pb-3 mb-2 m-auto"
       style={{
-        // backgroundColor: "rgba(0,0,0,.25)",
+        backgroundColor: "rgba(0,0,0,.25)",
         border: "solid 3px var(--blue)",
         borderRadius: "30px 30px 0 0",
       }}

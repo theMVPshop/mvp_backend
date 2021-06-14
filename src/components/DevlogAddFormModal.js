@@ -58,6 +58,7 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
     } finally {
       clearForm();
       setLoading(false);
+      handleClose();
     }
   };
 
