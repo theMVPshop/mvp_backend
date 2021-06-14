@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
-// import { useProjects } from "../contexts/ProjectsProvider";
+import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
-function SetRoles({ projects, authHeader, setmodalIsLoading }) {
+function SetRoles({ authHeader, setmodalIsLoading }) {
+  const { projects } = useProjects();
+
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
   const [roleLoading, setroleLoading] = useState(false);
-  const [permissionLoading, setpermissionLoading] = useState(false);
+  const [permissionsLoading, setpermissionsLoading] = useState(true);
+  const [permissionUpdating, setpermissionUpdating] = useState(true);
   const [clickedUser, setclickedUser] = useState(null);
   const [clickedPermission, setclickedPermission] = useState(null);
   const [clickedProject, setclickedProject] = useState(null);
@@ -30,6 +33,8 @@ function SetRoles({ projects, authHeader, setmodalIsLoading }) {
       setPermissions(response.data);
     } catch (error) {
       console.log("fetchpermissions", error);
+    } finally {
+      setpermissionsLoading(false);
     }
   };
 
@@ -59,7 +64,7 @@ function SetRoles({ projects, authHeader, setmodalIsLoading }) {
     username,
     permissionObj
   ) => {
-    setpermissionLoading(true);
+    setpermissionUpdating(true);
     let permissionId = permissionObj?.id;
     setclickedPermission(permissionId);
     setclickedProject(project_id);
@@ -78,7 +83,7 @@ function SetRoles({ projects, authHeader, setmodalIsLoading }) {
     } finally {
       await fetchPermissions();
     }
-    setpermissionLoading(false);
+    setpermissionUpdating(false);
   };
 
   return (
@@ -145,10 +150,21 @@ function SetRoles({ projects, authHeader, setmodalIsLoading }) {
                               )
                             }
                           >
-                            {clickedPermission === permissionObj?.id &&
+                            {permissionsLoading ? (
+                              <Spinner
+                                variant="info"
+                                as="span"
+                                animation="grow"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                                className="mr-3"
+                              />
+                            ) : (
+                              clickedPermission === permissionObj?.id &&
                               clickedProject === project.id &&
                               clickedUser === user.username &&
-                              permissionLoading && (
+                              permissionUpdating && (
                                 <Spinner
                                   variant="info"
                                   as="span"
@@ -162,7 +178,8 @@ function SetRoles({ projects, authHeader, setmodalIsLoading }) {
                                     {project.title}
                                   </span>
                                 </Spinner>
-                              )}
+                              )
+                            )}
                           </Form.Check>
                         );
                       })}

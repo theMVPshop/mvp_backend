@@ -3,7 +3,7 @@ import { Spinner, Container, Modal, Button } from "react-bootstrap";
 import SetRoles from "./SetRoles";
 
 // inheriting props from Navigation.js
-function SetRolesModal({ projects, authHeader }) {
+function SetRolesModal({ authHeader }) {
   const [show, setShow] = useState(false);
   const [modalIsLoading, setmodalIsLoading] = useState(false);
 
@@ -49,7 +49,6 @@ function SetRolesModal({ projects, authHeader }) {
           <Container className="d-flex p-6 justify-content-center">
             {/* line below renders SetRoles table component */}
             <SetRoles
-              projects={projects}
               authHeader={authHeader}
               setmodalIsLoading={setmodalIsLoading}
             />
