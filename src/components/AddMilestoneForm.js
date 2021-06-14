@@ -4,7 +4,7 @@ import {
   Button,
   Container,
   Form,
-  Col,
+  // Col,
   InputGroup,
   FormControl,
   Spinner,
@@ -40,42 +40,29 @@ function AddMilestoneForm({ handleClose }) {
       due_date: "",
     });
 
-  let postBody = {
-    title: input.title,
-    subtitle: input.subtitle,
-    project_id: activeProject,
-    due_date: input.due_date,
-    ms_status: "TODO",
-    description: input.description,
-  };
-
   // posts milestone and populates it in the view, then clears input fields
   const onSubmit = async (event) => {
-    setLoading(true);
     event.preventDefault();
+    setLoading(true);
+    let postBody = {
+      title: input.title,
+      subtitle: input.subtitle,
+      project_id: activeProject,
+      due_date: input.due_date,
+      ms_status: "TODO",
+      description: input.description,
+    };
     try {
       await axios.post("/milestones", postBody, authHeader);
       await fetchMilestones();
+    } catch (error) {
+      console.log(error);
+    } finally {
       clearForm();
       setLoading(false);
       handleClose();
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
     }
   };
-
-  // const onSubmit = (event) => {
-  //   setLoading(true);
-  //   event.preventDefault();
-  //   axios
-  //     .post("/milestones", postBody, authHeader)
-  //     .then(() => fetchMilestones())
-  //     .then(() => clearForm())
-  //     .then(() => setLoading(false))
-  //     .then(() => handleClose())
-  //     .catch((error) => console.log(error));
-  // };
 
   return (
     <Container className="d-flex p-6 justify-content-around m-auto">
@@ -136,30 +123,6 @@ function AddMilestoneForm({ handleClose }) {
           />
         </InputGroup>
 
-        {/* </Form.Row> */}
-        {/* <Form.Row> */}
-        {/* <InputGroup className="mb-3">
-          <InputGroup.Prepend>
-            <InputGroup.Text
-              className="bg-dark text-light"
-              id="description-addon1"
-            >
-              Description
-            </InputGroup.Text>
-          </InputGroup.Prepend>
-          <FormControl
-            type="text"
-            as="textarea"
-            rows={5}
-            name="description"
-            placeholder="Description"
-            value={input.description}
-            onChange={onChange}
-            aria-label="Milestone Description"
-            aria-describedby="description-addon1"
-          />
-        </InputGroup> */}
-
         <Form.Group controlId="formGridDescription">
           {/* <Form.Label>Description</Form.Label> */}
           <Form.Control
@@ -190,10 +153,10 @@ function AddMilestoneForm({ handleClose }) {
           </>
         ) : (
           <Button
-            as={Col}
+            // as={Col}
             variant="primary"
             type="submit"
-            className="m-auto"
+            className="m-auto float-right w-100"
             onClick={onSubmit}
           >
             Submit
@@ -205,54 +168,3 @@ function AddMilestoneForm({ handleClose }) {
 }
 
 export default AddMilestoneForm;
-
-{
-  /* <Form.Group as={Col} controlId="formGridTitle">
-  <Form.Label>Title</Form.Label>
-  <Form.Control
-    type="text"
-    name="title"
-    placeholder="Title"
-    value={input.title}
-    onChange={onChange}
-  />
-</Form.Group> */
-}
-
-{
-  /* <Form.Group as={Col} controlId="formGridSubtitle">
-<Form.Label>Subtitle</Form.Label>
-<Form.Control
-type="text"
-name="subtitle"
-placeholder="Subtitle"
-value={input.subtitle}
-onChange={onChange}
-/>
-</Form.Group> */
-}
-{
-  /* <Form.Group as={Col} controlId="formGridDescription">
-  <Form.Label>Description</Form.Label>
-  <Form.Control
-    type="text"
-    name="description"
-    placeholder="Description"
-    value={input.description}
-    onChange={onChange}
-  />
-</Form.Group> */
-}
-
-{
-  /* <Form.Group as={Col} controlId="formGridDueDate">
-            <Form.Label>Due Date</Form.Label>
-            <Form.Control
-              type="date"
-              name="due_date"
-              placeholder="Due Date"
-              value={input.due_date}
-              onChange={onChange}
-            />
-          </Form.Group> */
-}

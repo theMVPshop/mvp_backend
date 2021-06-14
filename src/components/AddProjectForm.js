@@ -19,32 +19,22 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
     }));
 
   // creates new project and stores it in (inhereted) hook and also the API
-  const onSubmit = (event) => {
-    setLoading(true);
+  const onSubmit = async (event) => {
     event.preventDefault();
-    const project = { title: input.title, description: input.description };
-
-    const postProject = () =>
-      axios
-        .post("/projects", project, authHeader)
-        .catch((error) => console.log("failed to post project", error));
-
-    const repopulateList = () =>
-      axios
-        .get("/projects", authHeader)
-        .then((response) => {
-          project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
-          setProjects(response.data);
-        })
-        .catch((error) => {
-          console.log("failed to repopulate projects list", error);
-          setLoading(false);
-        });
-
-    postProject().then(() => repopulateList().then(() => setLoading(false)));
-    setInput({ title: "", description: "" }); // clear input field
+    setLoading(true);
+    let project = { title: input.title, description: input.description };
+    try {
+      await axios.post("/projects", project, authHeader);
+      let response = await axios.get("/projects", authHeader);
+      project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
+      setProjects(response.data);
+    } catch (error) {
+      console.log("failed to repopulate projects list", error);
+    } finally {
+      setInput({ title: "", description: "" }); // clear input field
+      setLoading(false);
+    }
   };
-
   return (
     <>
       {isMod && (

@@ -25,17 +25,17 @@ const Login = ({ history }) => {
       [e.target.name]: e.target.value,
     }));
 
-  const clearForm = () =>
-    setInput({
-      username: "",
-      password: "",
-    });
+  // const clearForm = () =>
+  //   setInput({
+  //     username: "",
+  //     password: "",
+  //   });
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = async (username, authHeader) => {
     try {
-      const response = await axios.get("/users", authHeader);
-      const users = await response.data;
+      let response = await axios.get("/users", authHeader);
+      let users = await response.data;
       setIsMod(
         users.find((x) => x.username === username)?.isModerator === 1
           ? true
@@ -52,16 +52,15 @@ const Login = ({ history }) => {
     try {
       const response = await axios.post("/auth/login", input);
       if (response.status === 200) {
-        const lowercasedUsername = input.username.toLowerCase();
-        const token = response.data.token;
-        const authHeader = { headers: { Authorization: `Bearer ${token}` } };
+        let lowercasedUsername = input.username.toLowerCase();
+        let token = response.data.token;
+        let authHeader = { headers: { Authorization: `Bearer ${token}` } };
         localStorage.setItem("user", lowercasedUsername);
         localStorage.setItem("token", token);
         localStorage.setItem("loggedIn", true);
         setUser(lowercasedUsername);
         checkModPrivilege(lowercasedUsername, authHeader);
         history.push("/projects");
-        setLoading(false);
       }
     } catch (error) {
       setError(
@@ -71,31 +70,31 @@ const Login = ({ history }) => {
           ? "Wrong Password"
           : "Login Failed"
       );
+    } finally {
       setLoading(false);
     }
   };
 
   const signup = async (e) => {
     e.preventDefault();
-    const userObject = {
+    setLoading(true);
+    let userObject = {
       username: input.username,
       isModerator: 0,
     };
-    setLoading(true);
     try {
-      const response = await axios.post("/auth/signup", input);
+      let response = await axios.post("/auth/signup", input);
       if (response.status === 200) {
         await axios.post("/users", userObject);
         login();
       }
     } catch (error) {
       console.log("failed to create user", error);
-      setLoading(false);
       setError(
         error.response.status == 409 ? "User Already Exists" : "Login Failed"
       );
+      setLoading(false);
     }
-    clearForm();
   };
 
   return (
