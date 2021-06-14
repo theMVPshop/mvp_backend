@@ -166,7 +166,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                               clickedUser === user.username &&
                               permissionUpdating && (
                                 <Spinner
-                                  variant="info"
+                                  variant={permissionObj ? "danger" : "success"}
                                   as="span"
                                   animation="grow"
                                   size="sm"
