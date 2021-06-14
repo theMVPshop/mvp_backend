@@ -26,10 +26,10 @@ function AddMilestoneForm({ handleClose }) {
   const [loading, setLoading] = useState(false);
 
   // populates the add milestone form with input data in realtime
-  const onChange = (event) =>
+  const onChange = (e) =>
     setInput((prevState) => ({
       ...prevState,
-      [event.target.name]: event.target.value,
+      [e.target.name]: e.target.value,
     }));
 
   const clearForm = () =>
