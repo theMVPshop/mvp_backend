@@ -168,16 +168,12 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                                 <Spinner
                                   variant={permissionObj ? "danger" : "success"}
                                   as="span"
-                                  animation="grow"
+                                  animation="border"
                                   size="sm"
                                   role="status"
                                   aria-hidden="true"
                                   className="mr-3"
-                                >
-                                  <span className="text-light">
-                                    {project.title}
-                                  </span>
-                                </Spinner>
+                                />
                               )
                             )}
                           </Form.Check>
