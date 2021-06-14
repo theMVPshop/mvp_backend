@@ -40,7 +40,7 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
       time_stamp: "",
     });
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     let date = new Date().toLocaleString();
@@ -50,24 +50,29 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
       project_id: activeProject,
       time_stamp: date,
     };
-    axios
-      .post("/devlog", reqBody, authHeader)
-      .then(() => fetchLogs())
-      .then(() => clearForm())
-      .then(() => setLoading(false))
-      .catch((error) => console.log(error));
+    try {
+      await axios.post("/devlog", reqBody, authHeader);
+      fetchLogs();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      clearForm();
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      <Button
-        variant="success"
-        onClick={handleShow}
-        className="w-auto m-auto"
-        // style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
-      >
-        Add Log Entry
-      </Button>
+      {activeProject && (
+        <Button
+          variant="success"
+          onClick={handleShow}
+          className="w-auto m-auto"
+          // style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
+        >
+          Add Log Entry
+        </Button>
+      )}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Entry to Developer Log</Modal.Title>

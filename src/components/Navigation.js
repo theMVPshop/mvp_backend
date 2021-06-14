@@ -10,9 +10,9 @@ function Navigation({ history, location }) {
     useGlobal();
   let loggedIn = localStorage.getItem("loggedIn");
 
-  const logOut = async () => {
-    await setUser(null);
+  const logOut = () => {
     localStorage.clear();
+    setUser(null);
     history.push("/");
   };
 

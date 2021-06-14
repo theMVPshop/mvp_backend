@@ -35,6 +35,7 @@ function ProjectSelectModal({ asModal, route }) {
       handleClose();
     } catch (error) {
       console.log(error);
+    } finally {
       setLoading(false);
       handleClose();
     }

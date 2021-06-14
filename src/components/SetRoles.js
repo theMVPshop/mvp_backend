@@ -3,7 +3,7 @@ import axios from "axios";
 import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
 import { useProjects } from "../contexts/ProjectsProvider";
 
-// inheriting props from AddProjectForm.js > SetRolesModal.js
+// inheriting props from AddProjectForm.js/Navigation.js > SetRolesModal.js
 function SetRoles({ authHeader, setmodalIsLoading }) {
   const { projects } = useProjects();
 

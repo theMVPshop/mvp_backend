@@ -10,7 +10,7 @@ export const useProjects = () => useContext(ProjectsContext);
 export const ProjectsProvider = ({ children }) => {
   const { user, authHeader, activeProject } = useGlobal();
   const [projects, setProjects] = useLocalStorage("projects", []);
-  // const [permissions, setPermissions] = useState([]);
+  const [permissions, setPermissions] = useState([]);
   // const [loadingPermissions, setloadingPermissions] = useState(false);
 
   const fetchProjects = () =>
@@ -20,19 +20,19 @@ export const ProjectsProvider = ({ children }) => {
       .catch((error) => console.log("failed to populate projects", error));
 
   // fetch permissions table from API and store in hook
-  // const fetchPermissions = async () => {
-  //   setloadingPermissions(true);
-  //   await axios
-  //     .get("/permissions", authHeader)
-  //     .then((response) => {
-  //       setPermissions(response.data);
-  //       setloadingPermissions(false);
-  //     })
-  //     .catch((error) => {
-  //       console.log("failed to fetch permissions", error);
-  //       setloadingPermissions(false);
-  //     });
-  // };
+  const fetchPermissions = async () => {
+    // setloadingPermissions(true);
+    await axios
+      .get("/permissions", authHeader)
+      .then((response) => {
+        setPermissions(response.data);
+        // setloadingPermissions(false);
+      })
+      .catch((error) => {
+        console.log("failed to fetch permissions", error);
+        // setloadingPermissions(false);
+      });
+  };
 
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = (Id) =>
@@ -45,7 +45,7 @@ export const ProjectsProvider = ({ children }) => {
 
   React.useEffect(() => {
     function init() {
-      // fetchPermissions();
+      fetchPermissions();
       fetchProjects();
     }
     user && init();
@@ -61,7 +61,7 @@ export const ProjectsProvider = ({ children }) => {
         fetchProjects,
         // fetchPermissions,
         deleteProject,
-        // permissions,
+        permissions,
         activeProjectTitle,
       }}
     >
