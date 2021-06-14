@@ -59,13 +59,13 @@ function SetRoles({ projects, authHeader }) {
       permissionObj
         ? await axios.delete(`/permissions/${permissionId}`, authHeader)
         : await axios.post("/permissions", reqBody, authHeader);
+      await fetchPermissions();
     } catch (error) {
       console.log(
         `failed to change permission for ${username} with Id#${permissionId}`,
         error
       );
     } finally {
-      await fetchPermissions();
       setLoading(false);
     }
   };
