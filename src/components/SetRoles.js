@@ -1,38 +1,47 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
-import { useProjects } from "../contexts/ProjectsProvider";
+// import { useProjects } from "../contexts/ProjectsProvider";
 
 // inheriting props from AddProjectForm.js > SetRolesModal.js
-function SetRoles({ projects, authHeader }) {
-  // const { fetchPermissions, permissions, loadingPermissions } = useProjects();
-
+function SetRoles({ projects, authHeader, setmodalIsLoading }) {
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [roleLoading, setroleLoading] = useState(false);
+  const [permissionLoading, setpermissionLoading] = useState(false);
   const [clickedUser, setclickedUser] = useState(null);
-  // const [checked, setChecked] = useState();
+  const [clickedPermission, setclickedPermission] = useState(null);
+  const [clickedProject, setclickedProject] = useState(null);
 
-  const fetchUsers = () =>
-    axios
-      .get("/users", authHeader)
-      .then((response) => setUsers(response.data))
-      .catch((error) => console.log("failed to fetch users", error));
+  const fetchUsers = async () => {
+    try {
+      let response = await axios.get("/users", authHeader);
+      setUsers(response.data);
+    } catch (error) {
+      console.log("failed to fetch users", error);
+    } finally {
+      setmodalIsLoading(false);
+    }
+  };
 
-  const fetchPermissions = () =>
-    axios
-      .get("/permissions", authHeader)
-      .then((res) => setPermissions(res.data))
-      .catch((error) => console.log("fetchpermissions", error));
+  const fetchPermissions = async () => {
+    try {
+      let response = await axios.get("/permissions", authHeader);
+      setPermissions(response.data);
+    } catch (error) {
+      console.log("fetchpermissions", error);
+    }
+  };
 
   useEffect(() => {
+    setmodalIsLoading(true);
     fetchUsers();
     fetchPermissions();
   }, [projects]);
 
   const handleChangeRole = async (userObject) => {
     const { username, isModerator } = userObject;
-    setLoading(true);
+    setroleLoading(true);
     setclickedUser(username);
     const reqBody = { isModerator: !isModerator, username };
     try {
@@ -41,7 +50,7 @@ function SetRoles({ projects, authHeader }) {
     } catch (error) {
       console.log(`failed to update ${username}'s role`, error);
     } finally {
-      setLoading(false);
+      setroleLoading(false);
     }
   };
 
@@ -50,24 +59,26 @@ function SetRoles({ projects, authHeader }) {
     username,
     permissionObj
   ) => {
-    setLoading(true);
+    setpermissionLoading(true);
+    let permissionId = permissionObj?.id;
+    setclickedPermission(permissionId);
+    setclickedProject(project_id);
     setclickedUser(username);
     let reqBody = { username, project_id };
-    let permissionId = permissionObj?.id;
     console.log(permissionObj);
     try {
       permissionObj
         ? await axios.delete(`/permissions/${permissionId}`, authHeader)
         : await axios.post("/permissions", reqBody, authHeader);
-      await fetchPermissions();
     } catch (error) {
       console.log(
         `failed to change permission for ${username} with Id#${permissionId}`,
         error
       );
     } finally {
-      setLoading(false);
+      await fetchPermissions();
     }
+    setpermissionLoading(false);
   };
 
   return (
@@ -84,7 +95,7 @@ function SetRoles({ projects, authHeader }) {
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-                {clickedUser === user.username && loading ? (
+                {clickedUser === user.username && roleLoading ? (
                   <Button variant="danger" disabled className="d-flex">
                     <Spinner
                       // variant="warning"
@@ -110,7 +121,7 @@ function SetRoles({ projects, authHeader }) {
               <td>
                 <Form>
                   {["checkbox"].map((type) => (
-                    <div key={`inline-${type}`} className="mb-3">
+                    <div key={`inline-${type}-${user.id}`} className="mb-3">
                       {projects.map((project) => {
                         const permissionObj = permissions.find(
                           (x) =>
@@ -124,16 +135,35 @@ function SetRoles({ projects, authHeader }) {
                             inline
                             label={project.title}
                             type={type}
-                            id={`inline-${type}-1`}
+                            id={`inline-${type}-${user.username + project.id}`}
                             checked={permissionObj}
-                            onClick={() =>
+                            onChange={() =>
                               handleChangePermission(
                                 project.id,
                                 user.username,
                                 permissionObj
                               )
                             }
-                          />
+                          >
+                            {clickedPermission === permissionObj?.id &&
+                              clickedProject === project.id &&
+                              clickedUser === user.username &&
+                              permissionLoading && (
+                                <Spinner
+                                  variant="info"
+                                  as="span"
+                                  animation="grow"
+                                  size="sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                  className="mr-3"
+                                >
+                                  <span className="text-light">
+                                    {project.title}
+                                  </span>
+                                </Spinner>
+                              )}
+                          </Form.Check>
                         );
                       })}
                     </div>
@@ -149,135 +179,3 @@ function SetRoles({ projects, authHeader }) {
 }
 
 export default SetRoles;
-
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { Table, Container, Form, Button } from "react-bootstrap";
-// import { useProjects } from "../contexts/ProjectsProvider";
-
-// // inheriting props from AddProjectForm.js > SetRolesModal.js
-// function SetRoles({ projects, authHeader }) {
-//   const { fetchPermissions, permissions } = useProjects();
-//   const [users, setUsers] = useState([]);
-
-//   const populateUsers = () =>
-//     axios
-//       .get("/users", authHeader)
-//       .then((response) => setUsers(response.data))
-//       .catch((error) => console.log("failed to fetch users", error));
-
-//   useEffect(() => {
-//     populateUsers();
-//   }, []);
-
-//   const handleChangeRole = (isMod, username) => {
-//     const updateUserRole = async () => {
-//       let reqBody = {
-//         isModerator: !isMod,
-//         username,
-//       };
-//       await axios
-//         .put("/users", reqBody, authHeader)
-//         .catch((error) =>
-//           console.log(`failed to update ${username}'s role`, error)
-//         );
-//     };
-//     updateUserRole().then(() => populateUsers());
-//   };
-
-//   const handleChangePermission = (
-//     event,
-//     project_id,
-//     username,
-//     permissionObj
-//   ) => {
-//     let reqBody = { username, project_id };
-//     let permissionId = permissionObj?.id;
-//     const addPermission = async () =>
-//       await axios
-//         .post("/permissions", reqBody, authHeader)
-//         .then(() => fetchPermissions())
-//         .catch((error) =>
-//           console.log(`failed to add permission for ${username}`, error)
-//         );
-//     const removePermission = async () =>
-//       await axios
-//         .delete(`/permissions/${permissionId}`, authHeader)
-//         .then(() => fetchPermissions())
-//         .catch((error) =>
-//           console.log(
-//             `failed to remove permission for ${username} with Id#${permissionId}`,
-//             error
-//           )
-//         );
-//     event.target.checked ? addPermission() : removePermission();
-//   };
-
-//   return (
-//     <Container>
-//       <Table striped bordered hover variant="dark">
-//         <thead>
-//           <tr>
-//             <th>Role</th>
-//             <th>Permissions</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {users.map((user) => (
-//             <tr key={user.id}>
-//               <td>
-//                 <div className="m-1">{user.username}</div>
-
-//                 <Button
-//                   variant={user.isModerator ? "success" : "warning"}
-//                   onClick={() =>
-//                     handleChangeRole(user.isModerator, user.username)
-//                   }
-//                   size="sm"
-//                 >
-//                   {user.isModerator ? "Moderator" : "Client"}
-//                 </Button>
-//               </td>
-//               <td>
-//                 <Form>
-//                   {["checkbox"].map((type) => (
-//                     <div key={`inline-${type}`} className="mb-3">
-//                       {projects.map((project, idx) => {
-//                         let permissionObj = permissions.find(
-//                           (x) =>
-//                             x.username === user.username &&
-//                             x.project_id === project.id
-//                         );
-
-//                         return (
-//                           <Form.Check
-//                             key={project.id}
-//                             inline
-//                             label={project.title}
-//                             type={type}
-//                             id={`inline-${type}-1`}
-//                             checked={permissionObj}
-//                             onChange={(event) =>
-//                               handleChangePermission(
-//                                 event,
-//                                 project.id,
-//                                 user.username,
-//                                 permissionObj
-//                               )
-//                             }
-//                           />
-//                         );
-//                       })}
-//                     </div>
-//                   ))}
-//                 </Form>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </Table>
-//     </Container>
-//   );
-// }
-
-// export default SetRoles;

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Spinner, Container, Modal, Button } from "react-bootstrap";
 import SetRoles from "./SetRoles";
 
 // inheriting props from Navigation.js
 function SetRolesModal({ projects, authHeader }) {
   const [show, setShow] = useState(false);
+  const [modalIsLoading, setmodalIsLoading] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -31,8 +31,7 @@ function SetRolesModal({ projects, authHeader }) {
       >
         <Modal.Header className="bg-light" closeButton>
           <Modal.Title>
-            Assign Roles/Projects
-            {/* {loadingPermissions && (
+            {modalIsLoading ? (
               <Spinner
                 as="span"
                 variant="warning"
@@ -41,13 +40,19 @@ function SetRolesModal({ projects, authHeader }) {
                 aria-hidden="true"
                 className="ml-1"
               />
-            )} */}
+            ) : (
+              "Assign Roles/Projects"
+            )}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
           <Container className="d-flex p-6 justify-content-center">
-            {/* line below renders SetRoles component */}
-            <SetRoles projects={projects} authHeader={authHeader} />
+            {/* line below renders SetRoles table component */}
+            <SetRoles
+              projects={projects}
+              authHeader={authHeader}
+              setmodalIsLoading={setmodalIsLoading}
+            />
           </Container>
         </Modal.Body>
       </Modal>
@@ -56,42 +61,3 @@ function SetRolesModal({ projects, authHeader }) {
 }
 
 export default SetRolesModal;
-
-// import React, { useState } from "react";
-// import { Container, Modal, Button } from "react-bootstrap";
-// import SetRoles from "./SetRoles";
-
-// // inheriting props from AddProjectForm.js
-// function SetRolesModal({ projects, authHeader }) {
-//   const [show, setShow] = useState(false);
-
-//   const handleClose = () => setShow(false);
-//   const handleShow = () => setShow(true);
-
-//   return (
-//     <>
-//       <Button
-//         // variant="success"
-//         size="sm"
-//         onClick={handleShow}
-//         className="nav-link text-success"
-//         style={{ marginTop: ".5px" }}
-//       >
-//         Assign
-//       </Button>
-//       <Modal show={show} onHide={handleClose}>
-//         <Modal.Header className="bg-light" closeButton>
-//           <Modal.Title>Assign Roles/Projects</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
-//           <Container className="d-flex p-6 justify-content-center">
-//             {/* line below renders SetRoles component */}
-//             <SetRoles projects={projects} authHeader={authHeader} />
-//           </Container>
-//         </Modal.Body>
-//       </Modal>
-//     </>
-//   );
-// }
-
-// export default SetRolesModal;

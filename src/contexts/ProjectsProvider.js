@@ -10,7 +10,7 @@ export const useProjects = () => useContext(ProjectsContext);
 export const ProjectsProvider = ({ children }) => {
   const { user, authHeader, activeProject } = useGlobal();
   const [projects, setProjects] = useLocalStorage("projects", []);
-  const [permissions, setPermissions] = useLocalStorage("permissions", []);
+  const [permissions, setPermissions] = useState([]);
   const [loadingPermissions, setloadingPermissions] = useState(false);
 
   const fetchProjects = () =>
