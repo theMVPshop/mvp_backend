@@ -11,35 +11,42 @@ export const ProjectsProvider = ({ children }) => {
   const { user, authHeader, activeProject } = useGlobal();
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useState([]);
+  const [loadingProjects, setloadingProjects] = useState(true);
   // const [loadingPermissions, setloadingPermissions] = useState(false);
 
-  const fetchProjects = () =>
-    axios
-      .get("/projects", authHeader)
-      .then((response) => setProjects(response.data))
-      .catch((error) => console.log("failed to populate projects", error));
+  const fetchProjects = async () => {
+    // setloadingProjects(true);
+    try {
+      let response = await axios.get("/projects", authHeader);
+      setProjects(response.data);
+    } catch (error) {
+      console.log("failed to populate projects", error);
+    } finally {
+      setloadingProjects(false);
+    }
+  };
 
   // fetch permissions table from API and store in hook
   const fetchPermissions = async () => {
-    // setloadingPermissions(true);
-    await axios
-      .get("/permissions", authHeader)
-      .then((response) => {
-        setPermissions(response.data);
-        // setloadingPermissions(false);
-      })
-      .catch((error) => {
-        console.log("failed to fetch permissions", error);
-        // setloadingPermissions(false);
-      });
+    try {
+      let response = await axios.get("/permissions", authHeader);
+      setPermissions(response.data);
+    } catch (error) {
+      console.log("failed to fetch permissions", error);
+    }
   };
 
   // removes project from api and repopulates component with projects sans deleted one
-  const deleteProject = (Id) =>
-    axios
-      .delete(`/projects/${Id}`, authHeader)
-      .then(() => fetchProjects())
-      .catch((error) => console.log("error deleting project", error));
+  const deleteProject = async (Id) => {
+    setloadingProjects(true);
+    try {
+      await axios.delete(`/projects/${Id}`, authHeader);
+    } catch (error) {
+      console.log("error deleting project", error);
+    } finally {
+      fetchProjects();
+    }
+  };
 
   let activeProjectTitle = projects?.find((x) => x.id == activeProject)?.title;
 
@@ -56,6 +63,7 @@ export const ProjectsProvider = ({ children }) => {
       value={{
         // loadingPermissions,
         // setloadingPermissions,
+        loadingProjects,
         projects,
         setProjects,
         fetchProjects,

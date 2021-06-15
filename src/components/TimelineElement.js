@@ -1,12 +1,15 @@
 import React from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Spinner } from "react-bootstrap";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
+import { useMilestones } from "../contexts/MilestonesProvider";
 
+// inheriting props from Milestones.js
 function TimelineElement({ milestones, handleStatusChange, removeMilestone }) {
+  const { loadingMilestones, clickedMilestone } = useMilestones();
   return (
     <>
       {!milestones.length && (
@@ -68,14 +71,29 @@ function TimelineElement({ milestones, handleStatusChange, removeMilestone }) {
               >
                 {milestone.ms_status}
               </Button>
-              <Button
-                variant="danger"
-                onClick={() => removeMilestone(milestone.id)}
-                size="sm"
-                className="d-flex ml-auto"
-              >
-                Remove
-              </Button>
+              {loadingMilestones && clickedMilestone === milestone.id ? (
+                <Button variant="danger" className="d-flex ml-auto">
+                  <Spinner
+                    // as="span"
+                    // variant="warning"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                    // className="mr-1"
+                  />
+                  {/* Removing... */}
+                </Button>
+              ) : (
+                <Button
+                  variant="danger"
+                  onClick={() => removeMilestone(milestone.id)}
+                  size="sm"
+                  className="d-flex ml-auto"
+                >
+                  Remove
+                </Button>
+              )}
             </VerticalTimelineElement>
           ))}
         </VerticalTimeline>

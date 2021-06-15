@@ -13,7 +13,7 @@ function AddMilestoneModal({ onChange, onSubmit, input }) {
     <>
       <Button
         size="sm"
-        variant="success"
+        variant="warning"
         onClick={handleShow}
         style={{ filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)" }}
       >

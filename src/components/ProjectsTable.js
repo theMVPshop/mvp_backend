@@ -6,6 +6,7 @@ import {
   Button,
   Tooltip,
   OverlayTrigger,
+  Spinner,
 } from "react-bootstrap";
 import {
   faCalendarCheck,
@@ -20,7 +21,8 @@ import { useProjects } from "../contexts/ProjectsProvider";
 function ProjectsTable({ asModal, handleProjectClick }) {
   const { user, authHeader, isMod, activeProject, setActiveProject } =
     useGlobal();
-  const { projects, setProjects, permissions, deleteProject } = useProjects();
+  const { projects, setProjects, loadingProjects, permissions, deleteProject } =
+    useProjects();
   const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
@@ -91,11 +93,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             ? "table-active"
                             : undefined
                         }
-                        style={
-                          activeProject === project.id
-                            ? { backgroundColor: "orange" }
-                            : asModal && { cursor: "pointer" }
-                        }
+                        style={asModal ? { cursor: "pointer" } : undefined}
                         onClick={
                           asModal
                             ? () => handleProjectClick(project.id)

@@ -11,23 +11,29 @@ export const DevlogProvider = ({ children }) => {
   const { activeProject, authHeader, token } = useGlobal();
   const [logs, setLogs] = useLocalStorage("logs", []);
 
-  const fetchLogs = () =>
-    axios
-      .get(`/devlog/${activeProject}`, authHeader)
-      .then((response) => setLogs(response.data))
-      .catch((error) => console.log(error));
+  const fetchLogs = async () => {
+    try {
+      let response = await axios.get(`/devlog/${activeProject}`, authHeader);
+      setLogs(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => fetchLogs(), [activeProject]);
 
-  const removeLog = (id) => {
-    const reqBody = {
+  const removeLog = async (id) => {
+    let reqBody = {
       headers: { Authorization: `Bearer ${token}` },
       data: { id },
     };
-    axios
-      .delete(`/devlog/${id}`, reqBody)
-      .then(() => fetchLogs())
-      .catch((error) => console.log("delete devlog error", error));
+    try {
+      await axios.delete(`/devlog/${id}`, reqBody);
+    } catch (error) {
+      console.log("delete devlog error", error);
+    } finally {
+      fetchLogs();
+    }
   };
 
   return (

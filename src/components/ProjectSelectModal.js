@@ -24,27 +24,25 @@ function ProjectSelectModal({ asModal, route }) {
     setActiveProject(Id);
     localStorage.setItem("activeProject", Id);
     try {
-      const response = await axios.get(`/${route}/${Id}`, authHeader);
-      const data = await response.data;
+      let response = await axios.get(`/${route}/${Id}`, authHeader);
+      let data = await response.data;
       route === "milestones"
         ? setMilestones(data)
         : route === "devlog"
         ? setLogs(data)
         : null;
-      setLoading(false);
-      handleClose();
     } catch (error) {
       console.log(error);
     } finally {
       setLoading(false);
-      handleClose();
+      // handleClose();
     }
   };
 
   return (
     <>
       <Container className="d-flex justify-content-center">
-        <Button variant="secondary" onClick={handleShow} className="m-2">
+        <Button variant="primary" onClick={handleShow} className="m-2">
           Select Project
         </Button>
         {/* {isMod && <AddLogButton />} */}

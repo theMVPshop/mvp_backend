@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Spinner, Container, Button } from "react-bootstrap";
+import { useProjects } from "../contexts/ProjectsProvider";
 // import SetRolesModal from "./SetRolesModal";
 
 // inheriting props/state from ProjectsTable.js
 function AddProjectForm({ isMod, setProjects, authHeader }) {
+  const { loadingProjects } = useProjects();
   const [input, setInput] = useState({
     title: "",
     description: "",
@@ -56,8 +58,19 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
               value={input.description}
               onChange={onChange}
             />
-
-            {isLoading ? (
+            {loadingProjects ? (
+              <Button variant="danger">
+                <Spinner
+                  as="span"
+                  // variant="warning"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+                Deleting...
+              </Button>
+            ) : isLoading ? (
               <>
                 <Button variant="success">
                   <Spinner

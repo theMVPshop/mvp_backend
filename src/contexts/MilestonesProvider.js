@@ -11,25 +11,39 @@ export const MilestonesProvider = ({ children }) => {
   const { activeProject, authHeader, token } = useGlobal();
 
   const [milestones, setMilestones] = useLocalStorage("milestones", []);
+  const [clickedMilestone, setclickedMilestone] = React.useState(null);
+  const [loadingMilestones, setloadingMilestones] = React.useState(true);
 
-  const fetchMilestones = () =>
-    axios
-      .get(`/milestones/${activeProject}`, authHeader)
-      .then((response) => setMilestones(response.data))
-      .catch((error) => console.log("failed to fetch milestones", error));
+  const fetchMilestones = async () => {
+    try {
+      let response = await axios.get(
+        `/milestones/${activeProject}`,
+        authHeader
+      );
+      setMilestones(response.data);
+    } catch (error) {
+      console.log("failed to fetch milestones", error);
+    } finally {
+      setloadingMilestones(false);
+    }
+  };
 
   useEffect(() => fetchMilestones(), [activeProject]);
 
   // deletes milestone in api and repopulates component with milestones sans deleted one
-  const removeMilestone = (Id) => {
-    const reqBody = {
+  const removeMilestone = async (Id) => {
+    setloadingMilestones(true);
+    setclickedMilestone(Id);
+    let reqBody = {
       headers: { Authorization: `Bearer ${token}` },
       data: { id: Id },
     };
-    axios
-      .delete(`/milestones/${activeProject}`, reqBody)
-      .then(() => fetchMilestones())
-      .catch((error) => console.log(error));
+    try {
+      await axios.delete(`/milestones/${activeProject}`, reqBody);
+      await fetchMilestones();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // updates milestone status in api and component
@@ -55,6 +69,8 @@ export const MilestonesProvider = ({ children }) => {
   return (
     <MilestonesContext.Provider
       value={{
+        loadingMilestones,
+        clickedMilestone,
         milestones,
         setMilestones,
         fetchMilestones,
