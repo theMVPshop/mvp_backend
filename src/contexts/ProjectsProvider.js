@@ -15,7 +15,7 @@ export const ProjectsProvider = ({ children }) => {
   // const [loadingPermissions, setloadingPermissions] = useState(false);
 
   const fetchProjects = async () => {
-    setloadingProjects(true);
+    // setloadingProjects(true);
     try {
       let response = await axios.get("/projects", authHeader);
       setProjects(response.data);

@@ -1,13 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import {
   Container,
   Table,
   Button,
   Tooltip,
   OverlayTrigger,
-  // Spinner,
+  Spinner,
 } from "react-bootstrap";
 import {
   faCalendarCheck,
@@ -18,26 +18,47 @@ import AddProjectForm from "./AddProjectForm";
 import { useGlobal } from "../contexts/GlobalProvider";
 import { useProjects } from "../contexts/ProjectsProvider";
 import { useMilestones } from "../contexts/MilestonesProvider";
+import { useDevlog } from "../contexts/DevlogProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ asModal, handleProjectClick }) {
   let history = useHistory();
-
   const { user, authHeader, isMod, activeProject, setActiveProject } =
     useGlobal();
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const { setMilestones } = useMilestones();
+  const { setLogs } = useDevlog();
+  const [loading, setLoading] = React.useState({
+    isLoading: false,
+    clickedProjectId: null,
+    page: null,
+  });
 
   // makes clicked-on project consistent across app experience
-  const projectRedirect = (Id, route) => {
-    localStorage.setItem("activeProject", Id);
+  const projectRedirect = async (Id, page) => {
+    setLoading({ isLoading: true, clickedProjectId: Id, page });
     setActiveProject(Id);
-
-    axios
-      .get(`/milestones/${Id}`, authHeader)
-      .then((res) => setMilestones(res.data))
-      .then(() => history.push(route));
+    localStorage.setItem("activeProject", Id);
+    try {
+      const res = await axios.get(`/${page}/${Id}`, authHeader);
+      page === "milestones" ? setMilestones(res.data) : setLogs(res.data);
+    } catch (error) {
+      console.log("could not redirect");
+    } finally {
+      setLoading({ isLoading: false });
+      history.push(`/${page}`);
+    }
   };
+
+  const Loader = (
+    <Spinner
+      as="span"
+      animation="grow"
+      role="status"
+      aria-hidden="true"
+      className="ml-2"
+    />
+  );
 
   const renderTooltip = (props) => (
     <Tooltip id="button-tooltip" {...props}>
@@ -116,24 +137,36 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             {project.title}
                             {!asModal && (
                               <div className="d-flex ml-auto">
-                                <FontAwesomeIcon
-                                  icon={faCalendarCheck}
-                                  size="2x"
-                                  onClick={() =>
-                                    projectRedirect(project.id, "/milestones")
-                                  }
-                                  className="ml-3"
-                                  role="button"
-                                />
-                                <FontAwesomeIcon
-                                  icon={faClipboard}
-                                  size="2x"
-                                  onClick={() =>
-                                    projectRedirect(project.id, "/devlog")
-                                  }
-                                  className="ml-3"
-                                  role="button"
-                                />
+                                {loading.isLoading &&
+                                loading.clickedProjectId === project.id &&
+                                loading.page === "milestones" ? (
+                                  Loader
+                                ) : (
+                                  <FontAwesomeIcon
+                                    icon={faCalendarCheck}
+                                    size="2x"
+                                    onClick={() =>
+                                      projectRedirect(project.id, "milestones")
+                                    }
+                                    className="ml-3"
+                                    role="button"
+                                  />
+                                )}
+                                {loading.isLoading &&
+                                loading.clickedProjectId === project.id &&
+                                loading.page === "devlog" ? (
+                                  Loader
+                                ) : (
+                                  <FontAwesomeIcon
+                                    icon={faClipboard}
+                                    size="2x"
+                                    onClick={() =>
+                                      projectRedirect(project.id, "devlog")
+                                    }
+                                    className="ml-3"
+                                    role="button"
+                                  />
+                                )}
                                 {!asModal && (
                                   <Button
                                     variant="danger"
@@ -177,26 +210,38 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                               </td>
                               {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
                               <td>
-                                <FontAwesomeIcon
-                                  icon={faCalendarCheck}
-                                  size="2x"
-                                  onClick={() =>
-                                    projectRedirect(project.id, "/milestones")
-                                  }
-                                  className="ml-3"
-                                  role="button"
-                                />
+                                {loading.isLoading &&
+                                loading.clickedProjectId === project.id &&
+                                loading.page === "milestones" ? (
+                                  Loader
+                                ) : (
+                                  <FontAwesomeIcon
+                                    icon={faCalendarCheck}
+                                    size="2x"
+                                    onClick={() =>
+                                      projectRedirect(project.id, "milestones")
+                                    }
+                                    className="ml-3"
+                                    role="button"
+                                  />
+                                )}
                               </td>
                               <td>
-                                <FontAwesomeIcon
-                                  icon={faClipboard}
-                                  size="2x"
-                                  onClick={() =>
-                                    projectRedirect(project.id, "/devlog")
-                                  }
-                                  className="ml-3"
-                                  role="button"
-                                />
+                                {loading.isLoading &&
+                                loading.clickedProjectId === project.id &&
+                                loading.page === "devlog" ? (
+                                  Loader
+                                ) : (
+                                  <FontAwesomeIcon
+                                    icon={faClipboard}
+                                    size="2x"
+                                    onClick={() =>
+                                      projectRedirect(project.id, "devlog")
+                                    }
+                                    className="ml-3"
+                                    role="button"
+                                  />
+                                )}
                               </td>
                             </tr>
                           ) : (
