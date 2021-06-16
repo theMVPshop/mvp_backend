@@ -28,12 +28,11 @@ function ProjectsTable({ asModal, handleProjectClick }) {
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const { setMilestones } = useMilestones();
 
-  const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
-
   // makes clicked-on project consistent across app experience
   const projectRedirect = (Id, route) => {
     localStorage.setItem("activeProject", Id);
     setActiveProject(Id);
+
     axios
       .get(`/milestones/${Id}`, authHeader)
       .then((res) => setMilestones(res.data))
@@ -126,14 +125,15 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                   className="ml-3"
                                   role="button"
                                 />
-
-                                <Link
-                                  onClick={() => projectRedirect(project.id)}
-                                  to="/devlog"
-                                  className="text-light ml-3"
-                                >
-                                  {devlogIcon}
-                                </Link>
+                                <FontAwesomeIcon
+                                  icon={faClipboard}
+                                  size="2x"
+                                  onClick={() =>
+                                    projectRedirect(project.id, "/devlog")
+                                  }
+                                  className="ml-3"
+                                  role="button"
+                                />
                                 {!asModal && (
                                   <Button
                                     variant="danger"
@@ -162,42 +162,45 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             permission.username === user
                         )
                         .map((project) => {
-                          return (
-                            (!asModal && (
-                              <tr key={project.id}>
-                                <td>{project.id}</td>
-                                <OverlayTrigger
-                                  placement="top"
-                                  delay={{ show: 250, hide: 400 }}
-                                  overlay={renderTooltip(project.description)}
-                                >
-                                  <td>{project.title}</td>
-                                </OverlayTrigger>
-                                <td className="d-none d-md-table-cell">
-                                  {project.description}
-                                </td>
-                                {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
-                                <td>
-                                  <Link
-                                    onClick={() => projectRedirect(project.id)}
-                                    to="/milestones"
-                                    className="text-light"
-                                  >
-                                    {milestoneIcon}
-                                  </Link>
-                                </td>
-                                <td>
-                                  <Link
-                                    onClick={() => projectRedirect(project.id)}
-                                    to="/devlog"
-                                    className="text-light"
-                                  >
-                                    {devlogIcon}
-                                  </Link>
-                                </td>
-                              </tr>
-                            )) ||
-                            (asModal && (
+                          !asModal ? (
+                            <tr key={project.id}>
+                              <td>{project.id}</td>
+                              <OverlayTrigger
+                                placement="top"
+                                delay={{ show: 250, hide: 400 }}
+                                overlay={renderTooltip(project.description)}
+                              >
+                                <td>{project.title}</td>
+                              </OverlayTrigger>
+                              <td className="d-none d-md-table-cell">
+                                {project.description}
+                              </td>
+                              {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
+                              <td>
+                                <FontAwesomeIcon
+                                  icon={faCalendarCheck}
+                                  size="2x"
+                                  onClick={() =>
+                                    projectRedirect(project.id, "/milestones")
+                                  }
+                                  className="ml-3"
+                                  role="button"
+                                />
+                              </td>
+                              <td>
+                                <FontAwesomeIcon
+                                  icon={faClipboard}
+                                  size="2x"
+                                  onClick={() =>
+                                    projectRedirect(project.id, "/devlog")
+                                  }
+                                  className="ml-3"
+                                  role="button"
+                                />
+                              </td>
+                            </tr>
+                          ) : (
+                            asModal && (
                               <tr
                                 key={project.id}
                                 className={
@@ -224,7 +227,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                   {project.description}
                                 </td>
                               </tr>
-                            ))
+                            )
                           );
                         })
                     )

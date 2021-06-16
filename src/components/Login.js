@@ -6,11 +6,13 @@ import { Spinner, Button, Container } from "react-bootstrap";
 import { useGlobal } from "../contexts/GlobalProvider";
 
 const Login = ({ history }) => {
-  let cachedUser = localStorage.getItem("user");
   const { setUser, setIsMod } = useGlobal();
+
+  let cachedUser = localStorage.getItem("user");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("Login");
   const [showSignup, setshowSignup] = useState(false);
+
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -79,7 +81,7 @@ const Login = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     let userObject = {
-      username: input.username.toLowerCase(),
+      username: input.username,
       isModerator: 0,
     };
     try {
