@@ -28,15 +28,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const { setMilestones } = useMilestones();
 
-  // const milestoneIcon = (
-  //   <FontAwesomeIcon
-  //     icon={faCalendarCheck}
-  //     size="2x"
-  //     onClick={() => projectRedirect(project.id, "/milestones")}
-  //     className="ml-3"
-  //     role="button"
-  //   />
-  // );
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
   // makes clicked-on project consistent across app experience
@@ -47,9 +38,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
       .get(`/milestones/${Id}`, authHeader)
       .then((res) => setMilestones(res.data))
       .then(() => history.push(route));
-    // fetchMilestones().then(() => history.push(route));
-
-    // history.push(route);
   };
 
   const renderTooltip = (props) => (

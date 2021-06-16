@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Accordion, Card, Button } from "react-bootstrap";
-import DevlogAddFormModal from "../DevlogAddFormModal";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useDevlog } from "../../contexts/DevlogProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
+import DevlogAddFormModal from "../DevlogAddFormModal";
 import ProjectSelectModal from "../ProjectSelectModal";
 
 export default function Devlog() {

@@ -79,7 +79,7 @@ const Login = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     let userObject = {
-      username: input.username,
+      username: input.username.toLowerCase(),
       isModerator: 0,
     };
     try {
