@@ -11,11 +11,11 @@ export const ProjectsProvider = ({ children }) => {
   const { user, authHeader, activeProject } = useGlobal();
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useState([]);
-  const [loadingProjects, setloadingProjects] = useState(true);
+  const [loadingProjects, setloadingProjects] = useState(false);
   // const [loadingPermissions, setloadingPermissions] = useState(false);
 
   const fetchProjects = async () => {
-    // setloadingProjects(true);
+    setloadingProjects(true);
     try {
       let response = await axios.get("/projects", authHeader);
       setProjects(response.data);

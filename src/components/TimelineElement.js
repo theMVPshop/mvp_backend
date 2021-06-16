@@ -8,8 +8,14 @@ import "react-vertical-timeline-component/style.min.css";
 import { useMilestones } from "../contexts/MilestonesProvider";
 
 // inheriting props from Milestones.js
-function TimelineElement({ milestones, handleStatusChange, removeMilestone }) {
-  const { loadingMilestones, clickedMilestone } = useMilestones();
+function TimelineElement() {
+  const {
+    milestones,
+    loadingMilestones,
+    clickedMilestone,
+    handleStatusChange,
+    removeMilestone,
+  } = useMilestones();
   return (
     <>
       {!milestones.length && (

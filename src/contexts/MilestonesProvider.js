@@ -16,11 +16,8 @@ export const MilestonesProvider = ({ children }) => {
 
   const fetchMilestones = async () => {
     try {
-      let response = await axios.get(
-        `/milestones/${activeProject}`,
-        authHeader
-      );
-      setMilestones(response.data);
+      let res = await axios.get(`/milestones/${activeProject}`, authHeader);
+      setMilestones(res.data);
     } catch (error) {
       console.log("failed to fetch milestones", error);
     } finally {
@@ -40,9 +37,10 @@ export const MilestonesProvider = ({ children }) => {
     };
     try {
       await axios.delete(`/milestones/${activeProject}`, reqBody);
-      await fetchMilestones();
     } catch (error) {
       console.log(error);
+    } finally {
+      fetchMilestones();
     }
   };
 

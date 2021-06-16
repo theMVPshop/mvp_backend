@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useHistory } from "react-router-dom";
 import {
   Container,
   Table,
   Button,
   Tooltip,
   OverlayTrigger,
-  Spinner,
+  // Spinner,
 } from "react-bootstrap";
 import {
   faCalendarCheck,
@@ -16,20 +17,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AddProjectForm from "./AddProjectForm";
 import { useGlobal } from "../contexts/GlobalProvider";
 import { useProjects } from "../contexts/ProjectsProvider";
+import { useMilestones } from "../contexts/MilestonesProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ asModal, handleProjectClick }) {
+  let history = useHistory();
+
   const { user, authHeader, isMod, activeProject, setActiveProject } =
     useGlobal();
-  const { projects, setProjects, loadingProjects, permissions, deleteProject } =
-    useProjects();
-  const milestoneIcon = <FontAwesomeIcon icon={faCalendarCheck} size="2x" />;
+  const { projects, setProjects, permissions, deleteProject } = useProjects();
+  const { setMilestones } = useMilestones();
+
+  // const milestoneIcon = (
+  //   <FontAwesomeIcon
+  //     icon={faCalendarCheck}
+  //     size="2x"
+  //     onClick={() => projectRedirect(project.id, "/milestones")}
+  //     className="ml-3"
+  //     role="button"
+  //   />
+  // );
   const devlogIcon = <FontAwesomeIcon icon={faClipboard} size="2x" />;
 
   // makes clicked-on project consistent across app experience
-  const saveActiveProjectIdToCache = (Id) => {
+  const projectRedirect = (Id, route) => {
     localStorage.setItem("activeProject", Id);
     setActiveProject(Id);
+    axios
+      .get(`/milestones/${Id}`, authHeader)
+      .then((res) => setMilestones(res.data))
+      .then(() => history.push(route));
+    // fetchMilestones().then(() => history.push(route));
+
+    // history.push(route);
   };
 
   const renderTooltip = (props) => (
@@ -49,9 +69,8 @@ function ProjectsTable({ asModal, handleProjectClick }) {
         }}
       >
         <div
-          className="mileContainer pt-2 pb-2 mb-3"
+          className="pt-2 pb-2 mb-3"
           style={{
-            // backgroundColor: "var(--  )",
             borderRadius: "25px 25px 0 0",
             filter: "drop-shadow(0 10px 0.05rem rgba(0,0,0,.55)",
           }}
@@ -110,19 +129,18 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             {project.title}
                             {!asModal && (
                               <div className="d-flex ml-auto">
-                                <Link
+                                <FontAwesomeIcon
+                                  icon={faCalendarCheck}
+                                  size="2x"
                                   onClick={() =>
-                                    saveActiveProjectIdToCache(project.id)
+                                    projectRedirect(project.id, "/milestones")
                                   }
-                                  to="/milestones"
-                                  className="text-light ml-3"
-                                >
-                                  {milestoneIcon}
-                                </Link>
+                                  className="ml-3"
+                                  role="button"
+                                />
+
                                 <Link
-                                  onClick={() =>
-                                    saveActiveProjectIdToCache(project.id)
-                                  }
+                                  onClick={() => projectRedirect(project.id)}
                                   to="/devlog"
                                   className="text-light ml-3"
                                 >
@@ -173,9 +191,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                 {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
                                 <td>
                                   <Link
-                                    onClick={() =>
-                                      saveActiveProjectIdToCache(project.id)
-                                    }
+                                    onClick={() => projectRedirect(project.id)}
                                     to="/milestones"
                                     className="text-light"
                                   >
@@ -184,9 +200,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                 </td>
                                 <td>
                                   <Link
-                                    onClick={() =>
-                                      saveActiveProjectIdToCache(project.id)
-                                    }
+                                    onClick={() => projectRedirect(project.id)}
                                     to="/devlog"
                                     className="text-light"
                                   >

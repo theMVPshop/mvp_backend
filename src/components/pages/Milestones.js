@@ -4,13 +4,11 @@ import ProjectSelectModal from "../ProjectSelectModal";
 import AddMilestoneModal from "../AddMilestoneModal";
 import TimelineElement from "../TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
-import { useMilestones } from "../../contexts/MilestonesProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
 
 function Milestones() {
-  const { authHeader, activeProject } = useGlobal();
+  const { activeProject } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
-  const { milestones, removeMilestone, handleStatusChange } = useMilestones();
 
   return (
     <>
@@ -24,11 +22,7 @@ function Milestones() {
       >
         <div
           className="mileContainer pt-2 pb-2 mb-3"
-          style={{
-            // backgroundColor: "var(--blue)",
-            color: "var(--light)",
-            borderRadius: "25px 25px 0 0",
-          }}
+          style={{ borderRadius: "25px 25px 0 0" }}
         >
           <Container
             className="d-flex p-6 justify-content-evenly mt-2"
@@ -48,12 +42,7 @@ function Milestones() {
               ? "Please Select a Project"
               : "Please inform your supervisor to assign you a project")}
         </h1>
-        <TimelineElement
-          milestones={milestones}
-          handleStatusChange={handleStatusChange}
-          removeMilestone={removeMilestone}
-          authHeader={authHeader}
-        />
+        <TimelineElement />
       </Container>
     </>
   );
