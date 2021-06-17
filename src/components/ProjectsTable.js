@@ -55,10 +55,11 @@ function ProjectsTable({ asModal, handleProjectClick }) {
   const Loader = (
     <Spinner
       as="span"
-      animation="grow"
+      variant="danger"
+      animation="border"
       role="status"
       aria-hidden="true"
-      className="ml-2"
+      className={isMod ? "ml-2" : undefined}
     />
   );
 
@@ -211,7 +212,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                 {project.description}
                               </td>
                               {/* below lines are the same deal as the above for two links/icons, except rendered by non-mods i.e. clients */}
-                              <td>
+                              <td className="text-center">
                                 {loading.isLoading &&
                                 loading.clickedProjectId === project.id &&
                                 loading.page === "milestones" ? (
@@ -223,12 +224,12 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                     onClick={() =>
                                       projectRedirect(project.id, "milestones")
                                     }
-                                    className="ml-3"
+                                    // className="ml-3"
                                     role="button"
                                   />
                                 )}
                               </td>
-                              <td>
+                              <td className="text-center">
                                 {loading.isLoading &&
                                 loading.clickedProjectId === project.id &&
                                 loading.page === "devlog" ? (
@@ -240,7 +241,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                     onClick={() =>
                                       projectRedirect(project.id, "devlog")
                                     }
-                                    className="ml-3"
+                                    // className="ml-3"
                                     role="button"
                                   />
                                 )}
