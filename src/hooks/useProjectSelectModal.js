@@ -33,7 +33,7 @@ export default (route) => {
       console.log(error);
     } finally {
       setLoading(false);
-      // handleClose();
+      handleClose();
     }
   };
 
