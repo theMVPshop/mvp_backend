@@ -170,15 +170,20 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                               loading.clickedProject === project.id &&
                               loading.clickedUser === user.username &&
                               loading.permissionUpdating && (
-                                <Spinner
-                                  variant={permissionObj ? "danger" : "success"}
-                                  as="span"
-                                  animation="grow"
-                                  size="sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                  className="mr-3"
-                                />
+                                <>
+                                  <Spinner
+                                    variant={
+                                      permissionObj ? "danger" : "success"
+                                    }
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    // className="p-1"
+                                  />
+                                  {project.title}
+                                </>
                               )
                             )}
                           </Form.Check>
