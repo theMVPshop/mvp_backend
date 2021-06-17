@@ -120,7 +120,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                             ? "table-active"
                             : undefined
                         }
-                        style={asModal ? { cursor: "pointer" } : undefined}
+                        role={asModal ? "button" : undefined}
                         onClick={
                           asModal
                             ? () => handleProjectClick(project.id)
@@ -186,7 +186,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                         </td>
                       </tr>
                     ))
-                  : // two more conditional renderings if not moderator
+                  : // filter projects if not moderator
                     permissions.map((permission) =>
                       projects
                         .filter(
@@ -245,6 +245,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                               </td>
                             </tr>
                           ) : (
+                            // when rendered as modal and not a mod
                             asModal && (
                               <tr
                                 key={project.id}
@@ -253,11 +254,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                     ? "table-active"
                                     : undefined
                                 }
-                                style={
-                                  activeProject === project.id
-                                    ? { backgroundColor: "orange" }
-                                    : asModal && { cursor: "pointer" }
-                                }
+                                role={asModal ? "button" : undefined}
                                 onClick={() => handleProjectClick(project.id)}
                               >
                                 <td>{project.id}</td>

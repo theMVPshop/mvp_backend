@@ -24,6 +24,7 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
   const onSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
+    setInput({ title: "", description: "" }); // clear input field
     let project = { title: input.title, description: input.description };
     try {
       await axios.post("/projects", project, authHeader);
@@ -33,7 +34,6 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
     } catch (error) {
       console.log("failed to repopulate projects list", error);
     } finally {
-      setInput({ title: "", description: "" }); // clear input field
       setLoading(false);
     }
   };

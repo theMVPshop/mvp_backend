@@ -9,12 +9,15 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
 
   const [users, setUsers] = useState([]);
   const [permissions, setPermissions] = useState([]);
-  const [roleLoading, setroleLoading] = useState(false);
-  const [permissionsLoading, setpermissionsLoading] = useState(true);
-  const [permissionUpdating, setpermissionUpdating] = useState(true);
-  const [clickedUser, setclickedUser] = useState(null);
-  const [clickedPermission, setclickedPermission] = useState(null);
-  const [clickedProject, setclickedProject] = useState(null);
+
+  const [loading, setLoading] = useState({
+    roleLoading: false,
+    permissionsLoading: true,
+    permissionUpdating: true,
+    clickedUser: null,
+    clickedPermission: null,
+    clickedProject: null,
+  });
 
   const fetchUsers = async () => {
     try {
@@ -34,7 +37,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
     } catch (error) {
       console.log("fetchpermissions", error);
     } finally {
-      setpermissionsLoading(false);
+      setLoading({ permissionsLoading: false });
     }
   };
 
@@ -46,8 +49,8 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
 
   const handleChangeRole = async (userObject) => {
     const { username, isModerator } = userObject;
-    setroleLoading(true);
-    setclickedUser(username);
+    setLoading({ roleLoading: true });
+    setLoading({ clickedUser: username });
     const reqBody = { isModerator: !isModerator, username };
     try {
       await axios.put("/users", reqBody, authHeader);
@@ -55,7 +58,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
     } catch (error) {
       console.log(`failed to update ${username}'s role`, error);
     } finally {
-      setroleLoading(false);
+      setLoading({ roleLoading: false });
     }
   };
 
@@ -64,14 +67,15 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
     username,
     permissionObj
   ) => {
-    setpermissionUpdating(true);
     let permissionId = permissionObj?.id;
-    setclickedPermission(permissionId);
-    setclickedProject(project_id);
-    setclickedUser(username);
-    let reqBody = { username, project_id };
-    console.log(permissionObj);
+    setLoading({
+      permissionUpdating: true,
+      clickedPermission: permissionId,
+      clickedProject: project_id,
+      clickedUser: username,
+    });
     try {
+      let reqBody = { username, project_id };
       permissionObj
         ? await axios.delete(`/permissions/${permissionId}`, authHeader)
         : await axios.post("/permissions", reqBody, authHeader);
@@ -83,7 +87,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
     } finally {
       await fetchPermissions();
     }
-    setpermissionUpdating(false);
+    setLoading({ permissionUpdating: false });
   };
 
   return (
@@ -100,7 +104,8 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
             <tr key={user.id}>
               <td>
                 <div className="m-1">{user.username}</div>
-                {clickedUser === user.username && roleLoading ? (
+                {loading.clickedUser === user.username &&
+                loading.roleLoading ? (
                   <Button variant="danger" disabled className="d-flex">
                     <Spinner
                       // variant="warning"
@@ -150,7 +155,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                               )
                             }
                           >
-                            {permissionsLoading ? (
+                            {loading.permissionsLoading ? (
                               <Spinner
                                 variant="info"
                                 as="span"
@@ -161,14 +166,14 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                                 className="mr-3"
                               />
                             ) : (
-                              clickedPermission === permissionObj?.id &&
-                              clickedProject === project.id &&
-                              clickedUser === user.username &&
-                              permissionUpdating && (
+                              loading.clickedPermission === permissionObj?.id &&
+                              loading.clickedProject === project.id &&
+                              loading.clickedUser === user.username &&
+                              loading.permissionUpdating && (
                                 <Spinner
                                   variant={permissionObj ? "danger" : "success"}
                                   as="span"
-                                  animation="border"
+                                  animation="grow"
                                   size="sm"
                                   role="status"
                                   aria-hidden="true"
