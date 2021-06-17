@@ -4,6 +4,7 @@ import Signup from "./Signup";
 import { Redirect } from "react-router-dom";
 import { Spinner, Button, Container } from "react-bootstrap";
 import { useGlobal } from "../contexts/GlobalProvider";
+import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 
 const Login = ({ history }) => {
   const { setUser, setIsMod } = useGlobal();
@@ -38,11 +39,9 @@ const Login = ({ history }) => {
     try {
       let response = await axios.get("/users", authHeader);
       let users = await response.data;
-      setIsMod(
-        users.find((x) => x.username === username)?.isModerator === 1
-          ? true
-          : false
-      );
+      let hasPrivilege =
+        users.find((x) => x.username === username)?.isModerator === 1;
+      setIsMod(hasPrivilege ? true : false);
     } catch (error) {
       console.log("failed to retrieve moderator status", error);
     }
@@ -52,7 +51,7 @@ const Login = ({ history }) => {
     event?.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("/auth/login", input);
+      let response = await axios.post("/auth/login", input);
       if (response.status === 200) {
         let lowercasedUsername = input.username.toLowerCase();
         let token = response.data.token;

@@ -22,17 +22,19 @@ import { useDevlog } from "../contexts/DevlogProvider";
 
 // rendered from multiple components, and inherits behavior based on which
 function ProjectsTable({ asModal, handleProjectClick }) {
-  let history = useHistory();
   const { user, authHeader, isMod, activeProject, setActiveProject } =
     useGlobal();
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const { setMilestones } = useMilestones();
   const { setLogs } = useDevlog();
+
   const [loading, setLoading] = React.useState({
     isLoading: false,
     clickedProjectId: null,
     page: null,
   });
+
+  let history = useHistory();
 
   // makes clicked-on project consistent across app experience
   const projectRedirect = async (Id, page) => {
@@ -191,10 +193,10 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                       projects
                         .filter(
                           (x) =>
-                            x.id === permission.project_id &&
+                            permission.project_id === x.id &&
                             permission.username === user
                         )
-                        .map((project) => {
+                        .map((project) =>
                           !asModal ? (
                             <tr key={project.id}>
                               <td>{project.id}</td>
@@ -245,7 +247,7 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                               </td>
                             </tr>
                           ) : (
-                            // when rendered as modal and not a mod
+                            // when rendered as modal *and* not a mod
                             asModal && (
                               <tr
                                 key={project.id}
@@ -270,8 +272,8 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                 </td>
                               </tr>
                             )
-                          );
-                        })
+                          )
+                        )
                     )
               }
             </tbody>

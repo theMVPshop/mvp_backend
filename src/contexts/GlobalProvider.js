@@ -8,7 +8,10 @@ export const useGlobal = () => useContext(GlobalContext);
 export const GlobalProvider = ({ children, user, setUser }) => {
   let cachedActiveProjectId =
     parseInt(localStorage.getItem("activeProject")) || undefined;
-  const [activeProject, setActiveProject] = useState(cachedActiveProjectId);
+  const [activeProject, setActiveProject] = useLocalStorage(
+    "activeProject",
+    cachedActiveProjectId
+  );
   const token = localStorage.getItem("token");
   const authHeader = { headers: { Authorization: `Bearer ${token}` } };
   const [isMod, setIsMod] = useLocalStorage("isMod", false);
