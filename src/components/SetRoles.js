@@ -49,8 +49,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
 
   const handleChangeRole = async (userObject) => {
     const { username, isModerator } = userObject;
-    setLoading({ roleLoading: true });
-    setLoading({ clickedUser: username });
+    setLoading({ roleLoading: true, clickedUser: username });
     const reqBody = { isModerator: !isModerator, username };
     try {
       await axios.put("/users", reqBody, authHeader);
@@ -131,7 +130,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
               <td>
                 <Form>
                   {["checkbox"].map((type) => (
-                    <div key={`inline-${type}-${user.id}`} className="mb-3">
+                    <div key={`inline-${type}-${user.id}`}>
                       {projects.map((project) => {
                         const permissionObj = permissions.find(
                           (x) =>
@@ -140,53 +139,57 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                         );
 
                         return (
-                          <Form.Check
-                            key={user.username + project.id}
-                            inline
-                            label={project.title}
-                            type={type}
-                            id={`inline-${type}-${user.username + project.id}`}
-                            checked={permissionObj}
-                            onChange={() =>
-                              handleChangePermission(
-                                project.id,
-                                user.username,
-                                permissionObj
-                              )
-                            }
-                          >
-                            {loading.permissionsLoading ? (
-                              <Spinner
-                                variant="info"
-                                as="span"
-                                animation="grow"
-                                size="sm"
-                                role="status"
-                                aria-hidden="true"
-                                className="mr-3"
-                              />
+                          <>
+                            {loading.clickedPermission === permissionObj?.id &&
+                            loading.clickedProject === project.id &&
+                            loading.clickedUser === user.username &&
+                            loading.permissionUpdating ? (
+                              <div className="d-inline-block">
+                                <Spinner
+                                  variant={permissionObj ? "danger" : "success"}
+                                  as="span"
+                                  animation="grow"
+                                  size="sm"
+                                  role="status"
+                                  aria-hidden="true"
+                                  className="ml-1 mr-1"
+                                />
+                                <span className="mr-3 mb-3">
+                                  {project.title}
+                                </span>
+                              </div>
                             ) : (
-                              loading.clickedPermission === permissionObj?.id &&
-                              loading.clickedProject === project.id &&
-                              loading.clickedUser === user.username &&
-                              loading.permissionUpdating && (
-                                <>
+                              <Form.Check
+                                key={user.username + project.id}
+                                inline
+                                label={project.title}
+                                type={type}
+                                id={`inline-${type}-${
+                                  user.username + project.id
+                                }`}
+                                checked={permissionObj}
+                                onChange={() =>
+                                  handleChangePermission(
+                                    project.id,
+                                    user.username,
+                                    permissionObj
+                                  )
+                                }
+                              >
+                                {loading.permissionsLoading && (
                                   <Spinner
-                                    variant={
-                                      permissionObj ? "danger" : "success"
-                                    }
+                                    variant="info"
                                     as="span"
                                     animation="grow"
                                     size="sm"
                                     role="status"
                                     aria-hidden="true"
-                                    // className="p-1"
+                                    className="mr-3"
                                   />
-                                  {project.title}
-                                </>
-                              )
+                                )}
+                              </Form.Check>
                             )}
-                          </Form.Check>
+                          </>
                         );
                       })}
                     </div>
