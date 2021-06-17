@@ -36,7 +36,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
 
   let history = useHistory();
 
-  // makes clicked-on project consistent across app experience
   const projectRedirect = async (Id, page) => {
     setLoading({ isLoading: true, clickedProjectId: Id, page });
     setActiveProject(Id);
@@ -224,7 +223,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                     onClick={() =>
                                       projectRedirect(project.id, "milestones")
                                     }
-                                    // className="ml-3"
                                     role="button"
                                   />
                                 )}
@@ -241,7 +239,6 @@ function ProjectsTable({ asModal, handleProjectClick }) {
                                     onClick={() =>
                                       projectRedirect(project.id, "devlog")
                                     }
-                                    // className="ml-3"
                                     role="button"
                                   />
                                 )}

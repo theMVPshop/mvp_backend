@@ -148,7 +148,7 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                                 <Spinner
                                   variant={permissionObj ? "danger" : "success"}
                                   as="span"
-                                  animation="grow"
+                                  animation="border"
                                   size="sm"
                                   role="status"
                                   aria-hidden="true"
