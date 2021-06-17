@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import {
   Container,
   Button,
@@ -9,58 +8,12 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-// import ProjectSelectModal from "./ProjectSelectModal";
-// import { useDevlog } from "../contexts/DevlogProvider";
+import useDevlogAddForm from "../hooks/useDevlogAddForm";
 
 // inherits props from Devlog.js
 function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
-  const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState();
-
-  const [input, setInput] = useState({
-    title: "",
-    description: "",
-    time_stamp: "",
-    project_id: activeProject,
-  });
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const onChange = (event) =>
-    setInput((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-
-  const clearForm = () =>
-    setInput({
-      title: "",
-      description: "",
-      time_stamp: "",
-    });
-
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    let date = new Date().toLocaleString();
-    const reqBody = {
-      title: input.title,
-      description: input.description,
-      project_id: activeProject,
-      time_stamp: date,
-    };
-    try {
-      await axios.post("/devlog", reqBody, authHeader);
-      fetchLogs();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      clearForm();
-      setLoading(false);
-      handleClose();
-    }
-  };
+  const { show, input, loading, handleShow, handleClose, onChange, onSubmit } =
+    useDevlogAddForm(activeProject, authHeader, fetchLogs);
 
   return (
     <>
@@ -101,15 +54,6 @@ function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {
                 />
               </InputGroup>
 
-              {/* <Form.Group controlId="title">
-                  <Form.Label>Title</Form.Label>
-                  <Form.Control
-                    placeholder="Post Title..."
-                    value={input.title}
-                    onChange={onChange}
-                    name="title"
-                  />
-                </Form.Group> */}
               <Form.Group controlId="post">
                 {/* <Form.Label>Description</Form.Label> */}
                 <Form.Control

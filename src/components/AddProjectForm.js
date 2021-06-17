@@ -1,42 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import { Spinner, Container, Button } from "react-bootstrap";
-import { useProjects } from "../contexts/ProjectsProvider";
-// import SetRolesModal from "./SetRolesModal";
+import useAddProjectForm from "../hooks/useAddProjectForm";
 
 // inheriting props/state from ProjectsTable.js
 function AddProjectForm({ isMod, setProjects, authHeader }) {
-  const { loadingProjects } = useProjects();
-  const [input, setInput] = useState({
-    title: "",
-    description: "",
-  });
-  const [isLoading, setLoading] = useState(false);
+  const { loadingProjects, input, isLoading, onChange, onSubmit } =
+    useAddProjectForm(setProjects, authHeader);
 
-  // controls all the input fields in the form
-  const onChange = (event) =>
-    setInput((prevState) => ({
-      ...prevState,
-      [event.target.name]: event.target.value,
-    }));
-
-  // creates new project and stores it in (inhereted) hook and also the API
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    setInput({ title: "", description: "" }); // clear input field
-    let project = { title: input.title, description: input.description };
-    try {
-      await axios.post("/projects", project, authHeader);
-      let response = await axios.get("/projects", authHeader);
-      project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
-      setProjects(response.data);
-    } catch (error) {
-      console.log("failed to repopulate projects list", error);
-    } finally {
-      setLoading(false);
-    }
-  };
   return (
     <>
       {isMod && (
@@ -93,11 +63,6 @@ function AddProjectForm({ isMod, setProjects, authHeader }) {
                 Add Project
               </Button>
             )}
-
-            <Container className="d-flex p-6 justify-content-center">
-              {/* line below renders SetRolesModal button */}
-              {/* <SetRolesModal projects={projects} authHeader={authHeader} /> */}
-            </Container>
           </form>
         </Container>
       )}

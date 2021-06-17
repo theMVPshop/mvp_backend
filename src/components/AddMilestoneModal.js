@@ -25,7 +25,6 @@ function AddMilestoneModal({ onChange, onSubmit, input }) {
         </Modal.Header>
         <Modal.Body style={{ backgroundColor: "#adb5bd" }}>
           <Container className="d-flex p-6 justify-content-center">
-            {/* line below renders SetRoles component */}
             <AddMilestoneForm
               onChange={onChange}
               input={input}
