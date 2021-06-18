@@ -16,13 +16,11 @@ function Navigation({ history, location }) {
     history.push("/");
   };
 
-  const navLinkProps = (route) => {
-    return {
-      to: route,
-      className: "nav-link text-light d-inline-block",
-      onClick: () => setExpanded(false),
-    };
-  };
+  const navLinkProps = (route) => ({
+    to: route,
+    className: "nav-link text-light d-inline-block",
+    onClick: () => setExpanded(false),
+  });
 
   return (
     <div className="bg-primary">
