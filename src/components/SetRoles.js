@@ -47,7 +47,6 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                       aria-hidden="true"
                       className="mr-1"
                     />
-                    {/* Updating */}
                   </Button>
                 ) : (
                   <Button

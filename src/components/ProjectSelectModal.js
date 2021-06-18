@@ -1,10 +1,10 @@
 import React from "react";
 import { Spinner, Container, Modal, Button } from "react-bootstrap";
-import ProjectsTable from "./ProjectsTable";
 import useProjectSelectModal from "../hooks/useProjectSelectModal";
+import ProjectsTableModal from "./ProjectsTableModal";
 
-// inherits props from Devlog.js and Milestones.js
-function ProjectSelectModal({ asModal, route }) {
+// inherits route from Devlog.js or Milestones.js
+function ProjectSelectModal({ route }) {
   const {
     activeProject,
     setActiveProject,
@@ -21,7 +21,6 @@ function ProjectSelectModal({ asModal, route }) {
         <Button variant="primary" onClick={handleShow} className="m-2">
           Select Project
         </Button>
-        {/* {isMod && <AddLogButton />} */}
       </Container>
 
       <>
@@ -32,7 +31,6 @@ function ProjectSelectModal({ asModal, route }) {
           scrollable
           centered
           animation
-          // className="fixed-top"
         >
           <Modal.Header closeButton style={{ backgroundColor: "var(--blue)" }}>
             <Modal.Title style={{ color: "var(--light)" }}>
@@ -50,8 +48,7 @@ function ProjectSelectModal({ asModal, route }) {
 
           <Modal.Body style={{ backgroundColor: "gray" }}>
             <Container className="d-flex p-6 justify-content-center">
-              <ProjectsTable
-                asModal={asModal}
+              <ProjectsTableModal
                 handleProjectClick={handleProjectClick}
                 setActiveProject={setActiveProject}
                 activeProject={activeProject}

@@ -1,7 +1,7 @@
 import React from "react";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Spinner, Tooltip } from "react-bootstrap";
-import axios from "axios";
 import { useGlobal } from "../contexts/GlobalProvider";
 import { useProjects } from "../contexts/ProjectsProvider";
 import { useMilestones } from "../contexts/MilestonesProvider";
@@ -13,14 +13,13 @@ export default () => {
   const { projects, setProjects, permissions, deleteProject } = useProjects();
   const { setMilestones } = useMilestones();
   const { setLogs } = useDevlog();
+  let history = useHistory();
 
   const [loading, setLoading] = React.useState({
     isLoading: false,
     clickedProjectId: null,
     page: null,
   });
-
-  let history = useHistory();
 
   const projectRedirect = async (Id, page) => {
     setLoading({ isLoading: true, clickedProjectId: Id, page });

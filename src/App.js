@@ -8,10 +8,6 @@ import { DevlogProvider } from "./contexts/DevlogProvider";
 import { MilestonesProvider } from "./contexts/MilestonesProvider";
 import { ProjectsProvider } from "./contexts/ProjectsProvider";
 import Login from "./components/Login";
-import useLocalStorage from "./hooks/useLocalStorage";
-// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./App.scss";
 
 export default function App() {
   let cachedUser = localStorage.getItem("user");
