@@ -1,6 +1,6 @@
 import React from "react";
 import { Spinner, Container, Modal, Button } from "react-bootstrap";
-import useProjectSelectModal from "../hooks/useProjectSelectModal";
+import useProjectSelectModal from "../../hooks/useProjectSelectModal";
 import ProjectsTableModal from "./ProjectsTableModal";
 
 // inherits route from Devlog.js or Milestones.js

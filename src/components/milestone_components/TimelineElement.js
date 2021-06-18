@@ -5,7 +5,7 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import { useMilestones } from "../contexts/MilestonesProvider";
+import { useMilestones } from "../../contexts/MilestonesProvider";
 
 // inheriting props from Milestones.js
 function TimelineElement() {

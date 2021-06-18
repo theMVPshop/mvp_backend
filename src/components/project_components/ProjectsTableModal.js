@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Table, OverlayTrigger } from "react-bootstrap";
-import useProjectsTable from "../hooks/useProjectsTable";
+import useProjectsTable from "../../hooks/useProjectsTable";
 
 function ProjectsTableModal({ handleProjectClick }) {
   const { user, activeProject, projects, permissions, renderTooltip } =

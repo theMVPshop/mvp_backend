@@ -7,7 +7,7 @@ import {
   FormControl,
   Spinner,
 } from "react-bootstrap";
-import useAddMilestoneForm from "../hooks/useAddMilestoneForm";
+import useAddMilestoneForm from "../../hooks/useAddMilestoneForm";
 
 // props inherited from Milestones.js
 function AddMilestoneForm(handleClose) {

@@ -8,7 +8,7 @@ import {
   InputGroup,
   FormControl,
 } from "react-bootstrap";
-import useDevlogAddForm from "../hooks/useDevlogAddForm";
+import useDevlogAddForm from "../../hooks/useDevlogAddForm";
 
 // inherits props from Devlog.js
 function DevlogAddFormModal({ activeProject, authHeader, fetchLogs }) {

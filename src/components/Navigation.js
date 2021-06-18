@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { Navbar, Nav, Button, Container } from "react-bootstrap";
-import SetRolesModal from "./SetRolesModal";
+import SetRolesModal from "../components/setRoles_components/SetRolesModal";
 import { useGlobal } from "../contexts/GlobalProvider";
 
 // inheriting props from App.js

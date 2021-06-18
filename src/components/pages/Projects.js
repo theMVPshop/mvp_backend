@@ -1,9 +1,9 @@
 import React from "react";
 import { Container } from "react-bootstrap";
 import { useGlobal } from "../../contexts/GlobalProvider";
-import AddProjectForm from "../AddProjectForm";
-import ProjectsClientTable from "../ProjectsClientTable";
-import ProjectsModTable from "../ProjectsModTable";
+import AddProjectForm from "../project_components/AddProjectForm";
+import ProjectsClientTable from "../project_components/ProjectsClientTable";
+import ProjectsModTable from "../project_components/ProjectsModTable";
 
 function Projects() {
   const { isMod } = useGlobal();

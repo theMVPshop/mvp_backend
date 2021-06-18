@@ -3,8 +3,8 @@ import { Container, Accordion, Card, Button } from "react-bootstrap";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useDevlog } from "../../contexts/DevlogProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
-import DevlogAddFormModal from "../DevlogAddFormModal";
-import ProjectSelectModal from "../ProjectSelectModal";
+import DevlogAddFormModal from "../devlog_components/DevlogAddFormModal";
+import ProjectSelectModal from "../project_components/ProjectSelectModal";
 
 export default function Devlog() {
   const { authHeader, activeProject, isMod } = useGlobal();

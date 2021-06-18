@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Spinner, Table, Container, Form, Button } from "react-bootstrap";
-import useSetRoles from "../hooks/useSetRoles";
+import useSetRoles from "../../hooks/useSetRoles";
 
 // inheriting props from AddProjectForm.js/Navigation.js > SetRolesModal.js
 function SetRoles({ authHeader, setmodalIsLoading }) {

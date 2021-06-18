@@ -1,8 +1,8 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import ProjectSelectModal from "../ProjectSelectModal";
-import AddMilestoneModal from "../AddMilestoneModal";
-import TimelineElement from "../TimelineElement";
+import ProjectSelectModal from "../project_components/ProjectSelectModal";
+import AddMilestoneModal from "../milestone_components/AddMilestoneModal";
+import TimelineElement from "../milestone_components/TimelineElement";
 import { useGlobal } from "../../contexts/GlobalProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
 
