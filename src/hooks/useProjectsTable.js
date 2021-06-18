@@ -30,7 +30,7 @@ export default () => {
       const res = await axios.get(`/${page}/${Id}`, authHeader);
       page === "milestones" ? setMilestones(res.data) : setLogs(res.data);
     } catch (error) {
-      console.log("could not redirect");
+      console.error("could not redirect");
     } finally {
       setLoading({ isLoading: false });
       history.push(`/${page}`);

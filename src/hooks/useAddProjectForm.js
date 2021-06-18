@@ -33,7 +33,7 @@ export default (setProjects, authHeader) => {
         project.id = response.data[response.data.length - 1].id; // guarantees that projectId in client table remains accurate no matter how many projects are deleted and added within the database
         setProjects(response.data);
       } catch (error) {
-        console.log("failed to repopulate projects list", error);
+        console.error("failed to repopulate projects list", error);
       } finally {
         setLoading(false);
       }

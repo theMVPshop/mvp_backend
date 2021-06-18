@@ -53,7 +53,7 @@ const login = (req, res) => {
       });
     })
     .catch((e) => {
-      console.log(e);
+      console.error(e);
     });
 
   let sql = "SELECT * FROM usersCredentials WHERE username = ?";

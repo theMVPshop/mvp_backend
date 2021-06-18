@@ -13,7 +13,7 @@ const getMilestoneByProject = (req, res) => {
 };
 
 const createMilestone = (req, res) => {
-  console.log("the whole request", req.body);
+  console.error("the whole request", req.body);
   let { ms_status, due_date, title, subtitle, project_id, description } =
     req.body;
   let sql =

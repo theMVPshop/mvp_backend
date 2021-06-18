@@ -21,7 +21,7 @@ export const ProjectsProvider = ({ children }) => {
       let response = await axios.get("/projects", authHeader);
       setProjects(response.data);
     } catch (error) {
-      console.log("failed to populate projects", error);
+      console.error("failed to populate projects", error);
     } finally {
       setloadingProjects(false);
     }
@@ -33,7 +33,7 @@ export const ProjectsProvider = ({ children }) => {
       let response = await axios.get("/permissions", authHeader);
       setPermissions(response.data);
     } catch (error) {
-      console.log("failed to fetch permissions", error);
+      console.error("failed to fetch permissions", error);
     }
   };
 
@@ -43,7 +43,7 @@ export const ProjectsProvider = ({ children }) => {
     try {
       await axios.delete(`/projects/${Id}`, authHeader);
     } catch (error) {
-      console.log("error deleting project", error);
+      console.error("error deleting project", error);
     } finally {
       fetchProjects();
     }

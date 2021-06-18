@@ -16,6 +16,14 @@ function Navigation({ history, location }) {
     history.push("/");
   };
 
+  const navLinkProps = (route) => {
+    return {
+      to: route,
+      className: "nav-link text-light d-inline-block",
+      onClick: () => setExpanded(false),
+    };
+  };
+
   return (
     <div className="bg-primary">
       <Container className="col-lg-7 m-auto">
@@ -30,40 +38,19 @@ function Navigation({ history, location }) {
           />
           <Navbar.Collapse id="basic-navbar-nav">
             {user && (
-              <Nav variant="pills" activeKey={location.pathname}>
-                <Nav.Item>
-                  <NavLink
-                    to="/projects"
-                    className="nav-link text-light d-inline-block"
-                    onClick={() => setExpanded(false)}
-                  >
-                    Projects
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/milestones"
-                    className="nav-link text-light d-inline-block"
-                    onClick={() => setExpanded(false)}
-                  >
-                    Milestones
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/devlog"
-                    className="nav-link text-light d-inline-block"
-                    onClick={() => setExpanded(false)}
-                  >
-                    DevLog
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  {isMod && <SetRolesModal authHeader={authHeader} />}
-                </Nav.Item>
+              <Nav
+                variant="pills"
+                activeKey={location.pathname}
+                className="align-items-center"
+              >
+                <NavLink {...navLinkProps("/projects")}>Projects</NavLink>
+                <NavLink {...navLinkProps("/milestones")}>Milestones</NavLink>
+                <NavLink {...navLinkProps("/devlog")}>DevLog</NavLink>
+                {isMod && <SetRolesModal authHeader={authHeader} />}
               </Nav>
             )}
-            <div className="d-flex ml-auto">
+
+            <div className="d-flex ml-auto justify-content-center">
               {user && (
                 <span className="text-light d-none d-lg-block ml-auto align-self-center pr-2">
                   Welcome <span className="text-warning">{user}</span>!
@@ -75,7 +62,7 @@ function Navigation({ history, location }) {
                     variant="danger"
                     size="sm"
                     onClick={logOut}
-                    className="ml-auto"
+                    className="ml-auto d-flex"
                   >
                     Logout
                   </Button>

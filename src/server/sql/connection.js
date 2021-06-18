@@ -4,7 +4,7 @@ require("dotenv").config();
 class Connection {
   constructor() {
     if (!this.pool) {
-      console.log("creating mysql connection...");
+      console.error("creating mysql connection...");
 
       const config = {
         connectionLimit: 100,

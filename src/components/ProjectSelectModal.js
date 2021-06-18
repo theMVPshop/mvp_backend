@@ -3,6 +3,7 @@ import { Spinner, Container, Modal, Button } from "react-bootstrap";
 import ProjectsTable from "./ProjectsTable";
 import useProjectSelectModal from "../hooks/useProjectSelectModal";
 
+// inherits props from Devlog.js and Milestones.js
 function ProjectSelectModal({ asModal, route }) {
   const {
     activeProject,
@@ -22,47 +23,43 @@ function ProjectSelectModal({ asModal, route }) {
         </Button>
         {/* {isMod && <AddLogButton />} */}
       </Container>
-      <div className="d-flex justify-content-center">
-        <>
-          <Modal
-            show={show}
-            onHide={handleClose}
-            size="lg"
-            scrollable
-            centered
-            animation
-          >
-            <Modal.Header
-              closeButton
-              style={{ backgroundColor: "var(--blue)" }}
-            >
-              <Modal.Title style={{ color: "var(--light)" }}>
-                Your Projects
-                {loading && (
-                  <Spinner
-                    animation="grow"
-                    variant="warning"
-                    role="status"
-                    aria-hidden="true"
-                  />
-                )}
-              </Modal.Title>
-            </Modal.Header>
 
-            <Modal.Body style={{ backgroundColor: "gray" }}>
-              <Container className="d-flex p-6 justify-content-center">
-                <ProjectsTable
-                  style={{ backgroundColor: "var(--gray)" }}
-                  asModal={asModal}
-                  handleProjectClick={handleProjectClick}
-                  setActiveProject={setActiveProject}
-                  activeProject={activeProject}
+      <>
+        <Modal
+          show={show}
+          onHide={handleClose}
+          size="lg"
+          scrollable
+          centered
+          animation
+          // className="fixed-top"
+        >
+          <Modal.Header closeButton style={{ backgroundColor: "var(--blue)" }}>
+            <Modal.Title style={{ color: "var(--light)" }}>
+              Your Projects
+              {loading && (
+                <Spinner
+                  animation="grow"
+                  variant="warning"
+                  role="status"
+                  aria-hidden="true"
                 />
-              </Container>
-            </Modal.Body>
-          </Modal>
-        </>
-      </div>
+              )}
+            </Modal.Title>
+          </Modal.Header>
+
+          <Modal.Body style={{ backgroundColor: "gray" }}>
+            <Container className="d-flex p-6 justify-content-center">
+              <ProjectsTable
+                asModal={asModal}
+                handleProjectClick={handleProjectClick}
+                setActiveProject={setActiveProject}
+                activeProject={activeProject}
+              />
+            </Container>
+          </Modal.Body>
+        </Modal>
+      </>
     </>
   );
 }

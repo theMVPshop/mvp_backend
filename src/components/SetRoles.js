@@ -76,7 +76,10 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
                             loading.clickedProject === project.id &&
                             loading.clickedUser === user.username &&
                             loading.permissionUpdating ? (
-                              <div className="d-inline-block">
+                              <div
+                                className="d-inline-block"
+                                key={user.username + project.id}
+                              >
                                 <Spinner
                                   variant={permissionObj ? "danger" : "success"}
                                   as="span"

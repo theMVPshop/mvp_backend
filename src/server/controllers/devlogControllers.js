@@ -13,7 +13,7 @@ const getDevlogByProject = (req, res) => {
 };
 
 const createDevlog = (req, res) => {
-  console.log("the whole request", req.body);
+  console.error("the whole request", req.body);
   let { title, description, project_id, time_stamp } = req.body;
   let sql =
     "INSERT INTO devlog (title, description, project_id, time_stamp) VALUE (?, ?, ?, ?)";

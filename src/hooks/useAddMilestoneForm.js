@@ -48,7 +48,7 @@ export default ({ handleClose }) => {
         await axios.post("/milestones", postBody, authHeader);
         await fetchMilestones();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         clearForm();
         setLoading(false);

@@ -47,7 +47,7 @@ export default (activeProject, authHeader, fetchLogs) => {
         await axios.post("/devlog", reqBody, authHeader);
         await fetchLogs();
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         clearForm();
         handleClose();

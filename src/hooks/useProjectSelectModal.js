@@ -30,7 +30,7 @@ export default (route) => {
         ? setLogs(data)
         : null;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
       handleClose();

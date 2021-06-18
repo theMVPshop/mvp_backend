@@ -22,7 +22,7 @@ export default (authHeader, setmodalIsLoading) => {
       let response = await axios.get("/users", authHeader);
       setUsers(response.data);
     } catch (error) {
-      console.log("failed to fetch users", error);
+      console.error("failed to fetch users", error);
     } finally {
       setmodalIsLoading(false);
     }
@@ -33,7 +33,7 @@ export default (authHeader, setmodalIsLoading) => {
       let response = await axios.get("/permissions", authHeader);
       setPermissions(response.data);
     } catch (error) {
-      console.log("fetchpermissions", error);
+      console.error("fetchpermissions", error);
     } finally {
       setLoading({ permissionsLoading: false });
     }
@@ -47,7 +47,7 @@ export default (authHeader, setmodalIsLoading) => {
       await axios.put("/users", reqBody, authHeader);
       await fetchUsers();
     } catch (error) {
-      console.log(`failed to update ${username}'s role`, error);
+      console.error(`failed to update ${username}'s role`, error);
     } finally {
       setLoading({ roleLoading: false });
     }
@@ -71,7 +71,7 @@ export default (authHeader, setmodalIsLoading) => {
         ? await axios.delete(`/permissions/${permissionId}`, authHeader)
         : await axios.post("/permissions", reqBody, authHeader);
     } catch (error) {
-      console.log(
+      console.error(
         `failed to change permission for ${username} with Id#${permissionId}`,
         error
       );

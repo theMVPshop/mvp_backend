@@ -33,7 +33,7 @@ export default (history) => {
         users.find((x) => x.username === username)?.isModerator === 1;
       setIsMod(hasPrivilege ? true : false);
     } catch (error) {
-      console.log("failed to retrieve moderator status", error);
+      console.error("failed to retrieve moderator status", error);
     }
   };
   const login = async (event) => {
@@ -92,7 +92,7 @@ export default (history) => {
           login();
         }
       } catch (error) {
-        console.log("failed to create user", error);
+        console.error("failed to create user", error);
         setError(
           error.response.status == 409 ? "User Already Exists" : "Login Failed"
         );

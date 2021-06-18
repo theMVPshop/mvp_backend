@@ -16,7 +16,7 @@ export const DevlogProvider = ({ children }) => {
       let response = await axios.get(`/devlog/${activeProject}`, authHeader);
       setLogs(response.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -30,7 +30,7 @@ export const DevlogProvider = ({ children }) => {
     try {
       await axios.delete(`/devlog/${id}`, reqBody);
     } catch (error) {
-      console.log("delete devlog error", error);
+      console.error("delete devlog error", error);
     } finally {
       fetchLogs();
     }
