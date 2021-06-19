@@ -9,13 +9,8 @@ import { useMilestones } from "../../contexts/MilestonesProvider";
 
 // inheriting props from Milestones.js
 function TimelineElement() {
-  const {
-    milestones,
-    loadingMilestones,
-    clickedMilestone,
-    handleStatusChange,
-    removeMilestone,
-  } = useMilestones();
+  const { milestones, loading, handleStatusChange, removeMilestone } =
+    useMilestones();
   return (
     <>
       {!milestones.length && (
@@ -60,35 +55,49 @@ function TimelineElement() {
                 {milestone.subtitle}
               </h4>
               <p>{milestone.description}</p>
-              <Button
-                variant={
-                  milestone.ms_status === "COMPLETED"
-                    ? "success"
-                    : milestone.ms_status === "IN PROGRESS"
-                    ? "warning"
-                    : milestone.ms_status === "TODO"
-                    ? "danger"
-                    : "primary"
-                }
-                onClick={() => handleStatusChange(milestone)}
-                value={milestone.id}
-                id={milestone.id}
-                size="sm"
-              >
-                {milestone.ms_status}
-              </Button>
-              {loadingMilestones && clickedMilestone === milestone.id ? (
-                <Button variant="danger" className="d-flex ml-auto">
+
+              {loading.loadingStatusChange &&
+              loading.clickedMilestone === milestone.id ? (
+                <Button variant="info">
                   <Spinner
-                    // as="span"
+                    as="span"
                     // variant="warning"
                     animation="border"
                     size="sm"
                     role="status"
                     aria-hidden="true"
-                    // className="mr-1"
                   />
-                  {/* Removing... */}
+                </Button>
+              ) : (
+                <Button
+                  variant={
+                    milestone.ms_status === "COMPLETED"
+                      ? "success"
+                      : milestone.ms_status === "IN PROGRESS"
+                      ? "warning"
+                      : milestone.ms_status === "TODO"
+                      ? "danger"
+                      : "primary"
+                  }
+                  onClick={() => handleStatusChange(milestone)}
+                  value={milestone.id}
+                  id={milestone.id}
+                  size="sm"
+                >
+                  {milestone.ms_status}
+                </Button>
+              )}
+
+              {loading.loadingMilestones &&
+              loading.clickedMilestone === milestone.id ? (
+                <Button variant="danger" className="d-flex ml-auto">
+                  <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
                 </Button>
               ) : (
                 <Button
