@@ -3,8 +3,17 @@ import { Container, Table, OverlayTrigger } from "react-bootstrap";
 import useProjectsTable from "../../hooks/useProjectsTable";
 
 function ProjectsTableModal({ handleProjectClick }) {
-  const { user, activeProject, projects, permissions, renderTooltip } =
+  const { user, isMod, activeProject, projects, permissions, renderTooltip } =
     useProjectsTable();
+
+  const accessibleProjs = isMod
+    ? projects
+    : projects.filter((project) =>
+        permissions.find(
+          (permission) =>
+            permission.project_id === project.id && permission.username === user
+        )
+      );
 
   return (
     <Container>
@@ -17,33 +26,26 @@ function ProjectsTableModal({ handleProjectClick }) {
           </tr>
         </thead>
         <tbody>
-          {permissions.map((permission) =>
-            projects
-              .filter(
-                (x) =>
-                  permission.project_id === x.id && permission.username === user
-              )
-              .map((project) => (
-                <tr
-                  key={project.id}
-                  className={
-                    activeProject === project.id ? "table-active" : undefined
-                  }
-                  role="button"
-                  onClick={() => handleProjectClick(project.id)}
-                >
-                  <td>{project.id}</td>
-                  <OverlayTrigger
-                    placement="top"
-                    delay={{ show: 250, hide: 400 }}
-                    overlay={renderTooltip(project.description)}
-                  >
-                    <td>{project.title}</td>
-                  </OverlayTrigger>
-                  <td className="d-none d-md-block">{project.description}</td>
-                </tr>
-              ))
-          )}
+          {accessibleProjs.map((project) => (
+            <tr
+              key={project.id}
+              className={
+                activeProject === project.id ? "table-active" : undefined
+              }
+              role="button"
+              onClick={() => handleProjectClick(project.id)}
+            >
+              <td>{project.id}</td>
+              <OverlayTrigger
+                placement="top"
+                delay={{ show: 250, hide: 400 }}
+                overlay={renderTooltip(project.description)}
+              >
+                <td>{project.title}</td>
+              </OverlayTrigger>
+              <td className="d-none d-md-block">{project.description}</td>
+            </tr>
+          ))}
         </tbody>
       </Table>
     </Container>
