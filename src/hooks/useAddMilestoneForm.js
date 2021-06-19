@@ -15,6 +15,13 @@ export default ({ handleClose }) => {
   });
   const [loading, setLoading] = useState(false);
 
+  // populates the add milestone form with input data in realtime
+  const onChange = (e) =>
+    setInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+
   const clearForm = () =>
     setInput({
       title: "",
@@ -23,37 +30,34 @@ export default ({ handleClose }) => {
       due_date: "",
     });
 
+  // posts milestone and populates it in the view, then clears input fields
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    let postBody = {
+      title: input.title,
+      subtitle: input.subtitle,
+      project_id: activeProject,
+      due_date: input.due_date,
+      ms_status: "TODO",
+      description: input.description,
+    };
+    try {
+      await axios.post("/milestones", postBody, authHeader);
+      await fetchMilestones();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      clearForm();
+      setLoading(false);
+      handleClose();
+    }
+  };
+
   return {
     loading,
     input,
-    // populates the add milestone form with input data in realtime
-    onChange: (e) =>
-      setInput((prevState) => ({
-        ...prevState,
-        [e.target.name]: e.target.value,
-      })),
-    // posts milestone and populates it in the view, then clears input fields
-    onSubmit: async (event) => {
-      event.preventDefault();
-      setLoading(true);
-      let postBody = {
-        title: input.title,
-        subtitle: input.subtitle,
-        project_id: activeProject,
-        due_date: input.due_date,
-        ms_status: "TODO",
-        description: input.description,
-      };
-      try {
-        await axios.post("/milestones", postBody, authHeader);
-        await fetchMilestones();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        clearForm();
-        setLoading(false);
-        handleClose();
-      }
-    },
+    onChange,
+    onSubmit,
   };
 };

@@ -18,8 +18,8 @@ export const MilestonesProvider = ({ children }) => {
     try {
       let res = await axios.get(`/milestones/${activeProject}`, authHeader);
       setMilestones(res.data);
-    } catch (error) {
-      console.error("failed to fetch milestones", error);
+    } catch (e) {
+      console.error("failed to fetch milestones", e);
     } finally {
       setloadingMilestones(false);
     }
@@ -37,30 +37,28 @@ export const MilestonesProvider = ({ children }) => {
     };
     try {
       await axios.delete(`/milestones/${activeProject}`, reqBody);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
     } finally {
-      fetchMilestones();
+      await fetchMilestones();
     }
   };
 
   // updates milestone status in api and component
   const handleStatusChange = (milestone) => {
-    const milestoneId = milestone.id;
+    let milestoneId = milestone.id;
     const setStatus = (status) => {
       const url = `/milestones/${milestoneId}`;
       axios.put(url, { ms_status: status }, authHeader);
+      milestone.ms_status = status;
     };
-    if (milestone.ms_status === "TODO") {
-      milestone.ms_status = "IN PROGRESS";
-      setStatus("IN PROGRESS");
-    } else if (milestone.ms_status === "IN PROGRESS") {
-      milestone.ms_status = "COMPLETED";
-      setStatus("COMPLETED");
-    } else if (milestone.ms_status === "COMPLETED") {
-      milestone.ms_status = "TODO";
-      setStatus("TODO");
-    }
+    milestone.ms_status === "TODO"
+      ? setStatus("IN PROGRESS")
+      : milestone.ms_status === "IN PROGRESS"
+      ? setStatus("COMPLETED")
+      : milestone.ms_status === "COMPLETED"
+      ? setStatus("TODO")
+      : (milestone.ms_status = "TODO");
     setMilestones([...milestones]);
   };
 

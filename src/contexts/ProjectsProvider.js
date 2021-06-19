@@ -13,10 +13,8 @@ export const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
   const [loadingProjects, setloadingProjects] = useState(false);
-  // const [loadingPermissions, setloadingPermissions] = useState(false);
 
   const fetchProjects = async () => {
-    // setloadingProjects(true);
     try {
       let response = await axios.get("/projects", authHeader);
       setProjects(response.data);
@@ -62,13 +60,10 @@ export const ProjectsProvider = ({ children }) => {
   return (
     <ProjectsContext.Provider
       value={{
-        // loadingPermissions,
-        // setloadingPermissions,
         loadingProjects,
         projects,
         setProjects,
         fetchProjects,
-        // fetchPermissions,
         deleteProject,
         permissions,
         activeProjectTitle,

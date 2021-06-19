@@ -18,11 +18,11 @@ export default (history) => {
 
   const toggleForm = () => setshowSignup(!showSignup);
 
-  // const clearForm = () =>
-  //   setInput({
-  //     username: "",
-  //     password: "",
-  //   });
+  const handleChange = (e) =>
+    setInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
 
   // if someone is logged in, this will check to see if they are a moderator and store it in a useState hook as a boolean
   const checkModPrivilege = async (username, authHeader) => {
@@ -65,6 +65,28 @@ export default (history) => {
     }
   };
 
+  const signup = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    let userObject = {
+      username: input.username,
+      isModerator: 0,
+    };
+    try {
+      let response = await axios.post("/auth/signup", input);
+      if (response.status === 200) {
+        await axios.post("/users", userObject);
+        login();
+      }
+    } catch (error) {
+      console.error("failed to create user", error);
+      setError(
+        error.response.status == 409 ? "User Already Exists" : "Login Failed"
+      );
+      setLoading(false);
+    }
+  };
+
   return {
     input,
     cachedUser,
@@ -73,31 +95,7 @@ export default (history) => {
     loading,
     showSignup,
     login,
-    handleChange: (e) =>
-      setInput((prevState) => ({
-        ...prevState,
-        [e.target.name]: e.target.value,
-      })),
-    signup: async (e) => {
-      e.preventDefault();
-      setLoading(true);
-      let userObject = {
-        username: input.username,
-        isModerator: 0,
-      };
-      try {
-        let response = await axios.post("/auth/signup", input);
-        if (response.status === 200) {
-          await axios.post("/users", userObject);
-          login();
-        }
-      } catch (error) {
-        console.error("failed to create user", error);
-        setError(
-          error.response.status == 409 ? "User Already Exists" : "Login Failed"
-        );
-        setLoading(false);
-      }
-    },
+    handleChange,
+    signup,
   };
 };
