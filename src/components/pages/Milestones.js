@@ -10,15 +10,19 @@ function Milestones() {
   const { activeProject } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
 
+  const styles = {
+    milestonesContainer: {
+      backgroundColor: "rgba(0,0,0,.25)",
+      border: "solid 3px var(--blue)",
+      borderRadius: "30px 30px 0 0",
+    },
+  };
+
   return (
     <>
       <Container
         className="pb-3 mb-2 m-auto"
-        style={{
-          backgroundColor: "rgba(0,0,0,.25)",
-          border: "solid 3px var(--blue)",
-          borderRadius: "30px 30px 0 0",
-        }}
+        style={styles.milestonesContainer}
       >
         <div
           className="mileContainer pt-2 pb-2 mb-3"

@@ -1,8 +1,8 @@
 import React from "react";
 import Signup from "./Signup";
 import { Redirect } from "react-router-dom";
-import { Spinner, Button, Container } from "react-bootstrap";
-import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
+import { Container } from "react-bootstrap";
+// import { faCaretLeft } from "@fortawesome/free-solid-svg-icons";
 import useLogin from "../hooks/useLogin";
 
 const Login = ({ history }) => {
@@ -16,6 +16,9 @@ const Login = ({ history }) => {
     showSignup,
     signup,
     login,
+    loadingButton,
+    loginButton,
+    newUserButton,
   } = useLogin(history);
 
   return (
@@ -29,6 +32,8 @@ const Login = ({ history }) => {
           handleChange={handleChange}
           input={input}
           error={error}
+          loadingButton={loadingButton}
+          loginButton={loginButton}
         />
       ) : (
         <>
@@ -90,35 +95,9 @@ const Login = ({ history }) => {
                     </div>
                   </div>
 
-                  {loading ? (
-                    <>
-                      <Button variant="primary btn-block" disabled>
-                        <Spinner
-                          as="span"
-                          animation="grow"
-                          size="sm"
-                          role="status"
-                          aria-hidden="true"
-                        />
-                        Verifying...
-                      </Button>
-                    </>
-                  ) : (
-                    <Button type="submit" className="btn btn-primary btn-block">
-                      {error}
-                    </Button>
-                  )}
+                  {loading ? loadingButton : loginButton}
 
-                  <p className="forgot-password text-right">
-                    <Button
-                      onClick={() => toggleForm()}
-                      className="btn mt-4"
-                      size="sm"
-                      variant="success"
-                    >
-                      New user?
-                    </Button>
-                  </p>
+                  <p className="forgot-password text-right">{newUserButton}</p>
                 </form>
               </div>
             </Container>

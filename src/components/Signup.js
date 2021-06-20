@@ -5,12 +5,13 @@ import Login from "./Login";
 // inheriting props from--and is always rendered by--Login.js
 const Signup = ({
   loading,
+  loadingButton,
+  loginButton,
   toggleForm,
   showSignup,
   signup,
   handleChange,
   input,
-  error,
 }) => {
   return (
     <>
@@ -70,22 +71,7 @@ const Signup = ({
                   />
                 </div>
 
-                {loading ? (
-                  <Button variant="primary btn-block" disabled>
-                    <Spinner
-                      as="span"
-                      animation="grow"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                    />
-                    Verifying...
-                  </Button>
-                ) : (
-                  <Button type="submit" className="btn btn-primary btn-block">
-                    {error}
-                  </Button>
-                )}
+                {loading ? loadingButton : loginButton}
 
                 <p className="forgot-password text-right">
                   <Button

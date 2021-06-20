@@ -6,7 +6,7 @@ import { useProjects } from "../contexts/ProjectsProvider";
 export default () => {
   const { setProjects, authHeader } = useProjectsTable();
 
-  const { loadingProjects } = useProjects();
+  const { deletingProject } = useProjects();
   const [input, setInput] = useState({
     title: "",
     description: "",
@@ -37,7 +37,7 @@ export default () => {
   };
 
   return {
-    loadingProjects,
+    deletingProject,
     input,
     isLoading,
     onChange,

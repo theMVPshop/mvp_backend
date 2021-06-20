@@ -13,15 +13,17 @@ export const ProjectsProvider = ({ children }) => {
   const [projects, setProjects] = useLocalStorage("projects", []);
   const [permissions, setPermissions] = useLocalStorage("permissions", []);
   const [loadingProjects, setloadingProjects] = useState(false);
+  const [deletingProject, setdeletingProject] = useState(false);
 
   const fetchProjects = async () => {
     try {
-      let response = await axios.get("/projects", authHeader);
-      setProjects(response.data);
+      let { data } = await axios.get("/projects", authHeader);
+      setProjects(data);
     } catch (error) {
       console.error("failed to populate projects", error);
     } finally {
       setloadingProjects(false);
+      setdeletingProject(false);
     }
   };
 
@@ -37,7 +39,7 @@ export const ProjectsProvider = ({ children }) => {
 
   // removes project from api and repopulates component with projects sans deleted one
   const deleteProject = async (Id) => {
-    setloadingProjects(true);
+    setdeletingProject(true);
     try {
       await axios.delete(`/projects/${Id}`, authHeader);
     } catch (error) {
@@ -51,6 +53,7 @@ export const ProjectsProvider = ({ children }) => {
 
   React.useEffect(() => {
     function init() {
+      setloadingProjects(true);
       fetchPermissions();
       fetchProjects();
     }
@@ -61,6 +64,7 @@ export const ProjectsProvider = ({ children }) => {
     <ProjectsContext.Provider
       value={{
         loadingProjects,
+        deletingProject,
         projects,
         setProjects,
         fetchProjects,

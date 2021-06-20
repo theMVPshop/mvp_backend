@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Spinner, Button } from "react-bootstrap";
 import { useState } from "react";
 import { useGlobal } from "../contexts/GlobalProvider";
 
@@ -87,6 +88,36 @@ export default (history) => {
     }
   };
 
+  const loadingButton = (
+    <Button variant="primary btn-block" disabled>
+      <Spinner
+        as="span"
+        animation="grow"
+        size="sm"
+        role="status"
+        aria-hidden="true"
+      />
+      Verifying...
+    </Button>
+  );
+
+  const loginButton = (
+    <Button type="submit" className="btn btn-primary btn-block">
+      {error}
+    </Button>
+  );
+
+  const newUserButton = (
+    <Button
+      onClick={() => toggleForm()}
+      className="btn mt-4"
+      size="sm"
+      variant="success"
+    >
+      New user?
+    </Button>
+  );
+
   return {
     input,
     cachedUser,
@@ -97,5 +128,8 @@ export default (history) => {
     login,
     handleChange,
     signup,
+    loadingButton,
+    loginButton,
+    newUserButton,
   };
 };
