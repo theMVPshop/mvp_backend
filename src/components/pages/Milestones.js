@@ -7,7 +7,7 @@ import { useGlobal } from "../../contexts/GlobalProvider";
 import { useProjects } from "../../contexts/ProjectsProvider";
 
 function Milestones() {
-  const { activeProject } = useGlobal();
+  const { isMod, activeProject } = useGlobal();
   const { permissions, activeProjectTitle } = useProjects();
 
   const styles = {
@@ -36,7 +36,7 @@ function Milestones() {
           </Container>
           {activeProject && (
             <Container className="d-flex justify-content-center">
-              <AddMilestoneModal />
+              {isMod && <AddMilestoneModal />}
             </Container>
           )}
         </div>

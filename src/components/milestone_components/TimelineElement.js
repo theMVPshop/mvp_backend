@@ -10,7 +10,7 @@ import { useGlobal } from "../../contexts/GlobalProvider";
 
 // inheriting props from Milestones.js
 function TimelineElement() {
-  const { activeProject } = useGlobal();
+  const { isMod, activeProject } = useGlobal();
   const { milestones, loading, handleStatusChange, removeMilestone } =
     useMilestones();
 
@@ -120,7 +120,7 @@ function TimelineElement() {
                 </h4>
                 <p>{milestone.description}</p>
                 {isStatusLoading ? statusLoadingButton : statusButton}
-                {isDeleting ? milestoneDeletingButton : deleteButton}
+                {isDeleting ? milestoneDeletingButton : isMod && deleteButton}
               </VerticalTimelineElement>
             );
           })}
