@@ -19,7 +19,27 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
     setmodalIsLoading(true);
     fetchUsers();
     fetchPermissions();
-  }, [projects]);
+  }, []);
+
+  const loadingButton = (
+    <Button variant="danger" disabled className="d-flex">
+      <Spinner
+        as="span"
+        animation="border"
+        size="sm"
+        role="status"
+        aria-hidden="true"
+        className="mr-1"
+      />
+    </Button>
+  );
+
+  const spinnerProps = {
+    as: "span",
+    size: "sm",
+    role: "status",
+    ariaHidden: "true",
+  };
 
   return (
     <Container>
@@ -31,107 +51,105 @@ function SetRoles({ authHeader, setmodalIsLoading }) {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>
-                <div className="m-1">{user.username}</div>
-                {loading.clickedUser === user.username &&
-                loading.roleLoading ? (
-                  <Button variant="danger" disabled className="d-flex">
-                    <Spinner
-                      // variant="warning"
-                      as="span"
-                      animation="border"
-                      size="sm"
-                      role="status"
-                      aria-hidden="true"
-                      className="mr-1"
-                    />
-                  </Button>
-                ) : (
-                  <Button
-                    variant={user.isModerator ? "success" : "warning"}
-                    onClick={() => handleChangeRole(user)}
-                    size="sm"
-                  >
-                    {user.isModerator ? "Moderator" : "Client"}
-                  </Button>
-                )}
-              </td>
-              <td>
-                <Form>
-                  {["checkbox"].map((type) => (
-                    <div key={`inline-${type}-${user.id}`}>
-                      {projects.map((project) => {
-                        const permissionObj = permissions.find(
-                          (x) =>
-                            x.username === user.username &&
-                            x.project_id === project.id
-                        );
+          {users.map((user) => {
+            let isRoleLoading, roleButton;
 
-                        return (
-                          <>
-                            {loading.clickedPermission === permissionObj?.id &&
+            isRoleLoading =
+              loading.clickedUser === user.username && loading.roleLoading;
+
+            roleButton = (
+              <Button
+                variant={user.isModerator ? "success" : "warning"}
+                onClick={() => handleChangeRole(user)}
+                size="sm"
+              >
+                {user.isModerator ? "Moderator" : "Client"}
+              </Button>
+            );
+
+            return (
+              <tr key={user.id}>
+                <td>
+                  <div className="m-1">{user.username}</div>
+                  {isRoleLoading ? loadingButton : roleButton}
+                </td>
+                <td>
+                  <Form>
+                    {["checkbox"].map((type) => (
+                      <div key={`inline-${type}-${user.id}`}>
+                        {projects.map((project) => {
+                          let permissionObj,
+                            isPermissionUpdating,
+                            permissionSpinner,
+                            permissionFormCheck;
+
+                          permissionObj = permissions.find(
+                            (permission) =>
+                              permission.username === user.username &&
+                              permission.project_id === project.id
+                          );
+
+                          isPermissionUpdating =
+                            loading.clickedPermission === permissionObj?.id &&
                             loading.clickedProject === project.id &&
                             loading.clickedUser === user.username &&
-                            loading.permissionUpdating ? (
-                              <div
-                                className="d-inline-block"
-                                key={user.username + project.id}
-                              >
+                            loading.permissionUpdating;
+
+                          permissionSpinner = (
+                            <div
+                              className="d-inline-block"
+                              key={user.username + project.id}
+                            >
+                              <Spinner
+                                {...spinnerProps}
+                                variant={permissionObj ? "danger" : "success"}
+                                animation="border"
+                                className="mx-1"
+                              />
+                              <span className="mr-3 mb-3">{project.title}</span>
+                            </div>
+                          );
+
+                          permissionFormCheck = (
+                            <Form.Check
+                              inline
+                              key={user.username + project.id}
+                              id={`inline-${type}-${
+                                user.username + project.id
+                              }`}
+                              checked={permissionObj}
+                              type={type}
+                              label={project.title}
+                              onChange={() =>
+                                handleChangePermission(
+                                  project.id,
+                                  user.username,
+                                  permissionObj
+                                )
+                              }
+                            >
+                              {loading.permissionsLoading && (
                                 <Spinner
-                                  variant={permissionObj ? "danger" : "success"}
-                                  as="span"
-                                  animation="border"
-                                  size="sm"
-                                  role="status"
-                                  aria-hidden="true"
-                                  className="ml-1 mr-1"
+                                  {...spinnerProps}
+                                  variant="info"
+                                  animation="grow"
+                                  className="mr-3"
                                 />
-                                <span className="mr-3 mb-3">
-                                  {project.title}
-                                </span>
-                              </div>
-                            ) : (
-                              <Form.Check
-                                key={user.username + project.id}
-                                inline
-                                label={project.title}
-                                type={type}
-                                id={`inline-${type}-${
-                                  user.username + project.id
-                                }`}
-                                checked={permissionObj}
-                                onChange={() =>
-                                  handleChangePermission(
-                                    project.id,
-                                    user.username,
-                                    permissionObj
-                                  )
-                                }
-                              >
-                                {loading.permissionsLoading && (
-                                  <Spinner
-                                    variant="info"
-                                    as="span"
-                                    animation="grow"
-                                    size="sm"
-                                    role="status"
-                                    aria-hidden="true"
-                                    className="mr-3"
-                                  />
-                                )}
-                              </Form.Check>
-                            )}
-                          </>
-                        );
-                      })}
-                    </div>
-                  ))}
-                </Form>
-              </td>
-            </tr>
-          ))}
+                              )}
+                            </Form.Check>
+                          );
+
+                          return isPermissionUpdating
+                            ? permissionSpinner
+                            : permissionFormCheck;
+                        })}
+                      </div>
+                    ))}
+                  </Form>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </Table>
     </Container>

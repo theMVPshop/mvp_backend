@@ -74,6 +74,7 @@ function ProjectsModTable() {
                         onClick={() => projectRedirect(project.id, "devlog")}
                       />
                     )}
+
                     <Button
                       className="ml-3"
                       variant="danger"
