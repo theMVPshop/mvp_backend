@@ -74,7 +74,7 @@ function ProjectsModTable() {
                 size="sm"
                 onClick={() => deleteProject(project.id)}
               >
-                X
+                ❌
               </Button>
             );
 

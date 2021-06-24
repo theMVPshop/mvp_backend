@@ -19,10 +19,10 @@ export default (authHeader, setmodalIsLoading) => {
 
   const fetchUsers = async () => {
     try {
-      let response = await axios.get("/users", authHeader);
-      setUsers(response.data);
-    } catch (error) {
-      console.error("failed to fetch users", error);
+      let { data } = await axios.get("/users", authHeader);
+      setUsers(data);
+    } catch (e) {
+      console.error("failed to fetch users", e);
     } finally {
       setmodalIsLoading(false);
     }
@@ -30,10 +30,10 @@ export default (authHeader, setmodalIsLoading) => {
 
   const fetchPermissions = async () => {
     try {
-      let response = await axios.get("/permissions", authHeader);
-      setPermissions(response.data);
-    } catch (error) {
-      console.error("fetchpermissions", error);
+      let { data } = await axios.get("/permissions", authHeader);
+      setPermissions(data);
+    } catch (e) {
+      console.error("fetchpermissions", e);
     } finally {
       setLoading({ permissionsLoading: false });
     }
@@ -46,8 +46,8 @@ export default (authHeader, setmodalIsLoading) => {
     try {
       await axios.put("/users", reqBody, authHeader);
       await fetchUsers();
-    } catch (error) {
-      console.error(`failed to update ${username}'s role`, error);
+    } catch (e) {
+      console.error(`failed to update ${username}'s role`, e);
     } finally {
       setLoading({ roleLoading: false });
     }
@@ -70,10 +70,10 @@ export default (authHeader, setmodalIsLoading) => {
       permissionObj
         ? await axios.delete(`/permissions/${permissionId}`, authHeader)
         : await axios.post("/permissions", reqBody, authHeader);
-    } catch (error) {
+    } catch (e) {
       console.error(
         `failed to change permission for ${username} with Id#${permissionId}`,
-        error
+        e
       );
     } finally {
       await fetchPermissions();

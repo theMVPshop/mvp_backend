@@ -72,6 +72,7 @@ function TimelineElement() {
               loading.clickedMilestone === milestone.id;
 
             statusLoadingButton = <Button variant="info">{spinner}</Button>;
+
             statusButton = (
               <Button
                 variant={statusButtonVariant(milestone)}

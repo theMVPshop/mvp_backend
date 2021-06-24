@@ -68,7 +68,7 @@ export default function Devlog() {
                 size="sm"
                 className="ml-auto mb-auto"
               >
-                X
+                ❌
               </Button>
             );
 
